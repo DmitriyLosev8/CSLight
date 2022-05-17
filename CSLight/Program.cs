@@ -25,6 +25,13 @@ namespace CSLight
             string finishPhrase = "Да, мать вашу!";                                     
             char character1 = '1';
             char character2 = '2';
- }
+            //добавил недостающие переменные
+           
+            bool finishFirst = false;
+            short moneyAfterLosing = -150;
+            double procentChanceToWin = 78.4568944226549;
+
+
+        }
     }
 }
