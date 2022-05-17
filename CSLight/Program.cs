@@ -27,7 +27,7 @@ namespace CSLight
             char character2 = '2';
             //добавил недостающие переменные
            
-            bool isfinishFirst = false;
+            bool isFinishFirst = false;
             short moneyAfterLosing = -150;
             double procentChanceToWin = 78.4568944226549;
         }
