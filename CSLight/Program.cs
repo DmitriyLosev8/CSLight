@@ -11,14 +11,21 @@ namespace CSLight
         static void Main(string[] args)
         {
             // домашнее задание конкатинация
-
-            string request = "Как Вас зовут? Сколько Вам лет? Какой Ваш знак зодиака? Где Вы работаете?";
-            Console.WriteLine(request);
-            string name = "Алексей";
-            int age = 21;
-            string zodiak = "водолей";
-            string work = "на заводе";
+            
+            string name;
+            Console.Write("Как Вас зовут?");
+            name = Console.ReadLine();
+            int age;
+            Console.Write("Сколько вам лет?");
+            age = Convert.ToInt32(Console.ReadLine());
+            string zodiak;
+            Console.Write("Какой у Вас знак зодиака?");
+            zodiak = Console.ReadLine();
+            string work;
+            Console.Write("Где Вы работаете?");
+            work = Console.ReadLine();
             Console.WriteLine("Вас зовут " + name + ", вам " + age + " год, вы " + zodiak + " и работаете " + work + ".");
+        
         }
     }
 }
