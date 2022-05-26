@@ -13,16 +13,13 @@ namespace CSLight
             // домашнее задание поменять местами значения переменных:
 
             string name = "Волочкова";
-            string lastName = "Алёна";
+            string lastName = "Алёна";   
             Console.WriteLine("Ваше имя - " + name);
             Console.WriteLine("Ваша фамилия - " + lastName);
-            name = lastName;
-            if (name == "Алёна")
-            {
-                lastName = "Волочкова";
-            }
+            string changedName = lastName;
+            lastName = name;
             Console.WriteLine("Данные были не верны, вот верные данные:");
-            Console.WriteLine("Ваше имя - " + name);
+            Console.WriteLine("Ваше имя - " + changedName);
             Console.WriteLine("Ваша фамилия - " + lastName);
         }
     }
