@@ -9,20 +9,17 @@ namespace CSLight
     internal class Program
     {
         static void Main(string[] args)
-        {   // домашнее задание магазин:
+        {   // домашнее задание поликлиника:
 
-            int goldCoins;
-            int cristal;
-            int priseOfCristal = 10;
+            int minutesOfWaiting = 10;
+            int amoutnOfGrandmothers;
+            int timeToWait;
 
-            Console.WriteLine("Вы в магазине кристаллов. Цена одного кристалла - " + priseOfCristal + " золотых монет.");
-            Console.Write("Сколько у вас золотых монет?");
-            goldCoins = Convert.ToInt32(Console.ReadLine());
-            Console.Write("Сколько кристаллов вы хотите купить?");
-            cristal = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Здравствуйте, я помогу вам определить сколько Вам ждать в очереди. Сколько вы видите перед собой старушек?");
+            amoutnOfGrandmothers = Convert.ToInt32(Console.ReadLine());
 
-            goldCoins -= cristal * priseOfCristal;
-            Console.WriteLine("Спасибо за покупку, вы купили " + cristal + " кристалов, у вас осталось " + goldCoins + " золотых монет.");
+            timeToWait = amoutnOfGrandmothers * minutesOfWaiting;
+            Console.WriteLine("Судя по моим подсчётам вам придётся ждать " + timeToWait + " минут, удачи!");
         }
     }
 }
