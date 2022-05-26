@@ -18,10 +18,10 @@ namespace CSLight
             Console.WriteLine("Фамилия - " + lastName);
             string changes = "Данные были не верны, данные исправлены:";
             string changedName = "Алёна";
-            string chsngedLastName = "Волочкова";
+            string changedLastName = "Волочкова";
             Console.WriteLine(changes);
             Console.WriteLine("Имя - " + changedName);
-            Console.WriteLine("Фамилия - " + chsngedLastName);
+            Console.WriteLine("Фамилия - " + changedLastName);
 
         }
     }
