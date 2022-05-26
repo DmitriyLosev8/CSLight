@@ -16,13 +16,15 @@ namespace CSLight
             int amountOfGrandmothers;
             int timeToWaitHours;
             int timeToWaitMinutes;
+            int minutesPerHour = 60;
+            string timeToWait;
 
             Console.WriteLine("Здравствуйте, я помогу вам определить сколько Вам ждать в очереди. Сколько вы видите перед собой старушек?");
             amountOfGrandmothers = Convert.ToInt32(Console.ReadLine());
 
-            timeToWaitHours = amountOfGrandmothers * minutesOfWaiting / 60;
-            timeToWaitMinutes = amountOfGrandmothers * minutesOfWaiting % 60;
-            Console.WriteLine("Судя по моим подсчётам вам придётся ждать " + timeToWaitHours + " часов " + timeToWaitMinutes + " минут, удачи!");
+            timeToWait = Convert.ToString((amountOfGrandmothers * minutesOfWaiting / minutesPerHour) + " часов " +  
+                (amountOfGrandmothers * minutesOfWaiting % minutesPerHour) + " минут");
+            Console.WriteLine("По моим подсчётам вам ждать: " + timeToWait + ", удачи!");
         }
     }
 }
