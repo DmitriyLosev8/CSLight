@@ -10,7 +10,6 @@ namespace CSLight
     {
         static void Main(string[] args)
         {   
-          
             // домашнее задание поликлиника:
 
             int minutesOfWaiting = 10;
