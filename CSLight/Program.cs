@@ -10,16 +10,19 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            // домашнее задание картинки: у нас есть 52 картинке в альбоме, выводятся по 3 ряда, надо понять сколько полностью заполненных рядов можно будет вывести,
-            // и сколько картинок будет сверх меры.
-
-            int albumOfPictures = 52;
-            int seriaOfPictures = 3;
-            int fullSeriesOfPictures = albumOfPictures / seriaOfPictures;
-            int extraPictures = albumOfPictures % seriaOfPictures;
-            Console.WriteLine(fullSeriesOfPictures);
-            Console.WriteLine(extraPictures);
+            // домашнее задание перестановка местами значений:
             
+            string name = "Волочкова";
+            string lastName = "Алёна";
+            Console.WriteLine("Имя - " + name);
+            Console.WriteLine("Фамилия - " + lastName);
+            string changes = "Данные были не верны, данные исправлены:";
+            string changedName = "Алёна";
+            string chsngedLastName = "Волочкова";
+            Console.WriteLine(changes);
+            Console.WriteLine("Имя - " + changedName);
+            Console.WriteLine("Фамилия - " + chsngedLastName);
+
         }
     }
 }
