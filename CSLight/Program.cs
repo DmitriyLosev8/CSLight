@@ -9,8 +9,7 @@ namespace CSLight
     internal class Program
     {
         static void Main(string[] args)
-        {
-            // домашнее задание магазин:
+        {   // домашнее задание магазин:
 
             int goldCoins;
             int cristal;
@@ -24,7 +23,6 @@ namespace CSLight
 
             goldCoins -= cristal * priseOfCristal;
             Console.WriteLine("Спасибо за покупку, вы купили " + cristal + " кристалов, у вас осталось " + goldCoins + " золотых монет.");
-
         }
     }
 }
