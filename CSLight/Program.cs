@@ -14,9 +14,9 @@ namespace CSLight
             // и сколько картинок будет сверх меры.
 
             int fullSeriesOfPictures = 52 / 3;
-            int exraSeriesOfPictures = 52 % 7;
+            int exraPictures = 52 % 7;
             Console.WriteLine(fullSeriesOfPictures);
-            Console.WriteLine(exraSeriesOfPictures);
+            Console.WriteLine(exraPictures);
         }
     }
 }
