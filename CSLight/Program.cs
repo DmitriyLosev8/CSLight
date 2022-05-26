@@ -10,18 +10,20 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            // домашнее задание перестановка местами значений:
-            
-            string name = "Волочкова";
-            string lastName = "Алёна";
-            Console.WriteLine("Имя - " + name);
-            Console.WriteLine("Фамилия - " + lastName);
-            string changes = "Данные были не верны, данные исправлены:";
-            string changedName = "Алёна";
-            string changedLastName = "Волочкова";
-            Console.WriteLine(changes);
-            Console.WriteLine("Имя - " + changedName);
-            Console.WriteLine("Фамилия - " + changedLastName);
+            // домашнее задание магазин:
+
+            int goldCoins;
+            int cristal;
+            int priseOfCristal = 10;
+
+            Console.WriteLine("Вы в магазине кристаллов. Цена одного кристалла - 10 золотых монет.");
+            Console.Write("Сколько у вас золотых монет?");
+            goldCoins = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Сколько кристаллов вы хотите купить?");
+            cristal = Convert.ToInt32(Console.ReadLine());
+
+            goldCoins -= cristal * priseOfCristal;
+            Console.WriteLine("Спасибо за покупку, вы купили " + cristal + " кристалов, у вас осталось " + goldCoins + " золотых монет.");
 
         }
     }
