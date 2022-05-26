@@ -10,19 +10,19 @@ namespace CSLight
     {
         static void Main(string[] args)
         {   
-            // домашнее задание поменять местами значения переменных:
+            // домашнее задание поликлиника:
 
-            string name = "Волочкова";
-            string lastName = "Алёна";   
-            Console.WriteLine("Ваше имя - " + name);
-            Console.WriteLine("Ваша фамилия - " + lastName);
-            string changedName = lastName;
-            string changedLastName = name;
-            name = changedName;
-            lastName = changedLastName;
-            Console.WriteLine("Данные были не верны, вот верные данные:");
-            Console.WriteLine("Ваше имя - " + name);
-            Console.WriteLine("Ваша фамилия - " + lastName);
+            int minutesOfWaiting = 10;
+            int amountOfGrandmothers;
+            int timeToWaitHours;
+            int timeToWaitMinutes;
+
+            Console.WriteLine("Здравствуйте, я помогу вам определить сколько Вам ждать в очереди. Сколько вы видите перед собой старушек?");
+            amountOfGrandmothers = Convert.ToInt32(Console.ReadLine());
+
+            timeToWaitHours = amountOfGrandmothers * minutesOfWaiting / 60;
+            timeToWaitMinutes = amountOfGrandmothers * minutesOfWaiting % 60;
+            Console.WriteLine("Судя по моим подсчётам вам придётся ждать " + timeToWaitHours + " часов " + timeToWaitMinutes + " минут, удачи!");
         }
     }
 }
