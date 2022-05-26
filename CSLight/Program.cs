@@ -17,9 +17,11 @@ namespace CSLight
             Console.WriteLine("Ваше имя - " + name);
             Console.WriteLine("Ваша фамилия - " + lastName);
             string changedName = lastName;
-            lastName = name;
+            string changedLastName = name;
+            name = changedName;
+            lastName = changedLastName;
             Console.WriteLine("Данные были не верны, вот верные данные:");
-            Console.WriteLine("Ваше имя - " + changedName);
+            Console.WriteLine("Ваше имя - " + name);
             Console.WriteLine("Ваша фамилия - " + lastName);
         }
     }
