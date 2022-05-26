@@ -10,22 +10,13 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            // домашнее задание конкатинация
-            
-            string name;
-            Console.Write("Как Вас зовут?");
-            name = Console.ReadLine();
-            int age;
-            Console.Write("Сколько вам лет?");
-            age = Convert.ToInt32(Console.ReadLine());
-            string zodiak;
-            Console.Write("Какой у Вас знак зодиака?");
-            zodiak = Console.ReadLine();
-            string work;
-            Console.Write("Где Вы работаете?");
-            work = Console.ReadLine();
-            Console.WriteLine("Вас зовут " + name + ", вам " + age + " год, вы " + zodiak + " и работаете " + work + ".");
-        
+            // домашнее задание картинки: у нас есть 52 картинке в альбоме, выводятся по 3 ряда, надо понять сколько полностью заполненных рядов можно будет вывести,
+            // и сколько картинок будет сверх меры.
+
+            int fullSeriesOfPictures = 52 / 3;
+            int exraSeriesOfPictures = 52 % 7;
+            Console.WriteLine(fullSeriesOfPictures);
+            Console.WriteLine(exraSeriesOfPictures);
         }
     }
 }
