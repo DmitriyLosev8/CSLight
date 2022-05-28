@@ -9,22 +9,25 @@ namespace CSLight
     internal class Program
     {
         static void Main(string[] args)
-        {   
-            // домашнее задание поликлиника:
+        {
+            // домашнее задание освоение циклов:
 
-            int minutesOfWaiting = 10;
-            int amountOfGrandmothers;
-            int timeToWaitHours;
-            int timeToWaitMinutes;
-            int minutesPerHour = 60;
+            string userInput;
+            string notice;
+            int times;
 
-            Console.WriteLine("Здравствуйте, я помогу вам определить сколько Вам ждать в очереди. Сколько вы видите перед собой старушек?");
-            amountOfGrandmothers = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Вы хотите поставить напоминание, чтобы вы поздравили бабушку через 5 дней?");
+            Console.WriteLine("1 - да, 2 - нет");
+            userInput = Console.ReadLine();
+            Console.WriteLine("Сколько раз повторить это напоминание?");
+            times = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Введите текст напоминания:");
+            notice = Console.ReadLine();
 
-            int timeToWait = (amountOfGrandmothers * minutesOfWaiting);
-            timeToWaitHours = timeToWait / minutesPerHour;
-            timeToWaitMinutes = timeToWait % minutesPerHour;
-            Console.WriteLine("Судя по моим подсчётам вам придётся ждать " + timeToWaitHours + " часов " + timeToWaitMinutes + " минут, удачи!");
+            while (-- times > 0 )
+            {
+                Console.WriteLine(notice);
+            }
         }
     }
 }
