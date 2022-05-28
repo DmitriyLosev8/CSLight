@@ -24,10 +24,10 @@ namespace CSLight
             Console.WriteLine("Введите текст напоминания:");
             notice = Console.ReadLine();
 
-            while (-- times > 0 )
+            for (int i = 0; i < times; i++)
             {
                 Console.WriteLine(notice);
             }
-        }
+        }  
     }
 }
