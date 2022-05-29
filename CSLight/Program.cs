@@ -10,24 +10,16 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            // домашнее задание освоение циклов:
-
-            string userInput;
-            string notice;
-            int times;
-
-            Console.WriteLine("Вы хотите поставить напоминание, чтобы вы поздравили бабушку через 5 дней?");
-            Console.WriteLine("1 - да, 2 - нет");
-            userInput = Console.ReadLine();
-            Console.WriteLine("Сколько раз повторить это напоминание?");
-            times = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Введите текст напоминания:");
-            notice = Console.ReadLine();
-
-            for (int i = 0; i < times; i++)
+            //домашнее задание: последовательность. У нас есть неделя обучения и полный курс обучения по дням. 
+            //Использовал цикл for, потому что есть чёткие парраметры цикла и чёткий шаг.
+            
+            int weekOfStudy = 7;
+            int fullCourseOfStudy = 100;
+            
+            for (int i = 5; i <= fullCourseOfStudy; i+= weekOfStudy)
             {
-                Console.WriteLine(notice);
+                Console.WriteLine(i);
             }
-        }  
+        }
     }
 }
