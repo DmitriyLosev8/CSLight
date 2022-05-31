@@ -12,24 +12,17 @@ namespace CSLight
         {
             // домашнее задание: Контроль выхода:
 
-            int day;
-            string userInput;
+            string day;
+            string toExit = "exit";
 
             Console.WriteLine("Какое сегодня число?");
-            day = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Чтобы прекратить поздравления, напишите слово: " + toExit);
+            day = (Console.ReadLine());
 
-            while (true)
+            while (day != toExit)
             {
                 Console.WriteLine("Поздравляю Вас, вы прекрасны!");
-                Console.WriteLine("Какое сегодня число?");
-                Console.WriteLine("                                                       Чтобы прекратить поздравления, напишите слово exit");
-                
-                userInput = Console.ReadLine();
-
-                if (userInput == "exit")
-                {
-                    break;
-                }
+                Console.WriteLine("Какое сегодня число?"); 
             }
         }
     }
