@@ -10,30 +10,26 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            // домашнее задание: Вывод имени:
+            // домашнее задание: Контроль выхода:
 
-            string name;
-            string symbol;
-            int amountOfSymbolsInName;
+            int day;
+            string userInput;
 
-            Console.WriteLine("Напишите Ваше имя:");
-            name = Console.ReadLine();
-            Console.WriteLine(name.Length);
-            amountOfSymbolsInName = name.Length;
+            Console.WriteLine("Какое сегодня число?");
+            day = Convert.ToInt32(Console.ReadLine());
 
-            Console.WriteLine("Введите любой один символ и ваше имя окажется внутри прямоугольника, состоящего из этого символа:");
-            symbol = Console.ReadLine();
-
-            for (int i = 0; i <= amountOfSymbolsInName + 1; i++)
+            while (true)
             {
-                Console.Write(symbol);
-            }
+                Console.WriteLine("Поздравляю Вас, вы прекрасны!");
+                Console.WriteLine("Какое сегодня число?");
+                Console.WriteLine("                                                       Чтобы прекратить поздравления, напишите слово exit");
+                
+                userInput = Console.ReadLine();
 
-            Console.WriteLine("\n" + symbol + name + symbol);
-
-            for (int i = 0; i <= amountOfSymbolsInName + 1; i++)
-            {
-                Console.Write(symbol);
+                if (userInput == "exit")
+                {
+                    break;
+                }
             }
         }
     }
