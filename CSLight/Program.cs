@@ -10,26 +10,30 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            //домашнее задание "программа под паролем":
+            // домашнее задание: Вывод имени:
 
-            string password = "123456";
-            string userInput;
-            int tryCount = 3;
+            string name;
+            string symbol;
+            int amountOfSymbolsInName;
 
-            for (int i = 0; i < tryCount; i++)
+            Console.WriteLine("Напишите Ваше имя:");
+            name = Console.ReadLine();
+            Console.WriteLine(name.Length);
+            amountOfSymbolsInName = name.Length;
+
+            Console.WriteLine("Введите любой один символ и ваше имя окажется внутри прямоугольника, состоящего из этого символа:");
+            symbol = Console.ReadLine();
+
+            for (int i = 0; i <= amountOfSymbolsInName + 1; i++)
             {
-                Console.WriteLine("Введите пароль, чтобы узнать страшную тайну:");
-                userInput = Console.ReadLine();
+                Console.Write(symbol);
+            }
 
-                if (userInput == password)
-                {
-                    Console.WriteLine("Вы открыли страшную тайну: Бабы Яги не существует!");
-                    break;
-                }
-                else if (userInput != password)
-                {
-                    Console.WriteLine("Неа, пароль не верный, введите ещё раз");
-                }
+            Console.WriteLine("\n" + symbol + name + symbol);
+
+            for (int i = 0; i <= amountOfSymbolsInName + 1; i++)
+            {
+                Console.Write(symbol);
             }
         }
     }
