@@ -40,10 +40,10 @@ namespace CSLight
             userInput = Console.ReadLine();
 
             while (userInput != "8")
-
+           
             {
-                switch (userInput)
                
+                switch (userInput)
                 {
                     case "1":
 
@@ -58,9 +58,7 @@ namespace CSLight
                         {
                             Console.WriteLine("Недопустимое колличество денег");
                         }
-
                         break;
-
                     case "2":
 
                         Console.WriteLine("Обмен рублей на доллары.\nСколько вы хотите обменять?");
@@ -74,9 +72,7 @@ namespace CSLight
                         {
                             Console.WriteLine("Недопустимое колличество денег");
                         }
-
                         break;
-
                     case "3":
 
                         Console.WriteLine("Обмен евро на рубли.\nСколько вы хотите обменять?");
@@ -90,9 +86,7 @@ namespace CSLight
                         {
                             Console.WriteLine("Недопустимое колличество денег");
                         }
-
                         break;
-
                     case "4":
 
                         Console.WriteLine("Обмен евро на доллары.\nСколько вы хотите обменять?");
@@ -108,7 +102,6 @@ namespace CSLight
                         }
 
                         break;
-
                     case "5":
 
                         Console.WriteLine("Обмен доллары на рубли.\nСколько вы хотите обменять?");
@@ -124,7 +117,6 @@ namespace CSLight
                         }
 
                         break;
-
                     case "6":
 
                         Console.WriteLine("Обмен доллары на евро.\nСколько вы хотите обменять?");
@@ -138,7 +130,6 @@ namespace CSLight
                         {
                             Console.WriteLine("Недопустимое колличество денег");
                         }
-
                         break;
                 }
             }
