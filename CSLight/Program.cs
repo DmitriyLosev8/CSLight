@@ -40,20 +40,21 @@ namespace CSLight
             userInput = Console.ReadLine();
 
             while (userInput != "8")
-           
             {
                
                 switch (userInput)
-                {
+                {       
                     case "1":
 
                         Console.WriteLine("Обмен рублей на евро.\nСколько вы хотите обменять?");
                         currencyCount = Convert.ToSingle(Console.ReadLine());
+                       
                         if (rub >= currencyCount)
                         {
                             rub -= currencyCount;
                             eur += currencyCount * rubToEur;
                         }
+                       
                         else
                         {
                             Console.WriteLine("Недопустимое колличество денег");
@@ -63,11 +64,13 @@ namespace CSLight
 
                         Console.WriteLine("Обмен рублей на доллары.\nСколько вы хотите обменять?");
                         currencyCount = Convert.ToSingle(Console.ReadLine());
+                       
                         if (rub >= currencyCount)
                         {
                             rub -= currencyCount;
                             usd += currencyCount * rubToUsd;
                         }
+                       
                         else
                         {
                             Console.WriteLine("Недопустимое колличество денег");
@@ -77,11 +80,13 @@ namespace CSLight
 
                         Console.WriteLine("Обмен евро на рубли.\nСколько вы хотите обменять?");
                         currencyCount = Convert.ToSingle(Console.ReadLine());
+                       
                         if (eur >= currencyCount)
                         {
                             eur -= currencyCount;
                             rub += currencyCount * eurToRub;
                         }
+                       
                         else
                         {
                             Console.WriteLine("Недопустимое колличество денег");
@@ -91,41 +96,45 @@ namespace CSLight
 
                         Console.WriteLine("Обмен евро на доллары.\nСколько вы хотите обменять?");
                         currencyCount = Convert.ToSingle(Console.ReadLine());
+                       
                         if (eur >= currencyCount)
                         {
                             eur -= currencyCount;
                             usd += currencyCount * eurToUsd;
                         }
+                      
                         else
                         {
                             Console.WriteLine("Недопустимое колличество денег");
                         }
-
                         break;
                     case "5":
 
                         Console.WriteLine("Обмен доллары на рубли.\nСколько вы хотите обменять?");
                         currencyCount = Convert.ToSingle(Console.ReadLine());
+                        
                         if (usd >= currencyCount)
                         {
                             usd -= currencyCount;
                             rub += currencyCount * usdToRub;
                         }
+                      
                         else
                         {
                             Console.WriteLine("Недопустимое колличество денег");
                         }
-
                         break;
                     case "6":
 
                         Console.WriteLine("Обмен доллары на евро.\nСколько вы хотите обменять?");
                         currencyCount = Convert.ToSingle(Console.ReadLine());
+                       
                         if (usd >= currencyCount)
                         {
                             usd -= currencyCount;
                             eur += currencyCount * usdToEur;
                         }
+                       
                         else
                         {
                             Console.WriteLine("Недопустимое колличество денег");
