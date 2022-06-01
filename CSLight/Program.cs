@@ -10,20 +10,25 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            // домашнее задание: Контроль выхода:
+            // домашнее задание: сумма чисел
 
-            string day;
-            string toExit = "exit";
+            int multipleTo3 = 3;
+            int multipleTo5 = 5;
+            int sum = 0;
 
-            Console.WriteLine("Какое сегодня число?");
-            Console.WriteLine("Чтобы прекратить поздравления, напишите слово: " + toExit);
-            day = (Console.ReadLine());
+            Random rand = new Random();
+            int number = rand.Next(0, 101);
+            Console.WriteLine(number);
 
-            while (day != toExit)
+            for (int i = 0; i <= number; i ++)
+
             {
-                Console.WriteLine("Поздравляю Вас, вы прекрасны!");
-                Console.WriteLine("Какое сегодня число?"); 
+                if (i % multipleTo3 == 0 || i % multipleTo5 == 0)
+                {
+                    sum += i;
+                    Console.WriteLine(sum);
+                }      
             }
-        }
+        }   
     }
 }
