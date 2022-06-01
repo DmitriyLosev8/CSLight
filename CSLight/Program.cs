@@ -12,18 +12,19 @@ namespace CSLight
         {
             // домашнее задание: сумма чисел
 
-            int multipleTo3 = 3;
-            int multipleTo5 = 5;
+            int lowerNumber = 0;
+            int upperNumber = 101;
+            int lowerMultipleNumber = 3;
+            int upperMultipleNumber = 5;
             int sum = 0;
 
-            Random rand = new Random();
-            int number = rand.Next(0, 101);
+            Random random = new Random();
+            int number = random.Next(lowerNumber, upperNumber);
             Console.WriteLine(number);
 
             for (int i = 0; i <= number; i ++)
-
             {
-                if (i % multipleTo3 == 0 || i % multipleTo5 == 0)
+                if (i % lowerMultipleNumber == 0 || i % upperMultipleNumber == 0)
                 {
                     sum += i;
                     Console.WriteLine(sum);
