@@ -10,25 +10,160 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            //домашнее задание: степень двойки: 
+            //домашнее задание: скобочное выражение: 
 
-            int lowerNumber = 1;
-            int upperNumber = 1000;
-            int result = 1;
-            int numberToMultiply = 2;
+            string strToChek = "'(' и ')'";
+            Console.WriteLine(strToChek);
 
+            for (int i = 0; i <= strToChek.Length; i++)
+            {
 
-            Random random = new Random();
-            int number = random.Next(lowerNumber, upperNumber);      
+                while (i == 0)
+                {
 
-            Console.WriteLine("Стартовое число - " + number);
+                    if (strToChek[i] != '"')
+                    {
+                        Console.WriteLine("Это скобочное выражение не корректное.");
+                        break;
+                    }
 
-             while (result <+ number)
-              {
-                result *= numberToMultiply;
-                Console.WriteLine(result);
-              }
+                    else
+                    {
+                        Console.WriteLine("Пока что это кобочное выражение корректное.");
+                        break;
+                    }
+                }
+               
+                while (i == 1)
+                {
+
+                    if (strToChek[i] == '(')
+                    {
+                        Console.WriteLine("Пока что это кобочное выражение корректное.");
+                        break;
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Это скобочное выражение не корректное.");
+                        break;
+                    }
+                }
+                
+                while (i == 2)
+                {
+
+                    if (strToChek[i] == '(' || strToChek[i] == ' ' || strToChek[i] == ')')
+                    {
+                        Console.WriteLine("Пока что это кобочное выражение корректное.");
+                        break;
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Это скобочное выражение не корректное.");
+                        break;
+                    }
+                }
+                
+                while (i == 3)
+                {
+
+                    if (strToChek[i] == '(' || strToChek[i] == ' ')
+                    {
+                        Console.WriteLine("Пока что это кобочное выражение корректное.");
+                        break;
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Это скобочное выражение не корректное.");
+                        break;
+                    }
+                }
+                
+                while (i == 4)
+                {
+
+                    if (strToChek[i] == '(' || strToChek[i] == ' ' || strToChek[i] == 'и')
+                    {
+                        Console.WriteLine("Пока что это кобочное выражение корректное.");
+                        break;
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Это скобочное выражение не корректное.");
+                        break;
+                    }
+                }
+                
+                while (i == 5)
+                {
+
+                    if (strToChek[i] == ')' || strToChek[i] == ' ')
+                    {
+                        Console.WriteLine("Пока что это кобочное выражение корректное.");
+                        break;
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Это скобочное выражение не корректное.");
+                        break;
+                    }
+                }
+                
+                while (i == 6)
+                {
+
+                    if (strToChek[i] == '(' || strToChek[i] == ' ' || strToChek[i] == ')')
+                    {
+                        Console.WriteLine("Пока что это кобочное выражение корректное.");
+                        break;
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Это скобочное выражение не корректное.");
+                        break;
+                    }
+                }
+                
+                while (i == 7)
+                {
+
+                    if (strToChek[i] == ')')
+                    {
+                        Console.WriteLine("Пока что это кобочное выражение корректное.");
+                        break;
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Это скобочное выражение не корректное.");
+                        break;
+                    }
+                }
+                
+                while (i == 8)
+                {
+
+                    if (strToChek[i] != '"')
+                    {
+                        Console.WriteLine("Это скобочное выражение не корректное.");
+                        break;
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Пока что это кобочное выражение корректное.");
+                        break;
+                    }
+                }
+            }
         }
     }
 }
+
 
