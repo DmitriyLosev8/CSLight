@@ -12,40 +12,39 @@ namespace CSLight
         {
             //домашнее задание: скобочное выражение: 
 
-            string stringToChek = "'(' и ')'";
-            char deepOfBracket;
+            string stringToChek = "(()(()))";
+            int deepOfBracket = 0;
             Console.WriteLine(stringToChek);
 
             for (int i = 0; i <= stringToChek.Length; i++)
             {
-                deepOfBracket = stringToChek[i];
 
-                if (i == '(')
+                if (stringToChek[i] == '(')
                 {
-                    i += 1;
+                    deepOfBracket += 1;
                 }
 
-                if (i == ')')
+                if (stringToChek[i] == ')')
                 {
-                    i -= 1;
+                    deepOfBracket -= 1;
                 }
-               
+
                 if (deepOfBracket < 0)
                 {
                     break;
                 }
-               
-                if (deepOfBracket == 0)
-                {
-                    Console.WriteLine("Строка корректна");
-                }
-               
-                else
-                {
-                    Console.WriteLine("Строка не корректна");
-                }
             }
-        }   
+
+            if (deepOfBracket == 0)
+            {
+                Console.WriteLine("Строка корректна");
+            }
+
+            else
+            {
+                Console.WriteLine("Строка не корректна");
+            }
+        }
     }
 }
 
