@@ -12,7 +12,7 @@ namespace CSLight
         {
             //домашнее задание: скобочное выражение: 
 
-            string stringToChek = "(()(()))";
+            string stringToChek = "'(' и ')'";
             int deepOfBracket = 0;
             Console.WriteLine(stringToChek);
 
@@ -34,6 +34,7 @@ namespace CSLight
                     break;
                 }
             }
+
 
             if (deepOfBracket == 0)
             {
