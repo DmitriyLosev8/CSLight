@@ -16,7 +16,7 @@ namespace CSLight
             int deepOfBracket = 0;
             Console.WriteLine(stringToChek);
 
-            for (int i = 0; i <= stringToChek.Length; i++)
+            for (int i = 0; i < stringToChek.Length; i++)
             {
 
                 if (stringToChek[i] == '(')
