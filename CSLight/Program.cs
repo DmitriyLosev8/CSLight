@@ -35,7 +35,6 @@ namespace CSLight
                 }
             }
 
-
             if (deepOfBracket == 0)
             {
                 Console.WriteLine("Строка корректна");
