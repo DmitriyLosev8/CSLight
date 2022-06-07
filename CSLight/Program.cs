@@ -40,31 +40,17 @@ namespace CSLight
                 "Абсолютная Сила  - Ваш урон будет - " + ultimatePowerDamage + ", а хп увеличится на - " + ultimatePowerHealth + "\n" +
                 "(МОЖНО ПРИМЕНИТЬ, ТОЛЬКО КОГДА У ВАС - " + healthForUltimatePower + " ХП ИЛИ НИЖЕ). Нажмите 4, чтобы применить\n\n" +
                 "                                                        ДА НАЧНЁТСЯ БИТВА!");
-            userInput = Console.ReadLine();
 
             while (healthOfHero > 0 && healthOfBoss > 0)
             {
+                userInput = Console.ReadLine();
+               
                 switch (userInput)
                 {
                     case "1":
                         healthOfBoss -= powerOfAirDamage;
                         healthOfHero -= bossDamage;
                         Console.WriteLine("Герой - " + healthOfHero + " хп                                  Босс - " + healthOfBoss + " хп");
-
-                        if (healthOfHero <= 0 && healthOfBoss <= 0)
-                        {
-                            Console.WriteLine("Так бывает. Ничья!");
-                        }
-
-                        else if (healthOfHero <= 0)
-                        {
-                            Console.WriteLine("Не в этот раз. Победил Босс!");
-                        }
-
-                        else if (healthOfBoss <= 0)
-                        {
-                            Console.WriteLine("Босс повержен! Победил Герой!");
-                        }
                         break;
                     case "2":
 
@@ -80,21 +66,6 @@ namespace CSLight
                             Console.WriteLine("Сейчас невозможно применить Силу Земли, у Вас хп меньше чем - " + healthForPowerOfEarth);
                         }
                         Console.WriteLine("Герой - " + healthOfHero + " хп                                  Босс - " + healthOfBoss + " хп");
-
-                        if (healthOfHero <= 0 && healthOfBoss <= 0)
-                        {
-                            Console.WriteLine("Так бывает. Ничья!");
-                        }
-
-                        else if (healthOfHero <= 0)
-                        {
-                            Console.WriteLine("Не в этот раз. Победил Босс!");
-                        }
-
-                        else if (healthOfBoss <= 0)
-                        {
-                            Console.WriteLine("Босс повержен! Победил Герой!");
-                        }
                         break;
                     case "3":
 
@@ -111,21 +82,6 @@ namespace CSLight
                         }
 
                         Console.WriteLine("Герой - " + healthOfHero + " хп                                  Босс - " + healthOfBoss + " хп");
-
-                        if (healthOfHero <= 0 && healthOfBoss <= 0)
-                        {
-                            Console.WriteLine("Так бывает. Ничья!");
-                        }
-
-                        else if (healthOfHero <= 0)
-                        {
-                            Console.WriteLine("Не в этот раз. Победил Босс!");
-                        }
-
-                        else if (healthOfBoss <= 0)
-                        {
-                            Console.WriteLine("Босс повержен! Победил Герой!");
-                        }
                         break;
                     case "4":
 
@@ -141,24 +97,23 @@ namespace CSLight
                             Console.WriteLine("Сейчас невозможно применить Абсолютную Силу, у Вас хп больше чем - " + healthForUltimatePower);
                         }
                         Console.WriteLine("Герой - " + healthOfHero + " хп                                  Босс - " + healthOfBoss + " хп");
-
-                        if (healthOfHero <= 0 && healthOfBoss <= 0)
-                        {
-                            Console.WriteLine("Так бывает. Ничья!");
-                        }
-
-                        else if (healthOfHero <= 0)
-                        {
-                            Console.WriteLine("Не в этот раз. Победил Босс!");
-                        }
-
-                        else if (healthOfBoss <= 0)
-                        {
-                            Console.WriteLine("Босс повержен! Победил Герой!");
-                        }
                         break;
                 }
-                userInput = Console.ReadLine();
+                
+                if (healthOfHero <= 0 && healthOfBoss <= 0)
+                {
+                    Console.WriteLine("Так бывает. Ничья!");
+                }
+
+                else if (healthOfHero <= 0)
+                {
+                    Console.WriteLine("Не в этот раз. Победил Босс!");
+                }
+
+                else if (healthOfBoss <= 0)
+                {
+                    Console.WriteLine("Босс повержен! Победил Герой!");
+                } 
             }
         }
     }
