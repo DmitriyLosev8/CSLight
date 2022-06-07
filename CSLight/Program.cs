@@ -44,13 +44,13 @@ namespace CSLight
             while (healthOfHero > 0 && healthOfBoss > 0)
             {
                 userInput = Console.ReadLine();
-               
+                Console.WriteLine("Герой - " + healthOfHero + " хп                                  Босс - " + healthOfBoss + " хп");
+
                 switch (userInput)
                 {
                     case "1":
                         healthOfBoss -= powerOfAirDamage;
                         healthOfHero -= bossDamage;
-                        Console.WriteLine("Герой - " + healthOfHero + " хп                                  Босс - " + healthOfBoss + " хп");
                         break;
                     case "2":
 
@@ -65,7 +65,6 @@ namespace CSLight
                         {
                             Console.WriteLine("Сейчас невозможно применить Силу Земли, у Вас хп меньше чем - " + healthForPowerOfEarth);
                         }
-                        Console.WriteLine("Герой - " + healthOfHero + " хп                                  Босс - " + healthOfBoss + " хп");
                         break;
                     case "3":
 
@@ -80,8 +79,6 @@ namespace CSLight
                         {
                             Console.WriteLine("Сейчас невозможно применить Силу Воды, у Вас хп больше чем - " + healthForPowerOfWater);
                         }
-
-                        Console.WriteLine("Герой - " + healthOfHero + " хп                                  Босс - " + healthOfBoss + " хп");
                         break;
                     case "4":
 
@@ -95,8 +92,7 @@ namespace CSLight
                         else
                         {
                             Console.WriteLine("Сейчас невозможно применить Абсолютную Силу, у Вас хп больше чем - " + healthForUltimatePower);
-                        }
-                        Console.WriteLine("Герой - " + healthOfHero + " хп                                  Босс - " + healthOfBoss + " хп");
+                        } 
                         break;
                 }
                 
