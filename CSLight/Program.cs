@@ -12,8 +12,7 @@ namespace CSLight
         {
             // дамашнее задание: локальные максимумы: 
 
-            int[] array = new int[30];
-            Random random = new Random();
+            int[] array = {8,6,15,12,18,3,7,6,4,15,6,19,84,65,14,35,1,9,14,45,14,69,48,25,67,1,9,15,12,36};
             int minimalNumber = 0;
             int maximalNumber = 100;
             int minimalBorder = 0;
@@ -21,8 +20,7 @@ namespace CSLight
 
             for (int i = 0; i < array.Length; i++)
             {
-                array[i] = random.Next(minimalNumber, maximalNumber);
-
+               
                 if (i == minimalBorder)
                 {
                     if (array[i] > array[i + 1])
@@ -50,6 +48,7 @@ namespace CSLight
                         Console.WriteLine(array[i]);
                     }
                 }
+
             }
         }
     }
