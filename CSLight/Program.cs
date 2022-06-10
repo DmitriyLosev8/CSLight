@@ -18,26 +18,21 @@ namespace CSLight
             int minimalBorder = 0;
             int maximalBorder = 29;
 
+            if (array[minimalBorder] > array[minimalBorder +1])
+            {
+                    Console.WriteLine("\nЛокальный максимум:");
+                    Console.Write(array[minimalBorder] + "\n");   
+            }
+           
+            if (array[maximalBorder] > array[maximalBorder -1])
+            {
+                
+                    Console.WriteLine("\nЛокальный максимум:");
+                    Console.Write(array[maximalBorder] + "\n");
+            }
+
             for (int i = 0; i < array.Length; i++)
             {
-               
-                if (i == minimalBorder)
-                {
-                    if (array[i] > array[i + 1])
-                    {
-                        Console.WriteLine("\nЛокальный максимум:");
-                        Console.Write(array[i] + "\n");
-                    }
-                }
-
-                if (i == maximalBorder)
-                {
-                    if (array[i] > array[i - 1])
-                    {
-                        Console.WriteLine("\nЛокальный максимум:");
-                        Console.Write(array[i] + "\n");
-                    }
-                }
 
                 if (i > minimalBorder && i < maximalBorder)
                 {
