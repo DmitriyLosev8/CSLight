@@ -23,12 +23,24 @@ namespace CSLight
             {
                 array[i] = random.Next(minimalNumber, maximalNumber);
 
-                if (i == minimalBorder || i == maximalBorder)
+                if (i == minimalBorder)
                 {
-                    Console.WriteLine("\nЛокальный максимум:");
-                    Console.Write(array[i] + "\n");
+                    if (array[i] > array[i + 1])
+                    {
+                        Console.WriteLine("\nЛокальный максимум:");
+                        Console.Write(array[i] + "\n");
+                    }
                 }
-                
+
+                if (i == maximalBorder)
+                {
+                    if (array[i] > array[i - 1])
+                    {
+                        Console.WriteLine("\nЛокальный максимум:");
+                        Console.Write(array[i] + "\n");
+                    }
+                }
+
                 if (i > minimalBorder && i < maximalBorder)
                 {
 
