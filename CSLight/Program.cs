@@ -17,14 +17,15 @@ namespace CSLight
             int maximalNumber = 100;
             int minimalBorder = 0;
             int maximalBorder = 29;
+            int nearbyNumber = 1;
 
-            if (array[minimalBorder] > array[minimalBorder +1])
+            if (array[minimalBorder] > array[minimalBorder + nearbyNumber])
             {
                     Console.WriteLine("\nЛокальный максимум:");
                     Console.Write(array[minimalBorder] + "\n");   
             }
            
-            if (array[maximalBorder] > array[maximalBorder -1])
+            if (array[maximalBorder] > array[maximalBorder - nearbyNumber])
             {
                 
                     Console.WriteLine("\nЛокальный максимум:");
@@ -37,7 +38,7 @@ namespace CSLight
                 if (i > minimalBorder && i < maximalBorder)
                 {
 
-                    if (array[i] > array[i - 1] && array[i] > array[i + 1])
+                    if (array[i] > array[i - nearbyNumber] && array[i] > array[i + nearbyNumber])
                     {
                         Console.WriteLine("\nЛокальный максимум:");
                         Console.WriteLine(array[i]);
