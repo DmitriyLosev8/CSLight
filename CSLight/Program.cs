@@ -10,37 +10,33 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            // дамашнее задание: локальные максимумы: 
+            // дамашнее задание: работа с конкретными строками,столбцами.
 
-            int[] array = { 8, 6, 15, 12, 18, 3, 7, 6, 4, 15, 6, 19, 84, 65, 14, 35, 1, 9, 14, 45, 14, 69, 48, 25, 67, 1, 9, 15, 12, 36 };
-            int minimalNumber = 0;
-            int maximalNumber = 100;
-            int minimalBorder = 0;
-            int maximalBorder = 29;
-            int nearbyNumber = 1;
-
-            if (array[minimalBorder] > array[minimalBorder + nearbyNumber])
+            int[,] array = { { 8, 5, 9 }, {6,3,4 }, {8,7,2 } };
+            int sum = 0;
+            int mult = 1;
+            int line = 1;
+            int column = 0;
+            for (int i = 0; i < array.GetLength(0); i++)
             {
-                Console.WriteLine("\nЛокальный максимум:");
-                Console.Write(array[minimalBorder] + "\n");
-            }
-
-            if (array[maximalBorder] > array[maximalBorder - nearbyNumber])
-            {
-
-                Console.WriteLine("\nЛокальный максимум:");
-                Console.Write(array[maximalBorder] + "\n");
-            }
-
-            for (int i = 1; i < (array.Length - nearbyNumber); i++)
-            {
-
-                if (array[i] > array[i - nearbyNumber] && array[i] > array[i + nearbyNumber])
+                for (int j = 0; j < array.GetLength(1); j++)
                 {
-                    Console.WriteLine("\nЛокальный максимум:");
-                    Console.WriteLine(array[i]);
+                    
+                    if ( i == line)
+                    {
+                        sum += array[i, j];
+                    }
+                     
+                    if ( j == column)
+                    {
+                        mult *= array[i, j];
+                    }
+                    Console.Write(array[i, j] + " | ");   
                 }
-            }
+                Console.WriteLine("\n");
+            } 
+            Console.WriteLine("Сумма второй строки - " + sum);
+            Console.WriteLine("Произведение первого столбца - " + mult + "\n");
         }
     }
 }
