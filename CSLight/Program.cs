@@ -34,6 +34,7 @@ namespace CSLight
                 Console.WriteLine("\n");
             }
             Console.WriteLine("Наибольший элемент матрицы - " + maximumNumber + "\n");
+            Console.WriteLine("Новая матрица: \n");
 
             for (int i = 0; i < array.GetLength(0); i++)
             {
@@ -49,7 +50,6 @@ namespace CSLight
                 }
                 Console.WriteLine("\n");
             }                   
-            Console.WriteLine("Новая матрица \n");
         }
     }
 }
