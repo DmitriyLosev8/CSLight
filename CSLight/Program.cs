@@ -11,43 +11,53 @@ namespace CSLight
         static void Main(string[] args)
         {
 
-            // домашнее задание: подмассив повторейний чисел:
+            // домашнее задание: подмассив повторейний чисел:     ДОДЕЛАТЬ, ЭТО ВРЕМЕННО
 
-            int[] array = { 2, 6, 4, 8, 8, 8, 5, 6, 4, 8, 6, 4, 4, 4, 4, 4, 4, 3, 2, 8, };
+            int[] array = { 2, 6, 4, 8, 8, 8, 5, 6, 4, 8, 6, 4, 4, 4, 4, 4, 4, 3, 2, 8};
+            int number1;
+            int number2;
             int count1 = 0;
             int count2 = 0;
             int numberTostop = 0;
+            int max = int.MinValue;
+            int element1;
+            int element2;
 
 
             for (int i = 1; i < array.Length - 1; i++)
             {
-                numberTostop++;
 
-                if (array[i] == array[i + 1])
+                if (array[i] == array[i - 1])
                 {
-                    count1++;
+                    element1 =  array[i];
+                    count1 ++;
+                    //Console.WriteLine("Элемент - " + element1);
                 }
+                
 
-                else if (array[i] != array[i + 1] && array[i] == array[i - 1])
+                if (array[i] != array[i - 1])
                 {
-                   // Console.WriteLine("Вот тот индекс, на котоорм тормазнуть - " + numberTostop);
-                    break;
-                }
-
-                for (int j = numberTostop; j < array.Length - 1; j++)
+                    number1 = count1;
+                    count1 = 0;
+                    for(int j = 0; j < number1; j++)
                 {
-                    if (array[j] == array[j + 1])
-                    {
-                        count2++;
-                    }
-
-                    else if (array[j] != array[j + 1] && array[j] == array[j - 1])
-                    {
-                        break;
-                    }
+                if (max < number1)
+                {
+                    max = number1;
+                    Console.WriteLine(max);
                 }
             }
-            Console.WriteLine(count1 + "     ||       " + count2);     // доделать. их нужно ещё сравнить
+
+
+
+            //if (number1 > 0) // && (number1 > number1))
+            // {
+            //     Console.WriteLine(", а вот количество повторений - " + number1);
+            // }
+        }
+                
+            }
+            Console.WriteLine(count1 + "     ||       " + count2);    
         }
     }
 }
