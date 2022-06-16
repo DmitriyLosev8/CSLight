@@ -17,6 +17,8 @@ namespace CSLight
             int count = 0;
             int repeatNumber;
             int element;
+            int maximumCount = int.MinValue;
+            int rrrr;
 
             Console.WriteLine("Весь массив - ");
             for (int i = 0; i < array.Length; i++)
@@ -30,19 +32,23 @@ namespace CSLight
                     count++;
                     element = array[j];
                     Console.WriteLine("\nПовторяющийся элемент - " +  element);
-                }
-              
-                if (array[j] != array[j - 1])
-                  {
                     repeatNumber = count;
-                    count = 0;
-                     
-                    if (repeatNumber > 0)
-                      {
-                        Console.WriteLine("Количество повторений - " + repeatNumber);
-                      }
+                   
+                    if (maximumCount < count)
+                    {
+                        maximumCount = count;
+                    }
+                    rrrr = element;
                 }
+                
+                else if (array[j] != array[j - 1])
+                {
+                    count = 0;
+                }       
             }
+            Console.WriteLine("Максимальное колличество повторений  - " + maximumCount);
+            //Console.WriteLine("\nПовторяющийся элемент - " + rrrr);
+
         }
     }
 }
