@@ -11,53 +11,38 @@ namespace CSLight
         static void Main(string[] args)
         {
 
-            // домашнее задание: подмассив повторейний чисел:     ДОДЕЛАТЬ, ЭТО ВРЕМЕННО
+            // домашнее задание: подмассив повторейний чисел:     
 
             int[] array = { 2, 6, 4, 8, 8, 8, 5, 6, 4, 8, 6, 4, 4, 4, 4, 4, 4, 3, 2, 8};
-            int number1;
-            int number2;
-            int count1 = 0;
-            int count2 = 0;
-            int numberTostop = 0;
-            int max = int.MinValue;
-            int element1;
-            int element2;
+            int count = 0;
+            int repeatNumber;
+            int element;
 
-
-            for (int i = 1; i < array.Length - 1; i++)
+            Console.WriteLine("Весь массив - ");
+            for (int i = 0; i < array.Length; i++)
             {
-
-                if (array[i] == array[i - 1])
+                Console.Write(array[i] + " | "); 
+            }
+            for (int j = 1; j < array.Length; j++)
+            {
+                if (array[j] == array[j - 1])
                 {
-                    element1 =  array[i];
-                    count1 ++;
-                    //Console.WriteLine("Элемент - " + element1);
+                    count++;
+                    element = array[j];
+                    Console.WriteLine("\nПовторяющийся элемент - " +  element);
                 }
-                
-
-                if (array[i] != array[i - 1])
-                {
-                    number1 = count1;
-                    count1 = 0;
-                    for(int j = 0; j < number1; j++)
-                {
-                if (max < number1)
-                {
-                    max = number1;
-                    Console.WriteLine(max);
+              
+                if (array[j] != array[j - 1])
+                  {
+                    repeatNumber = count;
+                    count = 0;
+                     
+                    if (repeatNumber > 0)
+                      {
+                        Console.WriteLine("Количество повторений - " + repeatNumber);
+                      }
                 }
             }
-
-
-
-            //if (number1 > 0) // && (number1 > number1))
-            // {
-            //     Console.WriteLine(", а вот количество повторений - " + number1);
-            // }
-        }
-                
-            }
-            Console.WriteLine(count1 + "     ||       " + count2);    
         }
     }
 }
