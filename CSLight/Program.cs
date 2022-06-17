@@ -13,14 +13,18 @@ namespace CSLight
 
             // домашнее задание: подмассив повторейний чисел:     
 
-            int[] array = { 2, 6, 4, 8, 8, 8, 5, 6, 4, 8, 6, 4, 4, 4, 4, 4, 4, 3, 2, 8,2,4,12,67,4,87,12,5,6,6,};
+            int[] array = new int[30];
             int count = 0;
             int element;
             int maximumCount = int.MinValue;
+            Random random = new Random();
+            int lowerNumner = 0;
+            int upperNumber = 10;
 
             Console.WriteLine("Весь массив - ");
             for (int i = 0; i < array.Length; i++)
             {
+                array[i] = random.Next(lowerNumner, upperNumber);
                 Console.Write(array[i] + " | ");
             }
 
@@ -31,26 +35,14 @@ namespace CSLight
                     count++;
                     if (maximumCount < count)
                     {
+                        element = array[j];
                         maximumCount = count;
+                        Console.WriteLine("\n\nПервый максимально часто повторяющийся элемент - " + element);
                     }
                 }
                 else if (array[j] != array[j - 1])
                 {
                     count = 0;
-                }
-            }
-
-            for (int j = 1; j < array.Length; j++)
-            {
-                if (array[j] == array[j - 1])
-                {
-                    count++;
-                    if (count == maximumCount)
-                    {
-                        element = array[j];
-                        Console.WriteLine("\n\nМаксимально часто повторяющийся элемент - " + element);
-                        break;
-                    }
                 }
             }
             Console.WriteLine("\nМаксимальное колличество повторений  - " + maximumCount + "\n");
