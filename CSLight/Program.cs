@@ -16,26 +16,25 @@ namespace CSLight
             int[] array = { 2, 6, 9, 0, 7, 3, 1, 5, 4, 8 };
             int biggerNumber;
 
-            Console.Write("Не отсортированный массив - ");
             for (int i = 0; i < array.Length; i++)
             {
-                Console.Write(array[i] + " | ");
+
                 for (int j = 0; j < array.Length - 1; j++)
                 {
-                    if (array[j] > array[j+ 1])
+
+                    if (array[j] > array[j + 1])
                     {
                         biggerNumber = array[j];
                         array[j] = array[j + 1];
                         array[j + 1] = biggerNumber;
                     }
-                }  
+                }
             }
-            Console.Write("\nОтсортированный массив - ");    
-          
-            for (int i = 0; i < array.Length; i++)
-             {
+            Console.Write("\nОтсортированный массив - ");
 
-                Console.Write( + array[i] + " | ");
+            for (int i = 0; i < array.Length; i++)
+            {
+                Console.Write(+array[i] + " | ");
             }
             Console.WriteLine();
         }
