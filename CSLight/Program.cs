@@ -13,15 +13,24 @@ namespace CSLight
 
             // домашнее задание: сортировка чисел:
 
-            int[] array = { 2, 6, 9, 0, 7, 3, 1, 5, 4, 8 };
+            int[] array = new int[10];
+            int lowerNumber = 0;
+            int UpperNumber = 9;
+            Random random = new Random();
             int biggerNumber;
+            Console.Write("Не отсортированный массив - ");
 
             for (int i = 0; i < array.Length; i++)
             {
+                array[i] = random.Next(lowerNumber, UpperNumber);
+                Console.Write(array[i] + " | ");
 
+            }
+
+            for (int i = 0; i < array.Length; i++)
+            {
                 for (int j = 0; j < array.Length - 1; j++)
                 {
-
                     if (array[j] > array[j + 1])
                     {
                         biggerNumber = array[j];
@@ -34,7 +43,7 @@ namespace CSLight
 
             for (int i = 0; i < array.Length; i++)
             {
-                Console.Write(+array[i] + " | ");
+                Console.Write(array[i] + " | ");
             }
             Console.WriteLine();
         }
