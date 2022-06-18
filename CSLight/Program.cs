@@ -11,41 +11,33 @@ namespace CSLight
         static void Main(string[] args)
         {
 
-            // домашнее задание: подмассив повторейний чисел:     
+            // домашнее задание: сортировка чисел:
 
-            int[] array = new int[30];
-            int count = 0;
-            int element;
-            int maximumCount = int.MinValue;
-            Random random = new Random();
-            int lowerNumner = 0;
-            int upperNumber = 10;
+            int[] array = { 2, 6, 9, 0, 7, 3, 1, 5, 4, 8 };
+            int biggerNumber;
 
-            Console.WriteLine("Весь массив - ");
+            Console.Write("Не отсортированный массив - ");
             for (int i = 0; i < array.Length; i++)
             {
-                array[i] = random.Next(lowerNumner, upperNumber);
                 Console.Write(array[i] + " | ");
-            }
-
-            for (int j = 1; j < array.Length; j++)
-            {
-                if (array[j] == array[j - 1])
+                for (int j = 0; j < array.Length - 1; j++)
                 {
-                    count++;
-                    if (maximumCount < count)
+                    if (array[j] > array[j+ 1])
                     {
-                        element = array[j];
-                        maximumCount = count;
-                        Console.WriteLine("\n\nПервый максимально часто повторяющийся элемент - " + element);
+                        biggerNumber = array[j];
+                        array[j] = array[j + 1];
+                        array[j + 1] = biggerNumber;
                     }
-                }
-                else if (array[j] != array[j - 1])
-                {
-                    count = 0;
-                }
+                }  
             }
-            Console.WriteLine("\nМаксимальное колличество повторений  - " + maximumCount + "\n");
+            Console.Write("\nОтсортированный массив - ");    
+          
+            for (int i = 0; i < array.Length; i++)
+             {
+
+                Console.Write( + array[i] + " | ");
+            }
+            Console.WriteLine();
         }
     }
 }
