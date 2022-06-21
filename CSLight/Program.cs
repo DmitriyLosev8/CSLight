@@ -11,36 +11,36 @@ namespace CSLight
         static void Main(string[] args)
         {
 
-            // домашнее задание: сортировка чисел:
+            // домашнее задание: сдвиг значений массива:
 
-            int[] array = new int[10];
-            int lowerNumber = 0;
-            int UpperNumber = 9;
-            Random random = new Random();
-            int biggerNumber;
-            Console.Write("Не отсортированный массив - ");
+            int[] array = { 1, 2, 3, 4 };
+            int userInput;
+            int tempNumber;
 
+            Console.WriteLine("Исходный массив:");
             for (int i = 0; i < array.Length; i++)
             {
-                array[i] = random.Next(lowerNumber, UpperNumber);
                 Console.Write(array[i] + " | ");
-
             }
+            Console.WriteLine("\n\nЧтобы сдвинуть значения элементов массива влево, введите число на сколько позиций будет сдвиг:");
+            userInput = Convert.ToInt32(Console.ReadLine());
 
             for (int i = 0; i < array.Length; i++)
             {
-                for (int j = 0; j < array.Length - 1; j++)
+                
+              if (i == userInput - 1)
+               
                 {
-                    if (array[j] > array[j + 1])
-                    {
-                        biggerNumber = array[j];
-                        array[j] = array[j + 1];
-                        array[j + 1] = biggerNumber;
-                    }
-                }
-            }
-            Console.Write("\nОтсортированный массив - ");
+                    tempNumber = array[userInput -1];
 
+                    for (int j = 1; j <= array[userInput]; j++)
+                    {
+                        array[j - 1] = array[j];
+                    }
+                    array[array.Length - 1] = tempNumber;
+                }  
+            }
+            Console.WriteLine("Изменённый массив:");
             for (int i = 0; i < array.Length; i++)
             {
                 Console.Write(array[i] + " | ");
