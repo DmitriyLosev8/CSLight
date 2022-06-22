@@ -16,9 +16,12 @@ namespace CSLight
             int[] array = { 1, 2, 3, 4 };
             int userInput;
             int tempNumber;
-
+            int count = 0;
+            int lowerBorder = 0;
+            int correctNumber = 1;
 
             Console.WriteLine("Исходный массив:");
+            
             for (int i = 0; i < array.Length; i++)
             {
                 Console.Write(array[i] + " | ");
@@ -26,25 +29,19 @@ namespace CSLight
             Console.WriteLine("\n\nЧтобы сдвинуть значения элементов массива влево, введите число на сколько позиций будет сдвиг:");
             userInput = Convert.ToInt32(Console.ReadLine());
 
-            for (int i = 0; i < array[userInput]; i++)
+            while (count < userInput)
             {
-
-               // if (i == userInput - 1)
-
-              //  {
-                   // tempNumber = array[userInput - 1];        //следую рекомендациям, надо делать как-то так: (разобраться)
-
-                    for (int j = 1; j <= array.Length - 1; j++)
-                    {
-                      tempNumber = array[userInput - 1];
-                      array[j - 1] = array[j];
-                      array[array.Length - 1] = tempNumber;
-
-                    }
-                   // array[array.Length - 1] = tempNumber;
-               // }
+                tempNumber = array[lowerBorder];
+                
+                for (int j = correctNumber; j < array.Length; j++)
+                {
+                    array[j - correctNumber] = array[j];
+                }
+                array[array.Length - correctNumber] = tempNumber;
+                count++;
             }
             Console.WriteLine("Изменённый массив:");
+            
             for (int i = 0; i < array.Length; i++)
             {
                 Console.Write(array[i] + " | ");
