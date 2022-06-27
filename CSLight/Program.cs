@@ -10,13 +10,16 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            // Задание: Кадровый учёт:   недоделанное
+            // Задание: Кадровый учёт:   всё работает, надо дооформить
 
             string[] fio = new string[0];
             string[] post = new string[0];
             string userInformation;
             string userInput;
             bool isWorking = true;
+            int DossierToDelete;
+            int numberToCorrectInputOrUotput = 1;
+            int numberOfDossier = 0;
 
 
 
@@ -42,23 +45,40 @@ namespace CSLight
                     case "2":
                         Console.WriteLine("Вот список досье:\n");
 
-                       
-                        
                         for (int i = 0; i < fio.Length; i++)
-                        { 
+                        {
                             for (int j = 0; j < post.Length; j++)
                             {
                                 if (i == j)
                                 {
-                                    Console.Write((i + 1) + ") " + fio[i] + "-" + post[j] + ", ");
-                                }                              
+                                    Console.Write((i + numberToCorrectInputOrUotput) + ") " + fio[i] + "-" + post[j] + ", ");
+                                }
                             }
                         }
-                        
                         break;
                     case "3":
+                        Console.WriteLine("Какое по счёту досье вы хотите удалить?");
+                        DossierToDelete = Convert.ToInt32(Console.ReadLine());
+                        DeleteDossier(ref fio, DossierToDelete);
+                        DeleteDossier(ref post, DossierToDelete);
                         break;
                     case "4":
+                        Console.WriteLine("Введите фамилию и мы покажем вам это досье:");
+                        userInformation = Console.ReadLine();
+                        SearchOfFio(ref numberOfDossier, fio, userInformation);
+
+                        Console.WriteLine("Вот это досье:\n");
+
+                        for (int i = 0; i < fio.Length; i++)
+                        {
+                            for (int j = 0; j < post.Length; j++)
+                           {
+                                if (i == numberOfDossier && i == j)
+                                {
+                                    Console.Write((i + numberToCorrectInputOrUotput) + ") " + fio[i] + "-" + post[j] + ", ");
+                                }
+                            }
+                        }
                         break;
                     case "5":
                         isWorking = false;
@@ -82,8 +102,52 @@ namespace CSLight
             return partOfDossier;
         }
 
+        static void DeleteDossier(ref string[] partOfDossier, int DossierToDelete)
+        {
+            int numberToCorrectInput = 1;
+
+            if (DossierToDelete - numberToCorrectInput > partOfDossier.Length)
+            {
+                Console.WriteLine("Такого досье нет, введите корректный номер досье");
+            }
+
+            string[] tempPartOfDossier = new string[partOfDossier.Length - 1];
+
+            for (int i = 0; i < DossierToDelete - numberToCorrectInput; i++)
+            {
+                tempPartOfDossier[i] = partOfDossier[i];
+            }
+
+            for (int i = DossierToDelete; i < partOfDossier.Length; i++)
+            {
+                tempPartOfDossier[i - 1] = partOfDossier[i];
+            }
+            partOfDossier = tempPartOfDossier;
+        }
+
+        static void SearchOfFio(ref int numberOfDossier, string[] partOfDossier, string userInformation)
+        {
+            string familia;
+
+            for (int i = 0; i < partOfDossier.Length; i++)
+            {
+                familia = partOfDossier[i];
+                string[] separateFio = familia.Split(' ');
+
+                for (int j = 0; j < separateFio.Length; j++)
+                {
+                    if (separateFio[j] == userInformation)
+                    {
+                        numberOfDossier = i;
+                        
+                    }
+                }
+            }
+            
 
 
+
+        }
     }
 }
 
