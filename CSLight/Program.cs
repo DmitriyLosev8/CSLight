@@ -10,8 +10,8 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            // Задание: Кадровый учёт:   всё работает, надо дооформить
-
+            // Задание: Кадровый учёт: 
+           
             string[] fio = new string[0];
             string[] post = new string[0];
             string userInformation;
@@ -20,8 +20,6 @@ namespace CSLight
             int DossierToDelete;
             int numberToCorrectInputOrUotput = 1;
             int numberOfDossier = 0;
-
-
 
             while (isWorking)
             {
@@ -51,7 +49,7 @@ namespace CSLight
                             {
                                 if (i == j)
                                 {
-                                    Console.Write((i + numberToCorrectInputOrUotput) + ") " + fio[i] + "-" + post[j] + ", ");
+                                    Console.Write((i + numberToCorrectInputOrUotput) + ") " + fio[i] + " - " + post[j] + ", ");
                                 }
                             }
                         }
@@ -65,7 +63,7 @@ namespace CSLight
                     case "4":
                         Console.WriteLine("Введите фамилию и мы покажем вам это досье:");
                         userInformation = Console.ReadLine();
-                        SearchOfFio(ref numberOfDossier, fio, userInformation);
+                        SearchOfFio(fio, userInformation, ref numberOfDossier);
 
                         Console.WriteLine("Вот это досье:\n");
 
@@ -75,7 +73,7 @@ namespace CSLight
                            {
                                 if (i == numberOfDossier && i == j)
                                 {
-                                    Console.Write((i + numberToCorrectInputOrUotput) + ") " + fio[i] + "-" + post[j] + ", ");
+                                    Console.Write((i + numberToCorrectInputOrUotput) + ") " + fio[i] + " - " + post[j] + ", ");
                                 }
                             }
                         }
@@ -106,26 +104,28 @@ namespace CSLight
         {
             int numberToCorrectInput = 1;
 
-            if (DossierToDelete - numberToCorrectInput > partOfDossier.Length)
+            if (DossierToDelete > partOfDossier.Length)
             {
                 Console.WriteLine("Такого досье нет, введите корректный номер досье");
             }
-
-            string[] tempPartOfDossier = new string[partOfDossier.Length - 1];
-
-            for (int i = 0; i < DossierToDelete - numberToCorrectInput; i++)
+            else
             {
-                tempPartOfDossier[i] = partOfDossier[i];
-            }
+                string[] tempPartOfDossier = new string[partOfDossier.Length - 1];
 
-            for (int i = DossierToDelete; i < partOfDossier.Length; i++)
-            {
-                tempPartOfDossier[i - 1] = partOfDossier[i];
-            }
-            partOfDossier = tempPartOfDossier;
+                for (int i = 0; i < DossierToDelete - numberToCorrectInput; i++)
+                {
+                    tempPartOfDossier[i] = partOfDossier[i];
+                }
+
+                for (int i = DossierToDelete; i < partOfDossier.Length; i++)
+                {
+                    tempPartOfDossier[i - 1] = partOfDossier[i];
+                }
+                partOfDossier = tempPartOfDossier;
+            } 
         }
 
-        static void SearchOfFio(ref int numberOfDossier, string[] partOfDossier, string userInformation)
+        static void SearchOfFio(string[] partOfDossier, string userInformation,ref int numberOfDossier)
         {
             string familia;
 
@@ -138,15 +138,10 @@ namespace CSLight
                 {
                     if (separateFio[j] == userInformation)
                     {
-                        numberOfDossier = i;
-                        
+                        numberOfDossier = i; 
                     }
                 }
             }
-            
-
-
-
         }
     }
 }
