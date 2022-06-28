@@ -32,7 +32,7 @@ namespace CSLight
                         AddDossier(ref fullNames, ref posts); 
                         break;
                     case "2":
-                        ShowDossier(ref fullNames, ref posts);
+                        ShowDossier(fullNames,posts);
                         break;
                     case "3":
                         DeleteDossier(ref fullNames, ref posts);
@@ -73,20 +73,14 @@ namespace CSLight
             return partOfDossier;
         }
 
-        static void ShowDossier(ref string[] fullNames, ref string[] posts)
+        static void ShowDossier(string[] fullNames,string[] posts)
         {
             int numberToCorrectInput = 1;
             Console.WriteLine("Вот список досье:\n");
 
             for (int i = 0; i < fullNames.Length; i++)
             {
-                for (int j = 0; j < posts.Length; j++)
-                {
-                    if (i == j)
-                    {
-                        Console.Write((i + numberToCorrectInput) + ") " + fullNames[i] + " - " + posts[j] + ", ");
-                    }
-                }
+                Console.Write((i + numberToCorrectInput) + ") " + fullNames[i] + " - " + posts[i] + ", ");
             }
         }
 
