@@ -11,8 +11,8 @@ namespace CSLight
         static void Main(string[] args)
         {
             // Задание: Кадровый учёт: 
-           
-            string[] fios = new string[0];
+
+            string[] fullNames = new string[0];
             string[] posts = new string[0];
             string userInput;
             bool isWorking = true;
@@ -29,16 +29,16 @@ namespace CSLight
                 switch (userInput)
                 {
                     case "1":
-                        AddDossier(ref fios,ref posts);
+                        AddDossier(ref fullNames, ref posts); 
                         break;
                     case "2":
-                        ShowDossier(ref fios, ref posts);
+                        ShowDossier(ref fullNames, ref posts);
                         break;
                     case "3":
-                        DeleteDossier(ref fios, ref posts);
+                        DeleteDossier(ref fullNames, ref posts);
                         break;
                     case "4":
-                        SearchOfFio(ref fios, ref posts);
+                        SearchOfFio(fullNames);
                         break;
                     case "5":
                         isWorking = false;
@@ -49,127 +49,106 @@ namespace CSLight
             }
         }
 
-        static void AddDossier(ref string[] fios,ref string[] posts)
+        static void AddDossier(ref string[] fullNames, ref string[] posts)
         {
-            string fio;
-            string post;
-
+            string userInformation;
             Console.WriteLine("Введите Ваши ФИО:");
-            fio = Console.ReadLine();
+            userInformation = Console.ReadLine();
+            fullNames = AddPartOfDossier(fullNames, userInformation);
             Console.WriteLine("Введите Вашу должность:");
-            post = Console.ReadLine();
-
-            string[] tempFios = new string[fios.Length + 1];
-
-            for (int i = 0; i < fios.Length; i++)
-            {
-                tempFios[i] = fios[i];
-            }
-            tempFios[tempFios.Length - 1] = fio;
-            fios = tempFios;
-
-            string[] tempPosts = new string[posts.Length + 1];
-
-            for (int i = 0; i < posts.Length; i++)
-            {
-                tempPosts[i] = posts[i];
-            }
-            tempPosts[tempPosts.Length - 1] = post;
-            posts = tempPosts;
+            userInformation = Console.ReadLine();
+            posts = AddPartOfDossier(posts, userInformation);
         }
 
-        static void ShowDossier(ref string[] fios, ref string[] posts)
+        static string[] AddPartOfDossier(string[] partOfDossier, string userInformation)
+        {      
+            string[] tempPartOfDossier = new string[partOfDossier.Length + 1];
+
+            for (int i = 0; i < partOfDossier.Length; i++)
+            {
+                tempPartOfDossier[i] = partOfDossier[i];
+            }
+            tempPartOfDossier[tempPartOfDossier.Length - 1] = userInformation;
+            partOfDossier = tempPartOfDossier;
+            return partOfDossier;
+        }
+
+        static void ShowDossier(ref string[] fullNames, ref string[] posts)
         {
-            int numberToCorrectInputOrUotput = 1;
+            int numberToCorrectInput = 1;
             Console.WriteLine("Вот список досье:\n");
 
-            for (int i = 0; i < fios.Length; i++)
+            for (int i = 0; i < fullNames.Length; i++)
             {
                 for (int j = 0; j < posts.Length; j++)
                 {
                     if (i == j)
                     {
-                        Console.Write((i + numberToCorrectInputOrUotput) + ") " + fios[i] + " - " + posts[j] + ", ");
+                        Console.Write((i + numberToCorrectInput) + ") " + fullNames[i] + " - " + posts[j] + ", ");
                     }
                 }
             }
         }
 
-        static void DeleteDossier(ref string[] fios, ref string[] posts)
+        static void DeleteDossier(ref string[] fullNames, ref string[] posts)
         {
-            int DossierToDelete;
-            int numberToCorrectInputOrUotput = 1;
-
+            int numberOfDossierToDelete;
+            
             Console.WriteLine("Какое по счёту досье вы хотите удалить?");
-            DossierToDelete = Convert.ToInt32(Console.ReadLine());
+            numberOfDossierToDelete = Convert.ToInt32(Console.ReadLine());
 
-            if (DossierToDelete > fios.Length || DossierToDelete > posts.Length)
+            if (numberOfDossierToDelete > fullNames.Length || numberOfDossierToDelete > posts.Length)
             {
                 Console.WriteLine("Такого досье нет, введите корректный номер досье");
             }
             else
             {
-                string[] tempFios = new string[fios.Length - 1];
-
-                for (int i = 0; i < DossierToDelete - numberToCorrectInputOrUotput; i++)
-                {
-                    tempFios[i] = fios[i];
-                }
-
-                for (int i = DossierToDelete; i < fios.Length; i++)
-                {
-                    tempFios[i - 1] = fios[i];
-                }
-                fios = tempFios;
-
-                string[] tempPosts = new string[posts.Length - 1];
-
-                for (int i = 0; i < DossierToDelete - numberToCorrectInputOrUotput; i++)
-                {
-                    tempPosts[i] = posts[i];
-                }
-
-                for (int i = DossierToDelete; i < posts.Length; i++)
-                {
-                    tempPosts[i - 1] = posts[i];
-                }
-                posts = tempPosts;
-            } 
+                fullNames = DeletePartOfDossier(fullNames, numberOfDossierToDelete);
+                posts = DeletePartOfDossier(posts, numberOfDossierToDelete);
+            }
         }
 
-        static void SearchOfFio(ref string[] fios, ref string[] posts)
+        static string[] DeletePartOfDossier(string[] partOfDossier, int numberOfDossierToDelete)
         {
-            string inputedFamilia;
-            string familia;
-            int numberOfDossier;
-            int numberToCorrectInputOrUotput = 1;
+            int numberToCorrectInput = 1;
+            string[] tempParOfDossier = new string[partOfDossier.Length - 1];
 
-            Console.WriteLine("Введите фамилию и мы покажем вам это досье:");
-            inputedFamilia = Console.ReadLine();
-
-            for (int i = 0; i < fios.Length; i++)
+            for (int i = 0; i < numberOfDossierToDelete - numberToCorrectInput; i++)
             {
-                familia = fios[i];
-                string[] separateFio = familia.Split(' ');
+                tempParOfDossier[i] = partOfDossier[i];
+            }
 
-                for (int j = 0; j < separateFio.Length; j++)
+            for (int i = numberOfDossierToDelete; i < partOfDossier.Length; i++)
+            {
+                tempParOfDossier[i - 1] = partOfDossier[i];
+            }
+            partOfDossier = tempParOfDossier;
+            return partOfDossier;
+        }
+
+        static void SearchOfFio(string[] fullNames)
+        {
+            string inputedLastname;
+            string lastname;
+            int numberOfDossier;
+            int numberToCorrectInput = 1;
+
+            Console.WriteLine("Введите фамилию:");
+            inputedLastname = Console.ReadLine();
+
+            for (int i = 0; i < fullNames.Length; i++)
+            {
+                lastname = fullNames[i];
+                string[] separateFullName = lastname.Split(' ');
+
+                for (int j = 0; j < separateFullName.Length; j++)
                 {
-                    if (separateFio[j] == inputedFamilia)
+                    if (separateFullName[j] == inputedLastname)
                     {
                         numberOfDossier = i;
-
-                        Console.WriteLine("Вот это досье:\n");
-
-                        for (int y = 0; y < fios.Length; y++)    
-                        {
-                            for (int u = 0; u < posts.Length; u++)
-                            {
-                                if (y == numberOfDossier && y == u)
-                                {
-                                    Console.Write((y + numberToCorrectInputOrUotput) + ") " + fios[y] + " - " + posts[u] + ", ");
-                                }
-                            }
-                        }
+                        
+                        Console.WriteLine("Вот номер досье и полное имя этого человека:\n");
+                        Console.Write((i + numberToCorrectInput) + ") " + fullNames[i]);  
                     }
                 }
             }
