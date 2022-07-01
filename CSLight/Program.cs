@@ -19,16 +19,16 @@ namespace CSLight
 
         static void Shuffle(ref int[] array)
         {
-            int randomNumber;
+            int randomElement;
             int elementNumber;
             Random random = new Random();
 
             for (int i = 0; i < array.Length; i++)
             {
-                randomNumber = random.Next(i);                          
+                randomElement = random.Next(i);                          
                 elementNumber = array[i];
-                array[i] = array[randomNumber];
-                array[randomNumber] = elementNumber;
+                array[i] = array[randomElement];
+                array[randomElement] = elementNumber;
             }
             
             for (int i = 0; i < array.Length; i++)
