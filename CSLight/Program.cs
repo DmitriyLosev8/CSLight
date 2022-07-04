@@ -14,32 +14,32 @@ namespace CSLight
             //Задание: ReadInt:
 
             int inputedNumber;
+            RequestOfNumber(out inputedNumber);
+            Console.WriteLine("Вот оно -  " + inputedNumber);
+        }
+
+        static void RequestOfNumber(out int inputedNumber)
+        {
             bool isWorking = true;
-            bool success;
+            string userInput;
+            inputedNumber = 0;
+            bool isSuccessful;
 
             while (isWorking)
             {
-                RequestOfNumber(out inputedNumber, out success);
-
-                if (success == true)
+                Console.WriteLine("Введите число:");
+                userInput = Console.ReadLine();
+                isSuccessful = int.TryParse(userInput, out inputedNumber);
+                if (isSuccessful == false)
+                {
+                    Console.WriteLine("Введите корректное значение:");
+                }
+                else
                 {
                     Console.WriteLine("Число преобразованно");
                     isWorking = false;
                 }
-                else
-                {
-                    Console.WriteLine("Введите корректное значение:");
-                }
             }
-
-        }
-
-        static void RequestOfNumber(out int inputedNumber, out bool success)
-        {
-            string userInput;
-            Console.WriteLine("Введите число:");
-            userInput = Console.ReadLine();
-            success = int.TryParse(userInput, out inputedNumber);
         }
     }
 }
