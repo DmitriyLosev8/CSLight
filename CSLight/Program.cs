@@ -19,7 +19,6 @@ namespace CSLight
             int coordinateOfPlayerX = 8;
             int coordinateOfPlayerY = 6;
             bool isPlaying = true;
-            int allMoney = 0;
             char wall = '#';
             int bag = 0;
 
@@ -44,17 +43,8 @@ namespace CSLight
                 Console.WriteLine("В вашей сумке " + bag + " денег");
 
                 DrawMap(map);
-                MoveOfPlayer(map, player, wall, ref coordinateOfPlayerX, ref coordinateOfPlayerY);
-                
-                // не могу понять почему, если я делаю сбор денег через функцию, она не работает,
-                // CollectMoney(map, money, ref bag, coordinateOfPlayerX, coordinateOfPlayerX);
-                
-                // а если сделать без функции, то сбор работает
-                if (map[coordinateOfPlayerX, coordinateOfPlayerY] == money)
-                {
-                    bag++;
-                    map[coordinateOfPlayerX, coordinateOfPlayerY] = ' ';
-                }
+                MoveOfPlayer(map, player, wall, ref coordinateOfPlayerX, ref coordinateOfPlayerY); 
+                CollectMoney(map, money, ref bag, coordinateOfPlayerY, coordinateOfPlayerX);
                 Console.Clear();
             }
         }
@@ -114,7 +104,6 @@ namespace CSLight
                     }
                     break;
             }
-
         }
 
         static void CollectMoney(char[,] map, char money, ref int bag, int coordinateOfPlayerY, int coordinateOfPlayerX)
