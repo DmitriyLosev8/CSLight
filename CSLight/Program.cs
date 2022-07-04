@@ -43,7 +43,8 @@ namespace CSLight
                 Console.WriteLine("В вашей сумке " + bag + " денег");
 
                 DrawMap(map);
-                MoveOfPlayer(map, player, wall, ref coordinateOfPlayerX, ref coordinateOfPlayerY); 
+                DrawPlayer(coordinateOfPlayerX, coordinateOfPlayerY, player);
+                MoveOfPlayer(map, wall, ref coordinateOfPlayerX, ref coordinateOfPlayerY);
                 CollectMoney(map, money, ref bag, coordinateOfPlayerY, coordinateOfPlayerX);
                 Console.Clear();
             }
@@ -63,10 +64,14 @@ namespace CSLight
             }
         }
 
-        static void MoveOfPlayer(char[,] map, char player, char wall, ref int coordinateOfPlayerX, ref int coordinateOfPlayerY)
+        static void DrawPlayer(int coordinateOfPlayerX, int coordinateOfPlayerY, char player)
         {
             Console.SetCursorPosition(coordinateOfPlayerY, coordinateOfPlayerX);
             Console.WriteLine(player);
+        }
+
+        static void MoveOfPlayer(char[,] map, char wall, ref int coordinateOfPlayerX, ref int coordinateOfPlayerY)
+        {
             ConsoleKeyInfo userInput = Console.ReadKey();
 
             switch (userInput.Key)
@@ -75,32 +80,24 @@ namespace CSLight
                     if (map[coordinateOfPlayerX - 1, coordinateOfPlayerY] != wall)
                     {
                         coordinateOfPlayerX--;
-                        Console.SetCursorPosition(coordinateOfPlayerY, coordinateOfPlayerX);
-                        Console.Write(player);
                     }
                     break;
                 case ConsoleKey.DownArrow:
                     if (map[coordinateOfPlayerX + 1, coordinateOfPlayerY] != wall)
                     {
                         coordinateOfPlayerX++;
-                        Console.SetCursorPosition(coordinateOfPlayerY, coordinateOfPlayerX);
-                        Console.WriteLine(player);
                     }
                     break;
                 case ConsoleKey.LeftArrow:
                     if (map[coordinateOfPlayerX, coordinateOfPlayerY - 1] != wall)
                     {
                         coordinateOfPlayerY--;
-                        Console.SetCursorPosition(coordinateOfPlayerY, coordinateOfPlayerX);
-                        Console.WriteLine(player);
                     }
                     break;
                 case ConsoleKey.RightArrow:
                     if (map[coordinateOfPlayerX, coordinateOfPlayerY + 1] != wall)
                     {
                         coordinateOfPlayerY++;
-                        Console.SetCursorPosition(coordinateOfPlayerY, coordinateOfPlayerX);
-                        Console.WriteLine(player);
                     }
                     break;
             }
