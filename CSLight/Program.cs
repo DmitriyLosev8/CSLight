@@ -5,37 +5,125 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace CSLight    
+namespace CSLight
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            //Задание: Shuffle:
+            //Задание: Brave new world:
 
-            int[] array = { 2, 6, 9, 4, 5, 6, 7, 3, 1, 9, 8, 5 };
-            ShuffleElements(array);
+            Console.CursorVisible = false;
+            char player = '@';
+            char money = '$';
+            int coordinateOfPlayerX = 8;
+            int coordinateOfPlayerY = 6;
+            bool isPlaying = true;
+            int allMoney = 0;
+            char wall = '#';
+            int bag = 0;
 
-            for (int i = 0; i < array.Length; i++)
+            char[,] map = { {'#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'},
+                            {'#',' ',' ',' ','#',' ',' ',' ',' ',' ','#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#'},
+                            {'#','$',' ',' ','#',' ',' ',' ',' ',' ','#',' ',' ','#',' ',' ',' ',' ',' ',' ',' ','$',' ','#'},
+                            {'#',' ',' ',' ','#','$',' ',' ','$',' ','#',' ',' ','#',' ','$',' ',' ',' ',' ',' ',' ',' ','#'},
+                            {'#',' ',' ',' ','#',' ',' ',' ',' ',' ','#',' ',' ','#',' ',' ',' ',' ',' ',' ',' ',' ',' ','#'},
+                            {'#',' ',' ',' ','#',' ',' ',' ',' ',' ','#',' ',' ','#',' ',' ',' ','#','#','#','#','#','#','#'},
+                            {'#',' ',' ',' ','#',' ',' ',' ',' ',' ','#',' ',' ','#',' ',' ',' ','#',' ',' ',' ',' ',' ','#'},
+                            {'#',' ','#','#','#',' ','$',' ',' ',' ',' ',' ',' ','#',' ',' ',' ','#',' ',' ',' ',' ',' ','#'},
+                            {'#',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',' ',' ','#',' ',' ',' ','#',' ','$',' ',' ',' ','#'},
+                            {'#',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',' ',' ','#',' ',' ',' ','#',' ',' ',' ',' ',' ','#'},
+                            {'#','$',' ',' ','$',' ',' ',' ',' ',' ','#',' ',' ','#',' ',' ',' ','#',' ',' ',' ',' ',' ','#'},
+                            {'#',' ',' ',' ',' ',' ',' ',' ','$',' ','#',' ',' ','#',' ','$',' ','#',' ',' ',' ','$',' ','#'},
+                            {'#',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',' ',' ','#',' ',' ',' ',' ',' ',' ',' ',' ',' ','#'},
+                            {'#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'} };
+
+            while (isPlaying)
             {
-                Console.Write(array[i] + " | ");
+                Console.SetCursorPosition(0, 20);
+                Console.WriteLine("В вашей сумке " + bag + " денег");
+
+                DrawMap(map);
+                MoveOfPlayer(map, player, wall, ref coordinateOfPlayerX, ref coordinateOfPlayerY);
+                
+                // не могу понять почему, если я делаю сбор денег через функцию, она не работает,
+                // CollectMoney(map, money, ref bag, coordinateOfPlayerX, coordinateOfPlayerX);
+                
+                // а если сделать без функции, то сбор работает
+                if (map[coordinateOfPlayerX, coordinateOfPlayerY] == money)
+                {
+                    bag++;
+                    map[coordinateOfPlayerX, coordinateOfPlayerY] = ' ';
+                }
+                Console.Clear();
             }
-            Console.WriteLine();
         }
 
-        static void ShuffleElements(int[] array)
+        static void DrawMap(char[,] map)
         {
-            int randomElement;
-            int elementNumber;
-            Random random = new Random();
+            Console.SetCursorPosition(0, 0);
 
-            for (int i = 0; i < array.Length; i++)
+            for (int i = 0; i < map.GetLength(0); i++)
             {
-                randomElement = random.Next(i);
-                elementNumber = array[i];
-                array[i] = array[randomElement];
-                array[randomElement] = elementNumber;
-            } 
+                for (int j = 0; j < map.GetLength(1); j++)
+                {
+                    Console.Write(map[i, j]);
+                }
+                Console.WriteLine();
+            }
+        }
+
+        static void MoveOfPlayer(char[,] map, char player, char wall, ref int coordinateOfPlayerX, ref int coordinateOfPlayerY)
+        {
+            Console.SetCursorPosition(coordinateOfPlayerY, coordinateOfPlayerX);
+            Console.WriteLine(player);
+            ConsoleKeyInfo userInput = Console.ReadKey();
+
+            switch (userInput.Key)
+            {
+                case ConsoleKey.UpArrow:
+                    if (map[coordinateOfPlayerX - 1, coordinateOfPlayerY] != wall)
+                    {
+                        coordinateOfPlayerX--;
+                        Console.SetCursorPosition(coordinateOfPlayerY, coordinateOfPlayerX);
+                        Console.Write(player);
+                    }
+                    break;
+                case ConsoleKey.DownArrow:
+                    if (map[coordinateOfPlayerX + 1, coordinateOfPlayerY] != wall)
+                    {
+                        coordinateOfPlayerX++;
+                        Console.SetCursorPosition(coordinateOfPlayerY, coordinateOfPlayerX);
+                        Console.WriteLine(player);
+                    }
+                    break;
+                case ConsoleKey.LeftArrow:
+                    if (map[coordinateOfPlayerX, coordinateOfPlayerY - 1] != wall)
+                    {
+                        coordinateOfPlayerY--;
+                        Console.SetCursorPosition(coordinateOfPlayerY, coordinateOfPlayerX);
+                        Console.WriteLine(player);
+                    }
+                    break;
+                case ConsoleKey.RightArrow:
+                    if (map[coordinateOfPlayerX, coordinateOfPlayerY + 1] != wall)
+                    {
+                        coordinateOfPlayerY++;
+                        Console.SetCursorPosition(coordinateOfPlayerY, coordinateOfPlayerX);
+                        Console.WriteLine(player);
+                    }
+                    break;
+            }
+
+        }
+
+        static void CollectMoney(char[,] map, char money, ref int bag, int coordinateOfPlayerY, int coordinateOfPlayerX)
+        {
+            if (map[coordinateOfPlayerX, coordinateOfPlayerY] == money)
+            {
+                bag++;
+                map[coordinateOfPlayerX, coordinateOfPlayerY] = ' ';
+            }
         }
     }
 }
