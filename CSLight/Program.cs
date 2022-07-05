@@ -10,34 +10,34 @@ namespace CSLight
     internal class Program
     {
         static void Main(string[] args)
-        {
-            //Задание: ReadInt:
+        {      //Задание: толковый словарь:    
 
-            int inputedNumber;
-            RequestOfNumber(out inputedNumber);
-            Console.WriteLine("Вот оно -  " + inputedNumber);
+            List<string> names = new List<string>();
+            names.AddRange(new string[] { "Георгий", "Степан", "Фёдор", "Николай", "Сергей" });
+
+            ShowingNumberOfWord(names);
         }
 
-        static void RequestOfNumber(out int inputedNumber)
+        static void ShowingNumberOfWord(List<string> names)
         {
-            bool isWorking = true;
+            int correctUserInput = 1;
             string userInput;
-            inputedNumber = 0;
-            bool isSuccessful;
+            bool isWorking = true;
 
             while (isWorking)
             {
-                Console.WriteLine("Введите число:");
+                Console.WriteLine("Напишите слово и мы покажем вам его номер");
                 userInput = Console.ReadLine();
-                isSuccessful = int.TryParse(userInput, out inputedNumber);
-                if (isSuccessful == false)
+
+                if (names.Contains(userInput))
                 {
-                    Console.WriteLine("Введите корректное значение:");
+                    Console.WriteLine("Вот номер вашего слова - " + (names.IndexOf(userInput) + correctUserInput));
+                    isWorking = false;
                 }
                 else
                 {
-                    Console.WriteLine("Число преобразованно");
-                    isWorking = false;
+                    Console.WriteLine("Такого слова нет, нажмите Enter, чтобы попробовать снова:");
+                    Console.ReadKey();
                 }
             }
         }
