@@ -10,35 +10,28 @@ namespace CSLight
     internal class Program
     {
         static void Main(string[] args)
-        {      //Задание: толковый словарь:    
+        {      //Задание: очередь в магазине:    
 
-            List<string> names = new List<string>();
-            names.AddRange(new string[] { "Георгий", "Степан", "Фёдор", "Николай", "Сергей" });
+            Queue<int> queueToStore = new Queue<int>();
+            queueToStore.Enqueue(50);
+            queueToStore.Enqueue(80);
+            queueToStore.Enqueue(45);
+            queueToStore.Enqueue(36);
+            queueToStore.Enqueue(67);
+            queueToStore.Enqueue(90);
+            queueToStore.Enqueue(250);
 
-            ShowingNumberOfWord(names);
+            int amountOfPurchases = 0;
+            serviceOfClients(queueToStore,ref amountOfPurchases);
         }
-
-        static void ShowingNumberOfWord(List<string> names)
+        static void serviceOfClients(Queue<int> queueToStore,ref  int amountOfPurchases)
         {
-            int correctUserInput = 1;
-            string userInput;
-            bool isWorking = true;
-
-            while (isWorking)
+            while (queueToStore.Count > 0)
             {
-                Console.WriteLine("Напишите слово и мы покажем вам его номер");
-                userInput = Console.ReadLine();
-
-                if (names.Contains(userInput))
-                {
-                    Console.WriteLine("Вот номер вашего слова - " + (names.IndexOf(userInput) + correctUserInput));
-                    isWorking = false;
-                }
-                else
-                {
-                    Console.WriteLine("Такого слова нет, нажмите Enter, чтобы попробовать снова:");
-                    Console.ReadKey();
-                }
+                amountOfPurchases += queueToStore.Dequeue();
+                Console.WriteLine("Текущая сумма покупок всех клиентов - " + amountOfPurchases + ", нажмите любою клавишу, чтобы обслужить следующего клиента:");
+                Console.ReadKey(true);
+                Console.Clear();
             }
         }
     }
