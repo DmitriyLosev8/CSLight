@@ -31,7 +31,6 @@ namespace CSLight
                 {
                     case "s":
                         ShowSumNumbers(numbers);
-
                         break;
                     case "c":
                         AddNumbers(numbers, out userInput);
