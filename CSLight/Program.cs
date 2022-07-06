@@ -54,17 +54,17 @@ namespace CSLight
             {
                 Console.WriteLine("Вы ввели не число:");
             }
-
             numbers.Add(inputedNumber);
         }
 
         static void ShowSumNumbers(List<int> numbers)
         {
             int amauntOfNumbers = 0;
+            
             foreach (int number in numbers)
             {
                 amauntOfNumbers += number;
-            }
+            }  
             Console.WriteLine(amauntOfNumbers);
         }
     }
