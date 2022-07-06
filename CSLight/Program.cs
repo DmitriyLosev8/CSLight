@@ -10,30 +10,63 @@ namespace CSLight
     internal class Program
     {
         static void Main(string[] args)
-        {      //Задание: очередь в магазине:    
+        {      //Задание: Динамический массив продвинутый:    
 
-            Queue<int> queueToStore = new Queue<int>();
-            queueToStore.Enqueue(50);
-            queueToStore.Enqueue(80);
-            queueToStore.Enqueue(45);
-            queueToStore.Enqueue(36);
-            queueToStore.Enqueue(67);
-            queueToStore.Enqueue(90);
-            queueToStore.Enqueue(250);
-
-            int amountOfPurchases = 0;
-            ServiceOfClients(queueToStore, ref amountOfPurchases);
+            List<int> numbers = new List<int>();
+            PerformOperationsWithNumbers(numbers);
         }
 
-        static void ServiceOfClients(Queue<int> queueToStore, ref int amountOfPurchases)
+        static void PerformOperationsWithNumbers(List<int> numbers)
         {
-            while (queueToStore.Count > 0)
+            bool isWorking = true;
+            string userInput;
+
+            while (isWorking)
             {
-                amountOfPurchases += queueToStore.Dequeue();
-                Console.WriteLine("Текущая сумма покупок всех клиентов - " + amountOfPurchases + ", нажмите любою клавишу, чтобы обслужить следующего клиента:");
-                Console.ReadKey(true);
-                Console.Clear();
+                Console.WriteLine("Нажмите  английскую букву s, чтобы посмотреть сумму всех введённых вами чисел.\nНажмите английскую букву c чтобы ввести  число." +
+                    "\nНажмитие английскую букву e,чтобы выйти.");
+                userInput = (Console.ReadLine());
+
+                switch (userInput)
+                {
+                    case "s":
+                        ShowSumNumbers(numbers);
+
+                        break;
+                    case "c":
+                        AddNumbers(numbers, out userInput);
+                        break;
+                    case "e":
+                        isWorking = false;
+                        break;
+                }
             }
+        }
+
+        static void AddNumbers(List<int> numbers, out string userInput)
+        {
+            bool isSuccessfull;
+            int inputedNumber;
+            Console.WriteLine("Введите число и программа его запомнит:");
+            userInput = Console.ReadLine();
+            isSuccessfull = int.TryParse(userInput, out inputedNumber);
+
+            if (isSuccessfull == false)
+            {
+                Console.WriteLine("Вы ввели не число:");
+            }
+
+            numbers.Add(inputedNumber);
+        }
+
+        static void ShowSumNumbers(List<int> numbers)
+        {
+            int amauntOfNumbers = 0;
+            foreach (int number in numbers)
+            {
+                amauntOfNumbers += number;
+            }
+            Console.WriteLine(amauntOfNumbers);
         }
     }
 }
