@@ -10,62 +10,39 @@ namespace CSLight
     internal class Program
     {
         static void Main(string[] args)
-        {      //Задание: Динамический массив продвинутый:    
+        {      //Задание: объединение в одну коллекцию: 
 
-            List<int> numbers = new List<int>();
-            PerformOperationsWithNumbers(numbers);
+            string[] chairs = { "1", "2", "3", "7", "10", "45" };
+            string[] armchairs = { "4", "3", "5", "10", "18" };
+            List<string> seats = new List<string>();
+            seats.AddRange(chairs);
+            seats.AddRange(armchairs);
+
+            SearchAndDeleteRepeatingStrings(seats, chairs, armchairs);
+            ShowingAllUniqueSeats(seats);
         }
 
-        static void PerformOperationsWithNumbers(List<int> numbers)
+        static void SearchAndDeleteRepeatingStrings(List<string> seats, string[] chairs, string[] armchairs)
         {
-            bool isWorking = true;
-            string userInput;
+            List<string> tempSeats = seats;
+            tempSeats.Sort();
 
-            while (isWorking)
+            for (int i = 1; i < tempSeats.Count; i++)
             {
-                Console.WriteLine("Нажмите  английскую букву s, чтобы посмотреть сумму всех введённых вами чисел.\nНажмите английскую букву c чтобы ввести  число." +
-                    "\nНажмитие английскую букву e,чтобы выйти.");
-                userInput = (Console.ReadLine());
-
-                switch (userInput)
+                if (tempSeats[i - 1] == tempSeats[i])
                 {
-                    case "s":
-                        ShowSumNumbers(numbers);
-                        break;
-                    case "c":
-                        AddNumbers(numbers, out userInput);
-                        break;
-                    case "e":
-                        isWorking = false;
-                        break;
+                    seats.Remove(tempSeats[i]);
                 }
             }
         }
 
-        static void AddNumbers(List<int> numbers, out string userInput)
+        static void ShowingAllUniqueSeats(List<string> seats)
         {
-            bool isSuccessfull;
-            int inputedNumber;
-            Console.WriteLine("Введите число и программа его запомнит:");
-            userInput = Console.ReadLine();
-            isSuccessfull = int.TryParse(userInput, out inputedNumber);
-
-            if (isSuccessfull == false)
+            for (int i = 0; i < seats.Count; i++)
             {
-                Console.WriteLine("Вы ввели не число:");
+                Console.WriteLine(seats[i]);
+
             }
-            numbers.Add(inputedNumber);
-        }
-
-        static void ShowSumNumbers(List<int> numbers)
-        {
-            int amauntOfNumbers = 0;
-            
-            foreach (int number in numbers)
-            {
-                amauntOfNumbers += number;
-            }  
-            Console.WriteLine(amauntOfNumbers);
         }
     }
 }
