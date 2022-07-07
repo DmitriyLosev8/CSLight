@@ -18,11 +18,11 @@ namespace CSLight
             seats.AddRange(chairs);
             seats.AddRange(armchairs);
 
-            SearchAndDeleteRepeatingStrings(seats, chairs, armchairs);
+            SearchAndDeleteRepeatingStrings(seats);
             ShowingAllUniqueSeats(seats);
         }
 
-        static void SearchAndDeleteRepeatingStrings(List<string> seats, string[] chairs, string[] armchairs)
+        static void SearchAndDeleteRepeatingStrings(List<string> seats)
         {
             List<string> tempSeats = seats;
             tempSeats.Sort();
