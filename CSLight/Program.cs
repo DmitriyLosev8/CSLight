@@ -18,20 +18,19 @@ namespace CSLight
             seats.AddRange(chairs);
             seats.AddRange(armchairs);
 
-            SearchAndDeleteRepeatingStrings(seats);
+            DeleteRepeatingStrings(seats);
             ShowingAllUniqueSeats(seats);
         }
 
-        static void SearchAndDeleteRepeatingStrings(List<string> seats)
+        static void DeleteRepeatingStrings(List<string> seats)
         {
-            List<string> tempSeats = seats;
-            tempSeats.Sort();
+            seats.Sort();
 
-            for (int i = 1; i < tempSeats.Count; i++)
+            for (int i = 1; i < seats.Count; i++)
             {
-                if (tempSeats[i - 1] == tempSeats[i])
+                if (seats[i - 1] == seats[i])
                 {
-                    seats.Remove(tempSeats[i]);
+                    seats.Remove(seats[i]);
                 }
             }
         }
