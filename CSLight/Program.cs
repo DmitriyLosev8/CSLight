@@ -19,22 +19,22 @@ namespace CSLight
 
     class Players
     {
-        public int Health;
-        public int Armor;
-        public int Damage;
-        public string Name;
+        private int _health;
+        private int _armor;
+        private int _damage;
+        private string _name;
 
         public Players(string name, int health, int armor, int damage)
         {
-            Name = name;
-            Health = health;
-            Armor = armor;
-            Damage = damage;
+            _name = name;
+            _health = health;
+            _armor = armor;
+            _damage = damage;
         }
 
         public void ShowСharacteristic()
         {
-            Console.WriteLine($"Имя игрока - {Name}\nЗдоровье игрока - {Health}\nБроня игрока - {Armor}\nУрон игрока - {Damage}");
+            Console.WriteLine($"Имя игрока - {_name}\nЗдоровье игрока - {_health}\nБроня игрока - {_armor}\nУрон игрока - {_damage}");
         }
     }
 }
