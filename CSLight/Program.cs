@@ -10,31 +10,47 @@ namespace CSLight
     internal class Program
     {
         static void Main(string[] args)
-        {      // Задание: Работа с классами:
+        {      // Задание: работа со свойствами:
 
-            Players redPlayer = new Players("Красный игрок", 100, 85, 12);
-            redPlayer.ShowСharacteristic();
+            Player player = new Player(15, 15,'@');
+            Renderer renderer = new Renderer();
+            renderer.DrawPlayer(player.CoorditateX, player.CoorditateY,player.Character);
         }
     }
 
-    class Players
+    class Player
     {
-        private int _health;
-        private int _armor;
-        private int _damage;
-        private string _name;
+        public int CoorditateX { get; private set; }
+        public int CoorditateY { get; private set; }
+        public char Character { get; private set; }
 
-        public Players(string name, int health, int armor, int damage)
+        public Player(int coorditateX, int coorditateY, char character)
         {
-            _name = name;
-            _health = health;
-            _armor = armor;
-            _damage = damage;
+            CoorditateX = coorditateX;
+            CoorditateY = coorditateY;
+            Character = character;
         }
+    }
 
-        public void ShowСharacteristic()
+    class Renderer
+    {
+        public void DrawPlayer(int coorditateX, int coorditateY, char character)
         {
-            Console.WriteLine($"Имя игрока - {_name}\nЗдоровье игрока - {_health}\nБроня игрока - {_armor}\nУрон игрока - {_damage}");
+            Console.SetCursorPosition(coorditateX, coorditateY);
+            Console.CursorVisible = false;
+            Console.WriteLine(character);
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
