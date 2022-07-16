@@ -10,7 +10,7 @@ namespace CSLight
     internal class Program
     {
         static void Main(string[] args)
-        {      // Задание: База данных игроков:      Лист - доработать проверку на уникальный номер
+        {      // Задание: База данных игроков:      СЛОВАРЬ - ДОРАБОТАТЬ  бан и разбан
 
             bool isWorking = true;
             int userInput;
@@ -33,7 +33,7 @@ namespace CSLight
                         database.AddPlayer();
                         break;
                     case 2:
-                       database.DeletePlayer();
+                        database.DeletePlayer();
                         break;
                     case 3:
                         database.BanPlayer();
@@ -58,7 +58,7 @@ namespace CSLight
 
         class Database
         {
-            public List<Player> Players { get; private set; } = new List<Player>();
+            public Dictionary<int, Player> Players { get; private set; } = new Dictionary<int, Player>();
 
             public void AddPlayer()
             {
@@ -68,40 +68,25 @@ namespace CSLight
                 bool isNotUnique = true;
                 bool isBanned = false;
 
-                Console.WriteLine("Введите ник игрока");
-                userNickName = Console.ReadLine();
-                Console.WriteLine("Введите уровень игрока");
-                userLevel = Convert.ToInt32(Console.ReadLine());
-                Console.WriteLine("Введите уникальный номер игрока");
-                userNumber = Convert.ToInt32(Console.ReadLine());
-                Players.Add(new Player(userNickName, userLevel, isBanned, userNumber));
+                while (isNotUnique)
+                {
+                    Console.WriteLine("Введите ник игрока");
+                    userNickName = Console.ReadLine();
+                    Console.WriteLine("Введите уникальный номер игрока");
+                    userNumber = Convert.ToInt32(Console.ReadLine());
 
-
-                //Попытка проверить на уникальный номер, но новый элемент не добавляется
-                //while (isNotUnique)
-                //{
-                //    Console.WriteLine("Введите ник игрока");
-                //    userNickName = Console.ReadLine();
-                //    Console.WriteLine("Введите уровень игрока");
-                //    userLevel = Convert.ToInt32(Console.ReadLine());
-                //    Console.WriteLine("Введите уникальный номер игрока");
-                //    userNumber = Convert.ToInt32(Console.ReadLine());
-                //    Players.Add(new Player(userNickName, userLevel, isBanned, userNumber));
-
-                //    for (int i = 0; i < Players.Count; i++)
-                //    {
-                //        if (Players[i].Id == userNumber)
-                //        {
-                //            Console.WriteLine("Запись с таким номером уже есть, введите данные заново.");
-
-                //        }
-                //        else
-                //        {
-                //            Players.Add(new Player(userNickName, userLevel, isBanned, userNumber));
-                //            isNotUnique = false;
-                //        }
-                //    }
-                //}
+                    if (Players.ContainsKey(userNumber))
+                    {
+                        Console.WriteLine("Запись с таким номером уже есть, введите данные заново.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Введите уровень игрока");
+                        userLevel = Convert.ToInt32(Console.ReadLine());
+                        Players.Add(userNumber, new Player(userNickName, userLevel, isBanned));
+                        isNotUnique = false;
+                    }
+                }
             }
 
             public void DeletePlayer()
@@ -109,34 +94,28 @@ namespace CSLight
                 Console.WriteLine("Введите уникальный номер игрока, которого хотите удалить:");
                 int userNumber = Convert.ToInt32(Console.ReadLine());
 
-                for (int i = 0; i < Players.Count; i++)
+                if (Players.ContainsKey(userNumber))
                 {
-                    if (Players[i].Id == userNumber)
-                    {
-                        Players.RemoveAt(i);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Игрока под таким номером нет.");
-                    }
+                    Players.Remove(userNumber);
+                }
+                else
+                {
+                    Console.WriteLine("Игрока под таким номером нет.");
                 }
             }
 
+            //тут не получается обратиться к значению словаря, зная конкретный ключ, чтобы изменить значение isBanned
             public void BanPlayer()
             {
                 bool isBanned = true;
                 Console.WriteLine("Введите уникальный номер игрока, которого хотите забанить:");
                 int userNumber = Convert.ToInt32(Console.ReadLine());
 
-                for (int i = 0; i < Players.Count; i++)
+                foreach (var player in Players)
                 {
-                    if (Players[i].Id == userNumber)
+                    if (Players.ContainsKey(userNumber))
                     {
-                        Players[i].Ban(isBanned);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Игрока под таким номером нет.");
+                        Console.WriteLine(player.Value.NickName);
                     }
                 }
             }
@@ -146,16 +125,13 @@ namespace CSLight
                 bool isBanned = false;
                 Console.WriteLine("Введите уникальный номер игрока, которого хотите разбанить:");
                 int userNumber = Convert.ToInt32(Console.ReadLine());
+                int Key;
 
-                for (int i = 0; i < Players.Count; i++)
+                foreach (var player in Players)
                 {
-                    if (Players[i].Id == userNumber)
+                    if (Players.ContainsKey(userNumber))
                     {
-                        Players[i].Ban(isBanned);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Игрока под таким номером нет.");
+                        Console.WriteLine(player.Value.NickName);
                     }
                 }
             }
@@ -163,28 +139,28 @@ namespace CSLight
             public void ShowNotBannedPlayers()
             {
                 Console.WriteLine("Вот список не забанненых игроков:\n");
-                for (int i = 0; i < Players.Count; i++)
+                foreach (var player in Players)
                 {
-                    if (Players[i].IsBanned == false)
+                    if (player.Value.IsBanned == false)
                     {
-                        Console.WriteLine($"Уникальный номер игрока - {Players[i].Id}, его ник - {Players[i].NickName}, а его уровень - {Players[i].Level}");
-                    }  
+                        Console.WriteLine($"Уникальный номер игрока - {player.Key}, его ник - {player.Value.NickName}, а его уровень {player.Value.Level}");
+                    }
                 }
             }
 
             public void ShowBannedPlayers()
             {
                 Console.WriteLine($"Вот список забанненых игроков:\n");
-                for (int i = 0; i < Players.Count; i++)
+                foreach (var player in Players)
                 {
-                    if (Players[i].IsBanned == true)
+                    if (player.Value.IsBanned == true)
                     {
-                        Console.WriteLine($"Уникальный номер игрока - {Players[i].Id}, его ник - {Players[i].NickName}, а его уровень - {Players[i].Level}");
+                        Console.WriteLine($"Уникальный номер игрока - {player.Key}, его ник - {player.Value.NickName}, а его уровень {player.Value.Level}");
                     }
                 }
             }
         }
-       
+
         class Player
         {
             public string NickName { get; private set; }
@@ -192,12 +168,11 @@ namespace CSLight
             public int Level { get; private set; }
             public bool IsBanned { get; private set; }
 
-            public Player(string nickName, int level, bool IsBanned, int id) 
+            public Player(string nickName, int level, bool IsBanned) //int id
             {
                 NickName = nickName;
                 IsBanned = false;
                 Level = level;
-                Id = id;
             }
 
             public void Ban(bool isBanned)
