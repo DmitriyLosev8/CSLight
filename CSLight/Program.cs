@@ -10,44 +10,36 @@ namespace CSLight
     internal class Program
     {
         static void Main(string[] args)
-        {      // Задание: База данных игроков:      СЛОВАРЬ - ДОРАБОТАТЬ  бан и разбан
+        {      // Задание: Хранилище книг:
 
+            Storage storage = new Storage();
             bool isWorking = true;
-            int userInput;
-            Database database = new Database();
 
             while (isWorking)
             {
+                string userInput;
                 Console.SetCursorPosition(35, 0);
-                Console.WriteLine("Перед вами консоль управления базой данных игроков:");
-                Console.SetCursorPosition(0, 2);
-                Console.WriteLine("Чтобы добавить игрока, нажмите 1\nЧтобы удалить угрока по уникальному номеру нажмите 2\nЧтобы забанить игрока по уникальному номеру,нажмите 3\n" +
-                    "Чтобы разбанить игрока по уникальному номеру, нажмите 4\nЧтобы посмотреть забанненых игроков, нажмите 5\nЧтобы посмотреть" +
-                    "не забаненных игроков, нажмите 6\nЧтобы выйти, нажмите 7");
-
-                userInput = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Перед вами хранилище книг");
+                Console.SetCursorPosition(0, 3);
+                Console.WriteLine("Чтобы добавить книгу, нажмите 1\nЧтобы удалить книгу, нажмите 2\nЧтобы посмотреть список всех книг, нажмите 3\n" +
+                    "Чтобы посмотмотреть список книг по определённому параметру, нажмите 4\nЧтобы выйти, нажмите 5");
+                userInput = Console.ReadLine();
 
                 switch (userInput)
                 {
-                    case 1:
-                        database.AddPlayer();
+                    case "1":
+                        storage.AddBook();
                         break;
-                    case 2:
-                        database.DeletePlayer();
+                    case "2":
+                        storage.DeleteBook();
                         break;
-                    case 3:
-                        database.BanPlayer();
+                    case "3":
+                        storage.ShowAllBooks();
                         break;
-                    case 4:
-                        database.UnBanPlayer();
+                    case "4":
+                        storage.ShowPartOfBooks();
                         break;
-                    case 5:
-                        database.ShowBannedPlayers();
-                        break;
-                    case 6:
-                        database.ShowNotBannedPlayers();
-                        break;
-                    case 7:
+                    case "5":
                         isWorking = false;
                         break;
                 }
@@ -55,130 +47,151 @@ namespace CSLight
                 Console.Clear();
             }
         }
+    }
 
-        class Database
+    class Storage
+    {
+        public List<Book> Books { get; private set; } = new List<Book>();
+
+        public void AddBook()
         {
-            public Dictionary<int, Player> Players { get; private set; } = new Dictionary<int, Player>();
+            string userTitle;
+            string userAuthor;
+            int userYearOfIssue;
+            int userPrice;
+            Console.WriteLine("Введите название книги:");
+            userTitle = Console.ReadLine();
+            Console.WriteLine("Введите автора книги:");
+            userAuthor = Console.ReadLine();
+            Console.WriteLine("Введите год издания книги:");
+            userYearOfIssue = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Введите цену книги:");
+            userPrice = Convert.ToInt32(Console.ReadLine());
+            Books.Add(new Book(userTitle, userAuthor, userYearOfIssue, userPrice));
+        }
 
-            public void AddPlayer()
+        public void DeleteBook()
+        {
+            string userTitle;
+            Console.WriteLine("Введите название книги, которую хотите удалить:");
+            userTitle = Console.ReadLine();
+
+            for (int i = 0; i < Books.Count; i++)
             {
-                string userNickName;
-                int userNumber;
-                int userLevel;
-                bool isNotUnique = true;
-                bool isBanned = false;
-
-                while (isNotUnique)
+                if (Books[i].Title == userTitle)
                 {
-                    Console.WriteLine("Введите ник игрока");
-                    userNickName = Console.ReadLine();
-                    Console.WriteLine("Введите уникальный номер игрока");
-                    userNumber = Convert.ToInt32(Console.ReadLine());
-
-                    if (Players.ContainsKey(userNumber))
-                    {
-                        Console.WriteLine("Запись с таким номером уже есть, введите данные заново.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Введите уровень игрока");
-                        userLevel = Convert.ToInt32(Console.ReadLine());
-                        Players.Add(userNumber, new Player(userNickName, userLevel, isBanned));
-                        isNotUnique = false;
-                    }
-                }
-            }
-
-            public void DeletePlayer()
-            {
-                Console.WriteLine("Введите уникальный номер игрока, которого хотите удалить:");
-                int userNumber = Convert.ToInt32(Console.ReadLine());
-
-                if (Players.ContainsKey(userNumber))
-                {
-                    Players.Remove(userNumber);
-                }
-                else
-                {
-                    Console.WriteLine("Игрока под таким номером нет.");
-                }
-            }
-
-            //тут не получается обратиться к значению словаря, зная конкретный ключ, чтобы изменить значение isBanned
-            public void BanPlayer()
-            {
-                bool isBanned = true;
-                Console.WriteLine("Введите уникальный номер игрока, которого хотите забанить:");
-                int userNumber = Convert.ToInt32(Console.ReadLine());
-
-                foreach (var player in Players)
-                {
-                    if (Players.ContainsKey(userNumber))
-                    {
-                        Console.WriteLine(player.Value.NickName);
-                    }
-                }
-            }
-
-            public void UnBanPlayer()
-            {
-                bool isBanned = false;
-                Console.WriteLine("Введите уникальный номер игрока, которого хотите разбанить:");
-                int userNumber = Convert.ToInt32(Console.ReadLine());
-                int Key;
-
-                foreach (var player in Players)
-                {
-                    if (Players.ContainsKey(userNumber))
-                    {
-                        Console.WriteLine(player.Value.NickName);
-                    }
-                }
-            }
-
-            public void ShowNotBannedPlayers()
-            {
-                Console.WriteLine("Вот список не забанненых игроков:\n");
-                foreach (var player in Players)
-                {
-                    if (player.Value.IsBanned == false)
-                    {
-                        Console.WriteLine($"Уникальный номер игрока - {player.Key}, его ник - {player.Value.NickName}, а его уровень {player.Value.Level}");
-                    }
-                }
-            }
-
-            public void ShowBannedPlayers()
-            {
-                Console.WriteLine($"Вот список забанненых игроков:\n");
-                foreach (var player in Players)
-                {
-                    if (player.Value.IsBanned == true)
-                    {
-                        Console.WriteLine($"Уникальный номер игрока - {player.Key}, его ник - {player.Value.NickName}, а его уровень {player.Value.Level}");
-                    }
+                    Books.RemoveAt(i);
                 }
             }
         }
 
-        class Player
+        public void ShowAllBooks()
         {
-            public string NickName { get; private set; }
-            public int Id { get; private set; }
-            public int Level { get; private set; }
-            public bool IsBanned { get; private set; }
-
-            public Player(string nickName, int level, bool IsBanned) //int id
+            Console.WriteLine("Вот список всех книг:\n");
+            for (int i = 0; i < Books.Count; i++)
             {
-                NickName = nickName;
-                IsBanned = false;
-                Level = level;
+                Console.WriteLine($"Название книги - {Books[i].Title}, её автор - {Books[i].Author}, год издания - {Books[i].YearOfIisue} и цена - {Books[i].Price}");
             }
+        }
 
-            public void Ban(bool isBanned)
+        public void ShowPartOfBooks()
+        {
+            string userInput;
+            Console.WriteLine("Выберите параметр по которому вы хотите отсортитировать и посмотреть книги:");
+            Console.WriteLine("По названию, нажмите 1\nПо автору, нажмите 2\nПо году выпуска, нажмите 3\nПо цене, нажмите 4");
+            userInput = Console.ReadLine();
+
+            switch (userInput)
             {
-                IsBanned = isBanned;
+                case "1":
+                    ShowTitle();
+                    break;
+                case "2":
+                    ShowAuthor();
+                    break;
+                case "3":
+                    ShowYearOfIssue();
+                    break;
+                case "4":
+                    ShowPrice();
+                    break;
             }
+        }
+
+        public void ShowTitle()
+        {
+            Console.WriteLine("Введите название книги:");
+            string userTitle = Console.ReadLine();
+            Console.WriteLine("Вот список книг с этим названием:\n");
+
+            for (int i = 0; i < Books.Count; i++)
+            {
+                if (Books[i].Title == userTitle)
+                {
+                    Console.WriteLine($"Название книги - {Books[i].Title}, её автор - {Books[i].Author}, год издания - {Books[i].YearOfIisue} и цена - {Books[i].Price}");
+                }
+            }
+        }
+
+        public void ShowAuthor()
+        {
+            Console.WriteLine("Введите автора книги:");
+            string userAuthor = Console.ReadLine();
+            Console.WriteLine("Вот список книг с этим автором:\n");
+
+            for (int i = 0; i < Books.Count; i++)
+            {
+                if (Books[i].Author == userAuthor)
+                {
+                    Console.WriteLine($"Название книги - {Books[i].Title}, её автор - {Books[i].Author}, год издания - {Books[i].YearOfIisue} и цена - {Books[i].Price}");
+                }
+            }
+        }
+       
+        public void ShowYearOfIssue()
+        {
+            Console.WriteLine("Введите год издания книги:");
+            int userYearOfIssue = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Вот список книг этого года:\n");
+
+            for (int i = 0; i < Books.Count; i++)
+            {
+                if (Books[i].YearOfIisue == userYearOfIssue)
+                {
+                    Console.WriteLine($"Название книги - {Books[i].Title}, её автор - {Books[i].Author}, год издания - {Books[i].YearOfIisue} и цена - {Books[i].Price}");
+                }
+            }
+        }
+
+        public void ShowPrice()
+        {
+            Console.WriteLine("Введите цену книги:");
+            int userPrice = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Вот список книг с такой ценой:\n");
+
+            for (int i = 0; i < Books.Count; i++)
+            {
+                if (Books[i].Price == userPrice)
+                {
+                    Console.WriteLine($"Название книги - {Books[i].Title}, её автор - {Books[i].Author}, год издания - {Books[i].YearOfIisue} и цена - {Books[i].Price}");
+                }
+            }
+        }
+    }
+
+    class Book
+    {
+        public string Title { get; private set; }
+        public string Author { get; private set; }
+        public int YearOfIisue { get; private set; }
+        public int Price { get; private set; }
+
+        public Book(string title, string author, int yearOfIisue, int price)
+        {
+            Title = title;
+            Author = author;
+            YearOfIisue = yearOfIisue;
+            Price = price;
         }
     }
 }
