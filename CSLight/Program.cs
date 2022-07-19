@@ -66,7 +66,7 @@ namespace CSLight
 
         class Database
         {
-            private List<Player> Players { get; set; } = new List<Player>();
+            private List<Player> Players = new List<Player>();
 
             public void AddPlayer()
             {
@@ -87,6 +87,45 @@ namespace CSLight
                 else
                 {
                     Players.Add(new Player(userNickName, userLevel, isBanned));
+                }
+            }
+
+            public void DeletePlayer()
+            {
+                Players.RemoveAt(GetindexOfPlayer());
+            }
+
+            public void BanPlayer()
+            {
+                Players[GetindexOfPlayer()].Ban();
+            }
+
+            public void UnBanPlayer()
+            {
+                Players[GetindexOfPlayer()].UnBan();
+            }
+
+            public void ShowNotBannedPlayers()
+            {
+                Console.WriteLine("Вот список не забанненых игроков:\n");
+                for (int i = 0; i < Players.Count; i++)
+                {
+                    if (Players[i].IsBanned == false)
+                    {
+                        Console.WriteLine($"Уникальный номер игрока - {Players[i].Id}, его ник - {Players[i].NickName}, а его уровень - {Players[i].Level}");
+                    }
+                }
+            }
+
+            public void ShowBannedPlayers()
+            {
+                Console.WriteLine("Вот список забанненых игроков:\n");
+                for (int i = 0; i < Players.Count; i++)
+                {
+                    if (Players[i].IsBanned == true)
+                    {
+                        Console.WriteLine($"Уникальный номер игрока - {Players[i].Id}, его ник - {Players[i].NickName}, а его уровень - {Players[i].Level}");
+                    }
                 }
             }
 
@@ -114,69 +153,33 @@ namespace CSLight
                 }
                 return indexOfPlayer;
             }
-
-            public void DeletePlayer()
-            {
-                Players.RemoveAt(GetindexOfPlayer());
-            }
-
-            public void BanPlayer()
-            {
-                bool isBanned = true;
-                Players[GetindexOfPlayer()].Ban(isBanned);
-            }
-
-            public void UnBanPlayer()
-            {
-                bool isBanned = false;
-                Players[GetindexOfPlayer()].Ban(isBanned);
-            }
-
-            public void ShowNotBannedPlayers()
-            {
-                Console.WriteLine("Вот список не забанненых игроков:\n");
-                for (int i = 0; i < Players.Count; i++)
-                {
-                    if (Players[i].IsBanned == false)
-                    {
-                        Console.WriteLine($"Уникальный номер игрока - {Players[i].Id}, его ник - {Players[i].NickName}, а его уровень - {Players[i].Level}");
-                    }
-                }
-            }
-
-            public void ShowBannedPlayers()
-            {
-                Console.WriteLine("Вот список забанненых игроков:\n");
-                for (int i = 0; i < Players.Count; i++)
-                {
-                    if (Players[i].IsBanned == true)
-                    {
-                        Console.WriteLine($"Уникальный номер игрока - {Players[i].Id}, его ник - {Players[i].NickName}, а его уровень - {Players[i].Level}");
-                    }
-                }
-            }
         }
 
         class Player
         {
-            private static int _idS;
+            private static int _ids;
 
             public string NickName { get; private set; }
             public int Id { get; private set; }
             public int Level { get; private set; }
             public bool IsBanned { get; private set; }
-
+ 
             public Player(string nickName, int level, bool IsBanned)
             {
                 NickName = nickName;
                 IsBanned = false;
                 Level = level;
-                Id = ++_idS;
+                Id = ++_ids;
             }
 
-            public void Ban(bool isBanned)
+            public void Ban()
             {
-                IsBanned = isBanned;
+                IsBanned = true;
+            }
+
+            public void UnBan()
+            {
+                IsBanned = false;
             }
         }
     }
