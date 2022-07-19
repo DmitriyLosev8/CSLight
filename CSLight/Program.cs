@@ -66,7 +66,7 @@ namespace CSLight
 
         class Database
         {
-            private List<Player> Players = new List<Player>();
+            private List<Player> _players = new List<Player>();
 
             public void AddPlayer()
             {
@@ -86,33 +86,33 @@ namespace CSLight
                 }
                 else
                 {
-                    Players.Add(new Player(userNickName, userLevel, isBanned));
+                    _players.Add(new Player(userNickName, userLevel, isBanned));
                 }
             }
 
             public void DeletePlayer()
             {
-                Players.RemoveAt(GetindexOfPlayer());
+                _players.RemoveAt(GetindexOfPlayer());
             }
 
             public void BanPlayer()
             {
-                Players[GetindexOfPlayer()].Ban();
+                _players[GetindexOfPlayer()].Ban();
             }
 
             public void UnBanPlayer()
             {
-                Players[GetindexOfPlayer()].UnBan();
+                _players[GetindexOfPlayer()].UnBan();
             }
 
             public void ShowNotBannedPlayers()
             {
                 Console.WriteLine("Вот список не забанненых игроков:\n");
-                for (int i = 0; i < Players.Count; i++)
+                for (int i = 0; i < _players.Count; i++)
                 {
-                    if (Players[i].IsBanned == false)
+                    if (_players[i].IsBanned == false)
                     {
-                        Console.WriteLine($"Уникальный номер игрока - {Players[i].Id}, его ник - {Players[i].NickName}, а его уровень - {Players[i].Level}");
+                        Console.WriteLine($"Уникальный номер игрока - {_players[i].Id}, его ник - {_players[i].NickName}, а его уровень - {_players[i].Level}");
                     }
                 }
             }
@@ -120,11 +120,11 @@ namespace CSLight
             public void ShowBannedPlayers()
             {
                 Console.WriteLine("Вот список забанненых игроков:\n");
-                for (int i = 0; i < Players.Count; i++)
+                for (int i = 0; i < _players.Count; i++)
                 {
-                    if (Players[i].IsBanned == true)
+                    if (_players[i].IsBanned == true)
                     {
-                        Console.WriteLine($"Уникальный номер игрока - {Players[i].Id}, его ник - {Players[i].NickName}, а его уровень - {Players[i].Level}");
+                        Console.WriteLine($"Уникальный номер игрока - {_players[i].Id}, его ник - {_players[i].NickName}, а его уровень - {_players[i].Level}");
                     }
                 }
             }
@@ -143,9 +143,9 @@ namespace CSLight
                 }
                 else
                 {
-                    for (int i = 0; i < Players.Count; i++)
+                    for (int i = 0; i < _players.Count; i++)
                     {
-                        if (Players[i].Id == userNumber)
+                        if (_players[i].Id == userNumber)
                         {
                             indexOfPlayer = i;
                         }
