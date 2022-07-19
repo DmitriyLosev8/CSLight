@@ -10,188 +10,203 @@ namespace CSLight
     internal class Program
     {
         static void Main(string[] args)
-        {      // Задание: Хранилище книг:
+        {      // Задание: База данных игроков:      
 
-            Storage storage = new Storage();
             bool isWorking = true;
+            int userInput;
+            Database database = new Database();
 
             while (isWorking)
             {
-                string userInput;
+                bool isSuccessfull;
                 Console.SetCursorPosition(35, 0);
-                Console.WriteLine("Перед вами хранилище книг");
-                Console.SetCursorPosition(0, 3);
-                Console.WriteLine("Чтобы добавить книгу, нажмите 1\nЧтобы удалить книгу, нажмите 2\nЧтобы посмотреть список всех книг, нажмите 3\n" +
-                    "Чтобы посмотмотреть список книг по определённому параметру, нажмите 4\nЧтобы выйти, нажмите 5");
-                userInput = Console.ReadLine();
+                Console.WriteLine("Перед вами консоль управления базой данных игроков:");
+                Console.SetCursorPosition(0, 2);
+                Console.WriteLine("Чтобы добавить игрока, нажмите 1\nЧтобы удалить угрока по уникальному номеру нажмите 2\nЧтобы забанить игрока по уникальному номеру,нажмите 3\n" +
+                    "Чтобы разбанить игрока по уникальному номеру, нажмите 4\nЧтобы посмотреть забанненых игроков, нажмите 5\nЧтобы посмотреть" +
+                    " не забаненных игроков, нажмите 6\nЧтобы выйти, нажмите 7");
 
-                switch (userInput)
+                isSuccessfull = int.TryParse(Console.ReadLine(), out userInput);
+
+                if (!isSuccessfull)
                 {
-                    case "1":
-                        storage.AddBook();
-                        break;
-                    case "2":
-                        storage.DeleteBook();
-                        break;
-                    case "3":
-                        storage.ShowAllBooks();
-                        break;
-                    case "4":
-                        storage.ShowPartOfBooks();
-                        break;
-                    case "5":
-                        isWorking = false;
-                        break;
+                    Console.WriteLine("Вы ввели не число");
                 }
-                Console.ReadKey();
-                Console.Clear();
+                else
+                {
+                    switch (userInput)
+                    {
+                        case 1:
+                            database.AddPlayer();
+                            break;
+                        case 2:
+                            database.DeletePlayer();
+                            break;
+                        case 3:
+                            database.BanPlayer();
+                            break;
+                        case 4:
+                            database.UnBanPlayer();
+                            break;
+                        case 5:
+                            database.ShowBannedPlayers();
+                            break;
+                        case 6:
+                            database.ShowNotBannedPlayers();
+                            break;
+                        case 7:
+                            isWorking = false;
+                            break;
+                    }
+                    Console.ReadKey();
+                    Console.Clear();
+                }  
             }
         }
-    }
 
-    class Storage
-    {
-        public List<Book> Books { get; private set; } = new List<Book>();
-
-        public void AddBook()
+        class Database
         {
-            string userTitle;
-            string userAuthor;
-            int userYearOfIssue;
-            int userPrice;
-            Console.WriteLine("Введите название книги:");
-            userTitle = Console.ReadLine();
-            Console.WriteLine("Введите автора книги:");
-            userAuthor = Console.ReadLine();
-            Console.WriteLine("Введите год издания книги:");
-            userYearOfIssue = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Введите цену книги:");
-            userPrice = Convert.ToInt32(Console.ReadLine());
-            Books.Add(new Book(userTitle, userAuthor, userYearOfIssue, userPrice));
-        }
+            public List<Player> Players { get; private set; } = new List<Player>();
 
-        public void DeleteBook()
-        {
-            string userTitle;
-            Console.WriteLine("Введите название книги, которую хотите удалить:");
-            userTitle = Console.ReadLine();
-
-            for (int i = 0; i < Books.Count; i++)
+            public void AddPlayer()
             {
-                if (Books[i].Title == userTitle)
+                string userNickName;
+                int userLevel;
+                bool isBanned = false;
+                bool isSuccessfull;
+
+                Console.WriteLine("Введите ник игрока");
+                userNickName = Console.ReadLine();
+                Console.WriteLine("Введите уровень игрока");
+                isSuccessfull = int.TryParse(Console.ReadLine(), out userLevel);
+
+                if (!isSuccessfull)
                 {
-                    Books.RemoveAt(i);
+                    Console.WriteLine("Вы ввели не число");
                 }
-            }
-        }
-
-        public void ShowAllBooks()
-        {
-            Console.WriteLine("Вот список всех книг:\n");
-            for (int i = 0; i < Books.Count; i++)
-            {
-                Console.WriteLine($"Название книги - {Books[i].Title}, её автор - {Books[i].Author}, год издания - {Books[i].YearOfIisue} и цена - {Books[i].Price}");
-            }
-        }
-
-        public void ShowPartOfBooks()
-        {
-            string userInput;
-            Console.WriteLine("Выберите параметр по которому вы хотите отсортитировать и посмотреть книги:");
-            Console.WriteLine("По названию, нажмите 1\nПо автору, нажмите 2\nПо году выпуска, нажмите 3\nПо цене, нажмите 4");
-            userInput = Console.ReadLine();
-
-            switch (userInput)
-            {
-                case "1":
-                    ShowTitle();
-                    break;
-                case "2":
-                    ShowAuthor();
-                    break;
-                case "3":
-                    ShowYearOfIssue();
-                    break;
-                case "4":
-                    ShowPrice();
-                    break;
-            }
-        }
-
-        public void ShowTitle()
-        {
-            Console.WriteLine("Введите название книги:");
-            string userTitle = Console.ReadLine();
-            Console.WriteLine("Вот список книг с этим названием:\n");
-
-            for (int i = 0; i < Books.Count; i++)
-            {
-                if (Books[i].Title == userTitle)
+                else
                 {
-                    Console.WriteLine($"Название книги - {Books[i].Title}, её автор - {Books[i].Author}, год издания - {Books[i].YearOfIisue} и цена - {Books[i].Price}");
+                    Players.Add(new Player(userNickName, userLevel, isBanned));
                 }
             }
-        }
 
-        public void ShowAuthor()
-        {
-            Console.WriteLine("Введите автора книги:");
-            string userAuthor = Console.ReadLine();
-            Console.WriteLine("Вот список книг с этим автором:\n");
-
-            for (int i = 0; i < Books.Count; i++)
+            public void DeletePlayer()
             {
-                if (Books[i].Author == userAuthor)
+                bool isSuccessfull;
+                int userNumber;
+                Console.WriteLine("Введите уникальный номер игрока, которого хотите удалить:");
+                isSuccessfull = int.TryParse(Console.ReadLine(), out userNumber);
+
+                if (!isSuccessfull)
                 {
-                    Console.WriteLine($"Название книги - {Books[i].Title}, её автор - {Books[i].Author}, год издания - {Books[i].YearOfIisue} и цена - {Books[i].Price}");
+                    Console.WriteLine("Вы ввели не число");
+                }
+                else
+                {
+                    for (int i = 0; i < Players.Count; i++)
+                    {
+                        if (Players[i].Id == userNumber)
+                        {
+                            Players.RemoveAt(i);
+                        }
+                    }
+                }
+            }
+
+            public void BanPlayer()
+            {
+                bool isSuccessfull;
+                int userNumber;
+                bool isBanned = true;
+                Console.WriteLine("Введите уникальный номер игрока, которого хотите забанить:");
+                isSuccessfull = int.TryParse(Console.ReadLine(), out userNumber);
+
+                if (!isSuccessfull)
+                {
+                    Console.WriteLine("Вы ввели не число");
+                }
+                else
+                {
+                    for (int i = 0; i < Players.Count; i++)
+                    {
+                        if (Players[i].Id == userNumber)
+                        {
+                            Players[i].Ban(isBanned);
+
+                        }
+                    }
+                }
+            }
+
+            public void UnBanPlayer()
+            {
+                bool isSuccessfull;
+                bool isBanned = false;
+                int userNumber;
+                Console.WriteLine("Введите уникальный номер игрока, которого хотите разбанить:");
+                isSuccessfull = int.TryParse(Console.ReadLine(), out userNumber);
+
+                if (!isSuccessfull)
+                {
+                    Console.WriteLine("Вы ввели не число");
+                }
+                else
+                {
+                    for (int i = 0; i < Players.Count; i++)
+                    {
+                        if (Players[i].Id == userNumber)
+                        {
+                            Players[i].Ban(isBanned);
+                        }
+                    }
+                }
+            }
+
+            public void ShowNotBannedPlayers()
+            {
+                Console.WriteLine("Вот список не забанненых игроков:\n");
+                for (int i = 0; i < Players.Count; i++)
+                {
+                    if (Players[i].IsBanned == false)
+                    {
+                        Console.WriteLine($"Уникальный номер игрока - {Players[i].Id}, его ник - {Players[i].NickName}, а его уровень - {Players[i].Level}");
+                    }
+                }
+            }
+
+            public void ShowBannedPlayers()
+            {
+                Console.WriteLine("Вот список забанненых игроков:\n");
+                for (int i = 0; i < Players.Count; i++)
+                {
+                    if (Players[i].IsBanned == true)
+                    {
+                        Console.WriteLine($"Уникальный номер игрока - {Players[i].Id}, его ник - {Players[i].NickName}, а его уровень - {Players[i].Level}");
+                    }
                 }
             }
         }
-       
-        public void ShowYearOfIssue()
-        {
-            Console.WriteLine("Введите год издания книги:");
-            int userYearOfIssue = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Вот список книг этого года:\n");
 
-            for (int i = 0; i < Books.Count; i++)
+        class Player
+        {
+            public static int IdS;
+            public string NickName { get; private set; }
+            public int Id { get; private set; }
+            public int Level { get; private set; }
+            public bool IsBanned { get; private set; }
+
+            public Player(string nickName, int level, bool IsBanned)
             {
-                if (Books[i].YearOfIisue == userYearOfIssue)
-                {
-                    Console.WriteLine($"Название книги - {Books[i].Title}, её автор - {Books[i].Author}, год издания - {Books[i].YearOfIisue} и цена - {Books[i].Price}");
-                }
+                NickName = nickName;
+                IsBanned = false;
+                Level = level;
+                Id = ++IdS;
             }
-        }
 
-        public void ShowPrice()
-        {
-            Console.WriteLine("Введите цену книги:");
-            int userPrice = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Вот список книг с такой ценой:\n");
-
-            for (int i = 0; i < Books.Count; i++)
+            public void Ban(bool isBanned)
             {
-                if (Books[i].Price == userPrice)
-                {
-                    Console.WriteLine($"Название книги - {Books[i].Title}, её автор - {Books[i].Author}, год издания - {Books[i].YearOfIisue} и цена - {Books[i].Price}");
-                }
+                IsBanned = isBanned;
             }
-        }
-    }
-
-    class Book
-    {
-        public string Title { get; private set; }
-        public string Author { get; private set; }
-        public int YearOfIisue { get; private set; }
-        public int Price { get; private set; }
-
-        public Book(string title, string author, int yearOfIisue, int price)
-        {
-            Title = title;
-            Author = author;
-            YearOfIisue = yearOfIisue;
-            Price = price;
         }
     }
 }
