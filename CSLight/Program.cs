@@ -28,7 +28,7 @@ namespace CSLight
 
                 isSuccessfull = int.TryParse(Console.ReadLine(), out userInput);
 
-                if (!isSuccessfull)
+                if (isSuccessfull == false)
                 {
                     Console.WriteLine("Вы ввели не число");
                 }
@@ -80,7 +80,7 @@ namespace CSLight
                 Console.WriteLine("Введите уровень игрока");
                 isSuccessfull = int.TryParse(Console.ReadLine(), out userLevel);
 
-                if (!isSuccessfull)
+                if (isSuccessfull == false)
                 {
                     Console.WriteLine("Вы ввели не число");
                 }
@@ -90,35 +90,12 @@ namespace CSLight
                 }
             }
 
-            public void DeletePlayer()
-            {
-                bool isSuccessfull;
-                int userNumber;
-                Console.WriteLine("Введите уникальный номер игрока, которого хотите удалить:");
-                isSuccessfull = int.TryParse(Console.ReadLine(), out userNumber);
-
-                if (!isSuccessfull)
-                {
-                    Console.WriteLine("Вы ввели не число");
-                }
-                else
-                {
-                    for (int i = 0; i < Players.Count; i++)
-                    {
-                        if (Players[i].Id == userNumber)
-                        {
-                            Players.RemoveAt(i);
-                        }
-                    }
-                }
-            }
-
             private int GetindexOfPlayer()
             {
                 int indexOfPlayer = 0;
                 bool isSuccessfull;
                 int userNumber;
-                Console.WriteLine("Введите уникальный номер игрока, которого хотите разбанить:");
+                Console.WriteLine("Введите уникальный номер игрока:");
                 isSuccessfull = int.TryParse(Console.ReadLine(), out userNumber);
 
                 if (isSuccessfull == false)
@@ -136,6 +113,11 @@ namespace CSLight
                     }
                 }
                 return indexOfPlayer;
+            }
+
+            public void DeletePlayer()
+            {
+                Players.RemoveAt(GetindexOfPlayer());
             }
 
             public void BanPlayer()
