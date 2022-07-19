@@ -60,13 +60,13 @@ namespace CSLight
                     }
                     Console.ReadKey();
                     Console.Clear();
-                }  
+                }
             }
         }
 
         class Database
         {
-            public List<Player> Players { get; private set; } = new List<Player>();
+            private List<Player> Players { get; set; } = new List<Player>();
 
             public void AddPlayer()
             {
@@ -113,40 +113,15 @@ namespace CSLight
                 }
             }
 
-            public void BanPlayer()
+            private int GetindexOfPlayer()
             {
+                int indexOfPlayer = 0;
                 bool isSuccessfull;
-                int userNumber;
-                bool isBanned = true;
-                Console.WriteLine("Введите уникальный номер игрока, которого хотите забанить:");
-                isSuccessfull = int.TryParse(Console.ReadLine(), out userNumber);
-
-                if (!isSuccessfull)
-                {
-                    Console.WriteLine("Вы ввели не число");
-                }
-                else
-                {
-                    for (int i = 0; i < Players.Count; i++)
-                    {
-                        if (Players[i].Id == userNumber)
-                        {
-                            Players[i].Ban(isBanned);
-
-                        }
-                    }
-                }
-            }
-
-            public void UnBanPlayer()
-            {
-                bool isSuccessfull;
-                bool isBanned = false;
                 int userNumber;
                 Console.WriteLine("Введите уникальный номер игрока, которого хотите разбанить:");
                 isSuccessfull = int.TryParse(Console.ReadLine(), out userNumber);
 
-                if (!isSuccessfull)
+                if (isSuccessfull == false)
                 {
                     Console.WriteLine("Вы ввели не число");
                 }
@@ -156,10 +131,23 @@ namespace CSLight
                     {
                         if (Players[i].Id == userNumber)
                         {
-                            Players[i].Ban(isBanned);
+                            indexOfPlayer = i;
                         }
                     }
                 }
+                return indexOfPlayer;
+            }
+
+            public void BanPlayer()
+            {
+                bool isBanned = true;
+                Players[GetindexOfPlayer()].Ban(isBanned);
+            }
+
+            public void UnBanPlayer()
+            {
+                bool isBanned = false;
+                Players[GetindexOfPlayer()].Ban(isBanned);
             }
 
             public void ShowNotBannedPlayers()
@@ -189,7 +177,8 @@ namespace CSLight
 
         class Player
         {
-            public static int IdS;
+            private static int _idS;
+
             public string NickName { get; private set; }
             public int Id { get; private set; }
             public int Level { get; private set; }
@@ -200,7 +189,7 @@ namespace CSLight
                 NickName = nickName;
                 IsBanned = false;
                 Level = level;
-                Id = ++IdS;
+                Id = ++_idS;
             }
 
             public void Ban(bool isBanned)
