@@ -10,176 +10,195 @@ namespace CSLight
     internal class Program
     {
         static void Main(string[] args)
-        {      // Задание: База данных игроков:      
+        {
+            //Задание: Гладиаторские бои:    ДОДЕЛАТЬ
 
-            bool isWorking = true;
-            int userInput;
-            Database database = new Database();
+            //Database figthers = new Database();
 
-            while (isWorking)
+            bool readyToFight = true;           
+            Warrior[] warriors = { new Giant("Гигант", 100, 500, 50, readyToFight), new Knight("Рыцарь",50,200,30, readyToFight),new Wizard("Волшебник",50,150,30, readyToFight) };
+           
+        }
+    }
+
+
+    //class Database
+    //{
+    //    bool readyToFight = true;
+    //    private List<Warrior> _warriors = {new Giant() };
+        
+
+    //}
+    class Warrior // abstract
+    {
+        protected string Name;
+        protected int Armor;
+        //protected int Health;
+       // protected int Damage;
+        protected bool ReadyToFight;
+
+
+        public int Health { get; protected set; }
+        public int Damage { get; protected set; }
+
+        public Warrior(string name, int armor, int health, int damage, bool readyToFight) 
+        {
+            Name = name;
+            Armor = armor;
+            Health = health;
+            Damage = damage;
+            ReadyToFight = true;
+        }
+
+        //public int Damage
+        //{
+        //    get { return Damage; }
+        //}
+
+
+        public void ShowIndicators()
+        {
+            Console.WriteLine($"{Name} иммет {Damage} урона. Жизней - {Health}, брони - {Armor}");
+        }
+
+        public void TakeDamage(int damage)
+        {
+            Health -= damage - Armor;
+        }
+
+        public void LosePartOfDamage(int manaHit)
+        {
+            Damage -= manaHit;
+        }
+    }
+
+    class Giant : Warrior
+    {
+        public Giant(string name, int armor, int health, int damage, bool readyToFight) : base(name, armor, health, damage, readyToFight) 
+        {
+            Name = name;
+            Armor = armor;
+            Health = health;
+            Damage = damage;
+            ReadyToFight = true;
+        }
+
+        public void SuperHit(int stepOfFight)
+        {
+            int coolDown = 5;
+
+            if (stepOfFight % coolDown == 0)
             {
-                bool isSuccessfull;
-                Console.SetCursorPosition(35, 0);
-                Console.WriteLine("Перед вами консоль управления базой данных игроков:");
-                Console.SetCursorPosition(0, 2);
-                Console.WriteLine("Чтобы добавить игрока, нажмите 1\nЧтобы удалить угрока по уникальному номеру нажмите 2\nЧтобы забанить игрока по уникальному номеру,нажмите 3\n" +
-                    "Чтобы разбанить игрока по уникальному номеру, нажмите 4\nЧтобы посмотреть забанненых игроков, нажмите 5\nЧтобы посмотреть" +
-                    " не забаненных игроков, нажмите 6\nЧтобы выйти, нажмите 7");
+                Damage += 30;
+            }
+        }
+    }
 
-                isSuccessfull = int.TryParse(Console.ReadLine(), out userInput);
+    class Knight : Warrior
+    {
+        public Knight(string name, int armor, int health, int damage, bool readyToFight) : base(name, armor, health, damage, readyToFight)
+        {
+            Name = name;
+            Armor = armor;
+            Health = health;
+            Damage = damage;
+            ReadyToFight = true;
+        }
 
-                if (isSuccessfull == false)
-                {
-                    Console.WriteLine("Вы ввели не число");
-                }
-                else
-                {
-                    switch (userInput)
-                    {
-                        case 1:
-                            database.AddPlayer();
-                            break;
-                        case 2:
-                            database.DeletePlayer();
-                            break;
-                        case 3:
-                            database.BanPlayer();
-                            break;
-                        case 4:
-                            database.UnBanPlayer();
-                            break;
-                        case 5:
-                            database.ShowBannedPlayers();
-                            break;
-                        case 6:
-                            database.ShowNotBannedPlayers();
-                            break;
-                        case 7:
-                            isWorking = false;
-                            break;
-                    }
-                    Console.ReadKey();
-                    Console.Clear();
-                }
+        public void RepairTakenDamage(int damage)
+        {
+            int lowerBorder = 0;
+            int upperBorder = 5;
+            int possibility = 1;
+            Random random = new Random();
+            int chance = random.Next(lowerBorder, upperBorder);
+
+            if (chance == possibility)
+            {
+                Health += damage - Armor;
+            }
+        }
+    }
+
+    class Wizard : Warrior
+    {
+        private int _mana;
+        public Wizard(string name, int armor, int health, int damage, bool readyToFight) : base(name, armor, health, damage, readyToFight)
+        {
+            Name = name;
+            Armor = armor;
+            Health = health;
+            Damage = damage;
+            ReadyToFight = true;
+            _mana = 100;
+
+        }
+
+        public void GetExtraDamage()
+        {
+            int priceOfAplly = 25;
+            int manaHit = 10;
+
+            if (_mana >= priceOfAplly)
+            {
+                Damage += manaHit;
+            }
+            else
+            {
+                Console.WriteLine("Недостаточно маны");
             }
         }
 
-        class Database
+        public void GetExtraHealth()
         {
-            private List<Player> _players = new List<Player>();
+            int priceOfAplly = 25;
 
-            public void AddPlayer()
+            if (_mana >= priceOfAplly)
             {
-                string userNickName;
-                int userLevel;
-                bool isBanned = false;
-                bool isSuccessfull;
-
-                Console.WriteLine("Введите ник игрока");
-                userNickName = Console.ReadLine();
-                Console.WriteLine("Введите уровень игрока");
-                isSuccessfull = int.TryParse(Console.ReadLine(), out userLevel);
-
-                if (isSuccessfull == false)
-                {
-                    Console.WriteLine("Вы ввели не число");
-                }
-                else
-                {
-                    _players.Add(new Player(userNickName, userLevel, isBanned));
-                }
+                Health += 20;
             }
-
-            public void DeletePlayer()
+            else
             {
-                _players.RemoveAt(GetindexOfPlayer());
-            }
-
-            public void BanPlayer()
-            {
-                _players[GetindexOfPlayer()].Ban();
-            }
-
-            public void UnBanPlayer()
-            {
-                _players[GetindexOfPlayer()].UnBan();
-            }
-
-            public void ShowNotBannedPlayers()
-            {
-                Console.WriteLine("Вот список не забанненых игроков:\n");
-                for (int i = 0; i < _players.Count; i++)
-                {
-                    if (_players[i].IsBanned == false)
-                    {
-                        Console.WriteLine($"Уникальный номер игрока - {_players[i].Id}, его ник - {_players[i].NickName}, а его уровень - {_players[i].Level}");
-                    }
-                }
-            }
-
-            public void ShowBannedPlayers()
-            {
-                Console.WriteLine("Вот список забанненых игроков:\n");
-                for (int i = 0; i < _players.Count; i++)
-                {
-                    if (_players[i].IsBanned == true)
-                    {
-                        Console.WriteLine($"Уникальный номер игрока - {_players[i].Id}, его ник - {_players[i].NickName}, а его уровень - {_players[i].Level}");
-                    }
-                }
-            }
-
-            private int GetindexOfPlayer()
-            {
-                int indexOfPlayer = 0;
-                bool isSuccessfull;
-                int userNumber;
-                Console.WriteLine("Введите уникальный номер игрока:");
-                isSuccessfull = int.TryParse(Console.ReadLine(), out userNumber);
-
-                if (isSuccessfull == false)
-                {
-                    Console.WriteLine("Вы ввели не число");
-                }
-                else
-                {
-                    for (int i = 0; i < _players.Count; i++)
-                    {
-                        if (_players[i].Id == userNumber)
-                        {
-                            indexOfPlayer = i;
-                        }
-                    }
-                }
-                return indexOfPlayer;
+                Console.WriteLine("Недостаточно маны");
             }
         }
+    }
 
-        class Player
+    class Recruit : Warrior
+    {
+        public Recruit(string name, int armor, int health, int damage, bool readyToFight) : base(name, armor, health, damage, readyToFight)
         {
-            private static int _ids;
+            Name = name;
+            Armor = armor;
+            Health = health;
+            Damage = damage;
+            ReadyToFight = true;
+        }
 
-            public string NickName { get; private set; }
-            public int Id { get; private set; }
-            public int Level { get; private set; }
-            public bool IsBanned { get; private set; }
- 
-            public Player(string nickName, int level, bool IsBanned)
-            {
-                NickName = nickName;
-                IsBanned = false;
-                Level = level;
-                Id = ++_ids;
-            }
+        public void GiveUp()
+        {
+            ReadyToFight = false;
+        }
+    }
 
-            public void Ban()
-            {
-                IsBanned = true;
-            }
+    class Officer : Warrior
+    {
+        public Officer(string name, int armor, int health, int damage, bool readyToFight) : base(name, armor, health, damage, readyToFight)
+        {
+            Name = name;
+            Armor = armor;
+            Health = health;
+            Damage = damage;
+            ReadyToFight = true;
+        }
 
-            public void UnBan()
+        public void DoubleDamage(int stepOfFight)
+        {
+            int coolDown = 8;
+
+            if (stepOfFight % coolDown == 0)
             {
-                IsBanned = false;
+                Damage *= 2;
             }
         }
     }
