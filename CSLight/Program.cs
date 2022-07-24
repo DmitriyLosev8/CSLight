@@ -11,37 +11,39 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            //Задание: Гладиаторские бои:    ДОДЕЛАТЬ
+            //Задание: Гладиаторские бои:    
 
-            //Database figthers = new Database();
 
-            bool readyToFight = true;           
-            Warrior[] warriors = { new Giant("Гигант", 100, 500, 50, readyToFight), new Knight("Рыцарь",50,200,30, readyToFight),new Wizard("Волшебник",50,150,30, readyToFight) };
-           
+            bool readyToFight = true;
+
+            // ВОТ ТУТ. Я создаю массив с типом Warrior, внутри него создаю уже классы, но по-факту они всё теже Warrior.
+
+            Warrior[] warriors = { new Giant("Гигант", 100, 500, 50, readyToFight), new Knight("Рыцарь", 50, 200, 30, readyToFight), new Wizard("Волшебник", 50, 150, 30, readyToFight) };
+
+
+            warriors[0].ShowIndicators();  // В итоге доступны только методы базового класса
+          
         }
     }
 
 
-    //class Database
-    //{
-    //    bool readyToFight = true;
-    //    private List<Warrior> _warriors = {new Giant() };
-        
+    class Arena
+    {
+        static bool readyToFight = true;
+     
 
-    //}
-    class Warrior // abstract
+
+    }
+    class Warrior 
     {
         protected string Name;
         protected int Armor;
-        //protected int Health;
-       // protected int Damage;
         protected bool ReadyToFight;
-
 
         public int Health { get; protected set; }
         public int Damage { get; protected set; }
 
-        public Warrior(string name, int armor, int health, int damage, bool readyToFight) 
+        public Warrior(string name, int armor, int health, int damage, bool readyToFight)
         {
             Name = name;
             Armor = armor;
@@ -49,12 +51,6 @@ namespace CSLight
             Damage = damage;
             ReadyToFight = true;
         }
-
-        //public int Damage
-        //{
-        //    get { return Damage; }
-        //}
-
 
         public void ShowIndicators()
         {
@@ -74,7 +70,7 @@ namespace CSLight
 
     class Giant : Warrior
     {
-        public Giant(string name, int armor, int health, int damage, bool readyToFight) : base(name, armor, health, damage, readyToFight) 
+        public Giant(string name, int armor, int health, int damage, bool readyToFight) : base(name, armor, health, damage, readyToFight)
         {
             Name = name;
             Armor = armor;
@@ -202,6 +198,7 @@ namespace CSLight
             }
         }
     }
+
 }
 
 
