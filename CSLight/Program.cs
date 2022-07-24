@@ -11,18 +11,19 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            //Задание: Гладиаторские бои:    
+            //Задание: Гладиаторские бои:       ДОДЕЛАТЬ
 
 
             bool readyToFight = true;
+            Arena arena = new Arena();
+            arena.ShowAllWarriors();
 
             // ВОТ ТУТ. Я создаю массив с типом Warrior, внутри него создаю уже классы, но по-факту они всё теже Warrior.
 
-            Warrior[] warriors = { new Giant("Гигант", 100, 500, 50, readyToFight), new Knight("Рыцарь", 50, 200, 30, readyToFight), new Wizard("Волшебник", 50, 150, 30, readyToFight) };
 
 
-            warriors[0].ShowIndicators();  // В итоге доступны только методы базового класса
-          
+
+
         }
     }
 
@@ -30,7 +31,29 @@ namespace CSLight
     class Arena
     {
         static bool readyToFight = true;
-     
+        Warrior[] warriors = { new Giant("Гигант", 100, 500, 50, readyToFight), new Knight("Рыцарь", 50, 200, 30, readyToFight), new Wizard("Волшебник", 50, 150, 30, readyToFight) };
+
+        public void ShowAllWarriors()
+        {
+            Console.WriteLine("Вот список всех бойцов:");
+            
+            for(int i = 0; i < warriors.Length; i++)
+            {
+                Console.Write(i + 1 + " ");
+                warriors[i].ShowIndicators();
+
+            }
+        }
+
+        public void Fight()
+        {
+            ShowAllWarriors();
+            while
+        }
+
+
+
+
 
 
     }
@@ -43,19 +66,30 @@ namespace CSLight
         public int Health { get; protected set; }
         public int Damage { get; protected set; }
 
-        public Warrior(string name, int armor, int health, int damage, bool readyToFight)
-        {
-            Name = name;
-            Armor = armor;
-            Health = health;
-            Damage = damage;
-            ReadyToFight = true;
-        }
+        //public Warrior(string name, int armor, int health, int damage, bool readyToFight)
+        //{
+        //    Name = name;
+        //    Armor = armor;
+        //    Health = health;
+        //    Damage = damage;
+        //    ReadyToFight = true;
+        //}
 
         public void ShowIndicators()
         {
             Console.WriteLine($"{Name} иммет {Damage} урона. Жизней - {Health}, брони - {Armor}");
         }
+
+        public virtual void UniqueSkill(int unqueInfo)
+        {
+
+        }
+
+        public virtual void SecondUniqueSkill()
+        {
+
+        }
+
 
         public void TakeDamage(int damage)
         {
@@ -70,7 +104,7 @@ namespace CSLight
 
     class Giant : Warrior
     {
-        public Giant(string name, int armor, int health, int damage, bool readyToFight) : base(name, armor, health, damage, readyToFight)
+        public Giant(string name, int armor, int health, int damage, bool readyToFight) //: base(name, armor, health, damage, readyToFight)
         {
             Name = name;
             Armor = armor;
@@ -79,20 +113,32 @@ namespace CSLight
             ReadyToFight = true;
         }
 
-        public void SuperHit(int stepOfFight)
+        public override void UniqueSkill(int stepOfFight)
         {
             int coolDown = 5;
+            Console.WriteLine("SuperHit + 30 к урону");
 
             if (stepOfFight % coolDown == 0)
             {
                 Damage += 30;
             }
         }
+
+
+        //public void SuperHit(int stepOfFight)
+        //{
+        //    int coolDown = 5;
+
+        //    if (stepOfFight % coolDown == 0)
+        //    {
+        //        Damage += 30;
+        //    }
+        //}
     }
 
     class Knight : Warrior
     {
-        public Knight(string name, int armor, int health, int damage, bool readyToFight) : base(name, armor, health, damage, readyToFight)
+        public Knight(string name, int armor, int health, int damage, bool readyToFight) //: base(name, armor, health, damage, readyToFight)
         {
             Name = name;
             Armor = armor;
@@ -101,8 +147,9 @@ namespace CSLight
             ReadyToFight = true;
         }
 
-        public void RepairTakenDamage(int damage)
+        public override void UniqueSkill(int damage)
         {
+            Console.WriteLine("RepairTakenDamage - 20% вероятность восстановления полученного урона");
             int lowerBorder = 0;
             int upperBorder = 5;
             int possibility = 1;
@@ -118,8 +165,8 @@ namespace CSLight
 
     class Wizard : Warrior
     {
-        private int _mana;
-        public Wizard(string name, int armor, int health, int damage, bool readyToFight) : base(name, armor, health, damage, readyToFight)
+        public int _mana;
+        public Wizard(string name, int armor, int health, int damage, bool readyToFight) //: base(name, armor, health, damage, readyToFight)
         {
             Name = name;
             Armor = armor;
@@ -130,23 +177,25 @@ namespace CSLight
 
         }
 
-        public void GetExtraDamage()
-        {
-            int priceOfAplly = 25;
-            int manaHit = 10;
+        //public override void SecondUniqueSkill()
+        //{
+        //    Console.WriteLine("GetExtraDamage - урон + 10");
+        //    int priceOfAplly = 25;
+        //    int manaHit = 10;
 
-            if (_mana >= priceOfAplly)
-            {
-                Damage += manaHit;
-            }
-            else
-            {
-                Console.WriteLine("Недостаточно маны");
-            }
-        }
+        //    if (_mana >= priceOfAplly)
+        //    {
+        //        Damage += manaHit;
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("Недостаточно маны");
+        //    }
+        //}
 
-        public void GetExtraHealth()
+        public override void SecondUniqueSkill()
         {
+            Console.WriteLine("GetExtraHealth - жизни + 20");
             int priceOfAplly = 25;
 
             if (_mana >= priceOfAplly)
@@ -162,7 +211,7 @@ namespace CSLight
 
     class Recruit : Warrior
     {
-        public Recruit(string name, int armor, int health, int damage, bool readyToFight) : base(name, armor, health, damage, readyToFight)
+        public Recruit(string name, int armor, int health, int damage, bool readyToFight) //: base(name, armor, health, damage, readyToFight)
         {
             Name = name;
             Armor = armor;
@@ -171,15 +220,16 @@ namespace CSLight
             ReadyToFight = true;
         }
 
-        public void GiveUp()
+        public override void SecondUniqueSkill()
         {
+            Console.WriteLine("GiveUp - боец сдался");
             ReadyToFight = false;
         }
     }
 
     class Officer : Warrior
     {
-        public Officer(string name, int armor, int health, int damage, bool readyToFight) : base(name, armor, health, damage, readyToFight)
+        public Officer(string name, int armor, int health, int damage, bool readyToFight) //: base(name, armor, health, damage, readyToFight)
         {
             Name = name;
             Armor = armor;
