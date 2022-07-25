@@ -24,17 +24,6 @@ namespace CSLight
         private Warrior[] _warriors = { new Giant("Гигант", 10, 300, 50, _readyToFight), new Knight("Рыцарь", 5, 200, 30, _readyToFight), new Wizard("Волшебник", 5, 150, 30, _readyToFight),
             new Recruit("Рекрут",3,150,25,_readyToFight), new Officer("Офицер", 7,300,50,_readyToFight) };
 
-        public void ShowAllWarriors()
-        {
-            Console.WriteLine("Вот список всех бойцов:\n");
-
-            for (int i = 0; i < _warriors.Length; i++)
-            {
-                Console.Write(i + 1 + " ");
-                _warriors[i].ShowIndicators();
-            }
-        }
-
         public void PickWarrior()
         {
             int leftWarriorIndex;
@@ -63,7 +52,18 @@ namespace CSLight
             }
         }
 
-        public void ShowFigth(int leftWarriorIndex, int rightWarriorIndex)
+        private void ShowAllWarriors()
+        {
+            Console.WriteLine("Вот список всех бойцов:\n");
+
+            for (int i = 0; i < _warriors.Length; i++)
+            {
+                Console.Write(i + 1 + " ");
+                _warriors[i].ShowIndicators();
+            }
+        }
+
+        private void ShowFigth(int leftWarriorIndex, int rightWarriorIndex)
         {
             Console.SetCursorPosition(35, 0);
             Console.WriteLine("Сначала выберете способность для левого бойца, потом для правого");
@@ -77,7 +77,7 @@ namespace CSLight
             _warriors[rightWarriorIndex - 1].ShowIndicators();
         }
 
-        public void ApplySkill(int warriorIndex, int stepOfFight)
+        private void ApplySkill(int warriorIndex, int stepOfFight)
         {
             Console.SetCursorPosition(25, 7);
             Console.WriteLine("Применить способность у бойца?");
@@ -91,10 +91,10 @@ namespace CSLight
             }
         }
 
-        public void Fight(bool isSuccessfull, int leftWarriorIndex, int rightWarriorIndex)
+        private void Fight(bool isSuccessfull, int leftWarriorIndex, int rightWarriorIndex)
         {
             int stepOfFight = 0;
-           
+
             if (isSuccessfull == true && rightWarriorIndex <= _warriors.Length && leftWarriorIndex != rightWarriorIndex)
             {
                 Console.Clear();
