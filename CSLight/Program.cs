@@ -46,23 +46,7 @@ namespace CSLight
             {
                 if (userNumber == 1)
                 {
-                    Console.WriteLine("Сколько карт вы хотите взять?");
-                    string userInput = Console.ReadLine();
-                    isSuccessfull = int.TryParse(userInput, out userNumber);
-
-                    if (isSuccessfull == true)
-                    {
-                        while (userNumber > 0)
-                        {
-                            Card giveAwayCard = _cardDeck.GiveAwayCard(userNumber);
-                            _player.TakeCard(giveAwayCard);
-                            userNumber--;
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Вы ввели не число");
-                    }
+                    TakeCards(isSuccessfull, userNumber);
                 }
                 else if (userNumber == 2)
                 {
@@ -80,18 +64,41 @@ namespace CSLight
             Console.ReadKey();
             Console.Clear();
         }
+
+        private void TakeCards(bool isSuccessfull, int userNumber)
+        {
+            Console.WriteLine("Сколько карт вы хотите взять?");
+            string userInput = Console.ReadLine();
+            isSuccessfull = int.TryParse(userInput, out userNumber);
+
+            if (isSuccessfull == true)
+            {
+                while (userNumber > 0)
+                {
+                    Card giveAwayCard = _cardDeck.GiveAwayCard(userNumber);
+                    _player.TakeCard(giveAwayCard);
+                    userNumber--;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Вы ввели не число");
+            }
+        }
     }
 
     class CardDeck
     {
         private List<Card> _cards = new List<Card>();
 
-        public void AddCard()
-        {
-            _cards.AddRange(new Card[] {new("6 пик"), new("7 пик"), new("8 пик"), new("9 пик"), new("10 пик"), new("валет пик"), new("дама пик"),new("король пик"),new("туз пик"),
+        private Card[] _playingCards = {new("6 пик"), new("7 пик"), new("8 пик"), new("9 пик"), new("10 пик"), new("валет пик"), new("дама пик"),new("король пик"),new("туз пик"),
             new("6 черва"), new("7 черва"), new("8 черва"), new("9 черва"), new("10 черва"), new("валет черва"), new("дама черва"),new("король черва"),new("туз черва"),
             new("6 трефа"), new("7 трефа"), new("8 трефа"), new("9 трефа"), new("10 трефа"), new("валет трефа"), new("дама трефа"),new("король трефа"),new("туз трефа"),
-            new("6 бубна"), new("7 бубна"), new("8 бубна"), new("9 бубна"), new("10 бубна"), new("валет бубна"), new("дама бубна"),new("король бубна"),new("туз бубна"),});
+            new("6 бубна"), new("7 бубна"), new("8 бубна"), new("9 бубна"), new("10 бубна"), new("валет бубна"), new("дама бубна"),new("король бубна"),new("туз бубна"),};
+
+        public void AddCard()
+        {
+            _cards.AddRange(_playingCards);
         }
 
         public Card GiveAwayCard(int userNumber)
