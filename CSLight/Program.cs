@@ -90,20 +90,23 @@ namespace CSLight
     class CardDeck
     {
         private List<Card> _cards = new List<Card>();
-
-        private Card[] _playingCards = {new("6 пик"), new("7 пик"), new("8 пик"), new("9 пик"), new("10 пик"), new("валет пик"), new("дама пик"),new("король пик"),new("туз пик"),
-            new("6 черва"), new("7 черва"), new("8 черва"), new("9 черва"), new("10 черва"), new("валет черва"), new("дама черва"),new("король черва"),new("туз черва"),
-            new("6 трефа"), new("7 трефа"), new("8 трефа"), new("9 трефа"), new("10 трефа"), new("валет трефа"), new("дама трефа"),new("король трефа"),new("туз трефа"),
-            new("6 бубна"), new("7 бубна"), new("8 бубна"), new("9 бубна"), new("10 бубна"), new("валет бубна"), new("дама бубна"),new("король бубна"),new("туз бубна"),};
+        private string[] _suits = { "Пик", "Черва", "Бубна", "Трефа" };
+        private int[] _values = { 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
         public void AddCard()
         {
-            _cards.AddRange(_playingCards);
+            for (int i = 0; i < _suits.Length; i++)
+            {
+                for (int j = 0; j < _values.Length; j++)
+                {
+                    _cards.Add(new Card(_suits[i], _values[j]));
+                }
+            }
         }
 
         public Card GiveAwayCard(int userNumber)
         {
-            Card giveAwayCard = new Card("Отдаваемая карта");
+            Card giveAwayCard = new Card("Отдаваемая карта", 0);
             if (userNumber <= _cards.Count)
             {
                 giveAwayCard = _cards[0];
@@ -119,7 +122,7 @@ namespace CSLight
 
         public void TakeCard(Card giveAvayCard)
         {
-            if (giveAvayCard.Title != "Отдаваемая карта")
+            if (giveAvayCard.Suit != "Отдаваемая карта")
             {
                 _takenCards.Add(giveAvayCard);
             }
@@ -131,18 +134,21 @@ namespace CSLight
 
             for (int i = 0; i < _takenCards.Count; i++)
             {
-                Console.WriteLine(_takenCards[i].Title);
+                Console.WriteLine(_takenCards[i].Value + " " + _takenCards[i].Suit);
             }
         }
     }
 
     class Card
     {
-        public string Title { get; private set; }
+        public string Suit { get; private set; }
 
-        public Card(string title)
+        public int Value { get; private set; }
+
+        public Card(string title, int value)
         {
-            Title = title;
+            Suit = title;
+            Value = value;
         }
     }
 }
