@@ -145,9 +145,9 @@ namespace CSLight
 
         public int Value { get; private set; }
 
-        public Card(string title, int value)
+        public Card(string suit, int value)
         {
-            Suit = title;
+            Suit = suit;
             Value = value;
         }
     }
