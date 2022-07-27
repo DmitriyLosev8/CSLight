@@ -11,58 +11,66 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            //Задание: Магазин:       
+            //Задание: Колода карт:       
 
-            Shop shop = new Shop();
-            shop.ShowMenu();
+            PlayingTable playingTable = new PlayingTable();
+            playingTable.ShowMenu();
         }
     }
 
-    class Shop
+    class PlayingTable
     {
-        private bool _isWorking = true;
-        private Seller _seller = new Seller();
-        private Client _client = new Client();
+        private bool _isPlaying = true;
+        private Player _player = new Player();
+        private CardDeck _cardDeck = new CardDeck();
 
         public void ShowMenu()
         {
-            _seller.AddProducts();
+            _cardDeck.AddCard();
 
-            while (_isWorking)
+            while (_isPlaying)
             {
-                int inputedNumber;
+                int userNumber;
                 Console.SetCursorPosition(45, 0);
-                Console.WriteLine("Добро пожаловать в магазин");
-                _seller.ShowProducts();
-                Console.SetCursorPosition(45, 10);
-                Console.WriteLine("Чтобы купить товар, нажмите 1");
-                Console.SetCursorPosition(45, 11);
-                Console.WriteLine("Чтобы посмотреть купленные товары, нажмите 2");
-                Console.SetCursorPosition(45, 12);
-                Console.WriteLine("Чтобы выйти, нажмите любую другую цифру");
-                string userTitle = Console.ReadLine();
-                bool isSuccessfull = int.TryParse(userTitle, out inputedNumber);
-                PickAProduct(isSuccessfull, inputedNumber);
+                Console.WriteLine("Добро пожаловать за игральный стол");
+                Console.WriteLine("Чтобы взять карты, нажмите 1\nЧтобы посмотреть взятые карты, нажмите 2\nЧтобы выйти, нажмите любую другую цифру");
+                string userInput = Console.ReadLine();
+                bool isSuccessfull = int.TryParse(userInput, out userNumber);
+                Play(isSuccessfull, userNumber);
             }
         }
 
-        private void PickAProduct(bool isSuccessfull, int inputedNumber)
+        private void Play(bool isSuccessfull, int userNumber)
         {
-            if (isSuccessfull == true)
+            if (_isPlaying == true)
             {
-                if (inputedNumber == 1)
+                if (userNumber == 1)
                 {
-                    Console.WriteLine("Введите название товара, который вы хотите купить");
-                    string userTitle = Console.ReadLine();
-                    MakeADeal(userTitle);
+                    Console.WriteLine("Сколько карт вы хотите взять?");
+                    string userInput = Console.ReadLine();
+                    isSuccessfull = int.TryParse(userInput, out userNumber);
+
+                    if (isSuccessfull == true)
+                    {
+                        while (userNumber > 0)
+                        {
+                            Card giveAwayCard = _cardDeck.GiveAwayCard(userNumber);
+                            _player.TakeCard(giveAwayCard);
+                            userNumber--;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Вы ввели не число");
+                    }
                 }
-                else if (inputedNumber == 2)
+                else if (userNumber == 2)
                 {
-                    _client.ShowProducts();
+                    _player.ShowTakenCards();
                 }
                 else
                 {
-                    _isWorking = false;
+                    _isPlaying = false;
                 }
             }
             else
@@ -72,96 +80,62 @@ namespace CSLight
             Console.ReadKey();
             Console.Clear();
         }
-
-        private void MakeADeal(string userTitle)
-        {
-            Product ProductToSale = _seller.Sale(userTitle);
-            _client.Purchase(ProductToSale);
-        }
     }
 
-    class ParticipantOFDeal
+    class CardDeck
     {
-        protected List<Product> Products = new List<Product>();
-        protected int Money = 1000;
+        private List<Card> _cards = new List<Card>();
 
-        public virtual void ShowProducts()
+        public void AddCard()
         {
-            for (int i = 0; i < Products.Count; i++)
+            _cards.AddRange(new Card[] {new("6 пик"), new("7 пик"), new("8 пик"), new("9 пик"), new("10 пик"), new("валет пик"), new("дама пик"),new("король пик"),new("туз пик"),
+            new("6 черва"), new("7 черва"), new("8 черва"), new("9 черва"), new("10 черва"), new("валет черва"), new("дама черва"),new("король черва"),new("туз черва"),
+            new("6 трефа"), new("7 трефа"), new("8 трефа"), new("9 трефа"), new("10 трефа"), new("валет трефа"), new("дама трефа"),new("король трефа"),new("туз трефа"),
+            new("6 бубна"), new("7 бубна"), new("8 бубна"), new("9 бубна"), new("10 бубна"), new("валет бубна"), new("дама бубна"),new("король бубна"),new("туз бубна"),});
+        }
+
+        public Card GiveAwayCard(int userNumber)
+        {
+            Card giveAwayCard = new Card("Отдаваемая карта");
+            if (userNumber <= _cards.Count)
             {
-                Console.Write(i + 1 + " ");
-                Console.WriteLine(Products[i].Title + " стоит - " + Products[i].Price);
+                giveAwayCard = _cards[0];
+                _cards.RemoveAt(0);
             }
+            return giveAwayCard;
         }
     }
 
-    class Client : ParticipantOFDeal
+    class Player
     {
-        public void Purchase(Product ProductToSale)
+        private List<Card> _takenCards = new List<Card>();
+
+        public void TakeCard(Card giveAvayCard)
         {
-            if (ProductToSale.Title != "Товар на продажу")
+            if (giveAvayCard.Title != "Отдаваемая карта")
             {
-                Money -= ProductToSale.Price;
-                Products.Add(new Product(ProductToSale.Title, ProductToSale.Price));
-            }
-            else
-            {
-                Console.WriteLine("Такого товара нет.");
+                _takenCards.Add(giveAvayCard);
             }
         }
 
-        public override void ShowProducts()
+        public void ShowTakenCards()
         {
-            Console.WriteLine("Денег у клиента - " + Money + "\n\n");
-            Console.WriteLine("Вот список всех купленных товаров:\n");
-            base.ShowProducts();
+            Console.WriteLine("Вот список взятых карт:");
+
+            for (int i = 0; i < _takenCards.Count; i++)
+            {
+                Console.WriteLine(_takenCards[i].Title);
+            }
         }
     }
 
-    class Seller : ParticipantOFDeal
-    {
-        public Product Sale(string userTitle)
-        {
-            Product ProductToSale = new Product("Товар на продажу", 0);
-
-            for (int i = 0; i < Products.Count; i++)
-            {
-                if (Products[i].Title == userTitle)
-                {
-                    Money += Products[i].Price;
-                    ProductToSale = Products[i];
-                    Products.RemoveAt(i);
-                }
-            }
-            return ProductToSale;
-        }
-
-        public override void ShowProducts()
-        {
-            Console.WriteLine("Денег у продавца - " + Money + "\n\n");
-            Console.WriteLine("Вот список всех товаров продавца:\n");
-            base.ShowProducts();
-        }
-
-        public void AddProducts()
-        {
-            Products.Add(new Product("Сахар", 50));
-            Products.Add(new Product("Масло", 70));
-            Products.Add(new Product("Мука", 40));
-            Products.Add(new Product("Соль", 20));
-            Products.Add(new Product("Греча", 75));
-        }
-    }
-
-    class Product
+    class Card
     {
         public string Title { get; private set; }
-        public int Price { get; private set; }
 
-        public Product(string title, int price)
+        public Card(string title)
         {
             Title = title;
-            Price = price;
         }
     }
 }
