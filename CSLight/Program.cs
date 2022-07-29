@@ -105,14 +105,14 @@ namespace CSLight
         private List<Passanger> _waitingHall = new List<Passanger>();
        
         public int CountOfPassengers { get; private set; }
-        public bool isOnStation { get; private set; } = false;
+        public bool IsOnStation { get; private set; } = false;
         public bool IsCreated { get; private set; } = false;
 
         public void SendTrain()
         {
-            if (_waitingHall.Count == 0 && isOnStation != false)
+            if (_waitingHall.Count == 0 && IsOnStation != false)
             {
-                isOnStation = false;
+                IsOnStation = false;
                 Console.WriteLine("Поезд отправлен");
                 IsCreated = false;
             }
@@ -190,7 +190,7 @@ namespace CSLight
             {
                 CountOfPassengers = _waitingHall.Count;
                 train.FillATrain(CountOfPassengers);
-                isOnStation = true;
+                IsOnStation = true;
                 _waitingHall.Clear();
             }
             else
@@ -267,11 +267,11 @@ namespace CSLight
 
     class Passanger
     {
-        private int Money = 500; // { get; private set; } ;
+        private int _money = 500; 
 
         public void BuyATicket(int ticket)
         {
-            Money -= ticket;
+            _money -= ticket;
         }
     }
 }
