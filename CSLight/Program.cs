@@ -11,31 +11,23 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            //Задание: Конфигуратор пассажирских поездов:   ДОРАБОТАТЬ
+            //Задание: Конфигуратор пассажирских поездов:   
 
             ManagerOfRailwayStation managerOfRailwayStation = new ManagerOfRailwayStation();
             managerOfRailwayStation.ShowMenu();
-
-            //Train train = new Train();
-            //train.FillATrain(90);
-            //train.ShowInfo();
-
-            //Console.WriteLine(train._fullTrain.Count);
-
-
         }
     }
 
     class ManagerOfRailwayStation
     {
         private bool isWorking = true;
-        private RailwayStation _railwayStation = new RailwayStation();
-        private Train _train = new Train();
-        private Direction _direction = new Direction("Направление",0);
+        private List<RailwayStation> _stations = new List<RailwayStation>();
+        private List<Direction> _directions = new List<Direction>();
+        private List<Train> _trains = new List<Train>();
+        private int _countOfRuns = 0;
 
         public void ShowMenu()
         {
-
             while (isWorking == true)
             {
                 int userNumber;
@@ -49,7 +41,6 @@ namespace CSLight
                 string userInput = Console.ReadLine();
                 bool isSuccessfull = int.TryParse(userInput, out userNumber);
                 PickFunction(isSuccessfull, userNumber);
-
             }
         }
 
@@ -60,18 +51,18 @@ namespace CSLight
                 switch (userNumber)
                 {
                     case 1:
-                        _direction = _railwayStation.CreateADirection();
-                        //ShowAllInfo();
+                        _countOfRuns++;
+                        _stations.Add(new RailwayStation());
+                        _directions.Add(_stations[_countOfRuns - 1].CreateADirection());
                         break;
                     case 2:
-                        _railwayStation.SellTickets(_direction);
-                        //ShowAllInfo();
+                        _stations[_countOfRuns - 1].SellTickets(_directions[0]);
                         break;
                     case 3:
-                        _train = _railwayStation.FormATrain();
+                        _trains.Add(_stations[_countOfRuns - 1].FormATrain());
                         break;
                     case 4:
-                        _railwayStation.SendTrain();
+                        _stations[_countOfRuns - 1].SendTrain();
                         break;
                     case 5:
                         isWorking = false;
@@ -87,25 +78,34 @@ namespace CSLight
             ShowAllInfo();
         }
 
-        public void ShowAllInfo()
+        private void ShowAllInfo()
         {
-            _direction.ShowInfo();
-            _railwayStation.ShowPassengers();
-            _train.ShowInfo();
+            _directions[_countOfRuns - 1].ShowInfo();
+            _stations[_countOfRuns - 1].ShowPassengers();
+
+            if (_trains.Count != _countOfRuns - 1)
+            {
+                _trains[_countOfRuns - 1].ShowInfo();
+            }
+            else
+            {
+                Console.SetCursorPosition(60, 5);
+                Console.WriteLine("Cформируйте поезд");
+            }
         }
     }
 
     class RailwayStation
     {
-        public int CountOfPassengers { get; private set; }
-        public bool isOnStation { get; private set; } = false;
-
         private int _minimalNumberOfPassengers = 10;
         private int _maximumNumberOfPassengers = 200;
         private int _minimalPriceOfTicket = 50;
         private int _maximumPriceOfTicket = 100;
         private int _money = 1000;
         private List<Passanger> _waitingHall = new List<Passanger>();
+       
+        public int CountOfPassengers { get; private set; }
+        public bool isOnStation { get; private set; } = false;
         public bool IsCreated { get; private set; } = false;
 
         public void SendTrain()
@@ -114,18 +114,13 @@ namespace CSLight
             {
                 isOnStation = false;
                 Console.WriteLine("Поезд отправлен");
+                IsCreated = false;
             }
             else
             {
-                Console.WriteLine("Создайте направление");
+                Console.WriteLine("Поезд не сформирован");
             }
         }
-
-        public void GetReadyToSendAnotherTrain()
-        {
-            isOnStation = true;
-        }
-
 
         public Direction CreateADirection()
         {
@@ -167,49 +162,47 @@ namespace CSLight
             {
                 Console.WriteLine("Создайте направление.");
             }
-            
         }
 
         public void ShowPassengers()
         {
             Console.SetCursorPosition(60, 4);
-            
+
             if (_waitingHall.Count > 0)
-            {   
-                Console.WriteLine("По этому направлению поедут " + _waitingHall.Count + " пассажиров");
+            {
+                Console.WriteLine("В зале ожидания " + _waitingHall.Count + " пассажиров");
             }
             else if (CountOfPassengers > 0)
             {
-                Console.WriteLine("По этому направлению поедут " + CountOfPassengers + " пассажиров");
+                Console.WriteLine("В поезде " + CountOfPassengers + " пассажиров");
             }
-            else
+            else if (IsCreated == true)
             {
                 Console.WriteLine("Продайте билеты");
-            }  
+            }
         }
-       
+
         public Train FormATrain()
         {
             Train train = new Train();
-            
+
             if (_waitingHall.Count > 0)
-            { 
-                CountOfPassengers = _waitingHall.Count;  
+            {
+                CountOfPassengers = _waitingHall.Count;
                 train.FillATrain(CountOfPassengers);
+                isOnStation = true;
                 _waitingHall.Clear();
             }
             else
             {
                 Console.WriteLine("Продайте сначала билеты.");
             }
-
-            return train;   
+            return train;
         }
     }
 
     class Direction
     {
-       // public bool IsCreated {get; private set;}
         public string Title { get; private set; }
         public int Ticket { get; private set; }
 
@@ -217,20 +210,12 @@ namespace CSLight
         {
             Title = title;
             Ticket = ticket;
-           // IsCreated = false;
         }
-
-        //public void Create()
-        //{
-        //    IsCreated = true;
-        //}
-
 
         public void ShowInfo()
         {
             if (Title != "Направление")
             {
-               
                 Console.SetCursorPosition(60, 3);
                 Console.WriteLine($"Направление - {Title}, стоимость билета - {Ticket}");
             }
@@ -239,23 +224,19 @@ namespace CSLight
                 Console.SetCursorPosition(60, 3);
                 Console.WriteLine("Создайте направление");
             }
-            
         }
-        
     }
 
     class Train
     {
         private static int _roominessOfCarriages = 20;
-
-        public List<Passanger> _fullTrain = new List<Passanger>();
+        private List<Passanger> _fullTrain = new List<Passanger>();
         private List<Passanger> _сarriages = new List<Passanger>(_roominessOfCarriages);
-        
-        public int CountOfCarriages { get; private set; } = 0; 
+
+        public int CountOfCarriages { get; private set; } = 0;
 
         public void FillATrain(int countOfPassengers)
         {
-            Console.WriteLine("Hi");
             while (countOfPassengers > 0)
             {
                 CountOfCarriages++;
@@ -265,29 +246,14 @@ namespace CSLight
                     _сarriages.Add(new Passanger());
                 }
                 countOfPassengers -= _сarriages.Count;
-
                 _fullTrain.AddRange(_сarriages);
             }
-            //ShowInfo();
         }
-
-        //private void CreateCarriage(int countOfPassengers)
-        //{
-        //    //List<Passanger> _сarriages = new List<Passanger>(_roominessOfCarriages);
-        //    while (countOfPassengers > 0 && _сarriages.Count < _сarriages.Capacity)
-        //    {
-        //        _сarriages.Add(new Passanger());
-        //        // countOfPassengers--;
-        //    }
-        //    countOfPassengers -= _сarriages.Count;
-        //    // return _сarriages;
-        //}
 
         public void ShowInfo()
         {
-            //CountOfCarriages = _fullTrain.Count % _roominessOfCarriages;
             Console.SetCursorPosition(60, 5);
-            
+
             if (_fullTrain.Count > 0)
             {
                 Console.WriteLine($"Поезд состоит из {CountOfCarriages} вагонов");
@@ -295,39 +261,19 @@ namespace CSLight
             else
             {
                 Console.WriteLine("Cформируйте поезд");
-            }      
+            }
         }
     }
 
-    //class Carriage
-    //{
-    //    public static int Roominess { get; private set; } = 20;
-    //    private List<Passanger> _passangers = new List<Passanger>(Roominess);
-
-    //public void AddPassangers(int countOfPassengers)
-    //{
-    //    while (countOfPassengers > 0)
-    //    {
-    //        _passangers.Add(new Passanger());
-    //        //countOfPassengers--;
-    //    }
-    //}
-
-
-
-    //}
-
     class Passanger
     {
-        public int Money { get; private set; } = 500;
+        private int Money = 500; // { get; private set; } ;
 
         public void BuyATicket(int ticket)
         {
             Money -= ticket;
         }
     }
-
-
 }
 
 
