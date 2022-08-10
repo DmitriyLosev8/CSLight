@@ -11,138 +11,132 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            //Задание: зоопарк:   
+            //Задание: автосервис:   
 
-            Zoo zoo = new Zoo();
-            zoo.ShowMenu();
+            Client client = new Client();
+            Console.WriteLine(client._car.IdOfDefect);
+
         }
     }
 
-    class Zoo
+    class CarService
     {
-        private Dogs _dogs = new Dogs("В этом вольере живут собаки", 20, "Мужской", "Гав", "Собаки");
-        private Ducks _ducks = new Ducks("В этом вольере живут утки", 30, "Женский", "Кря", "Утки");
-        private Goats _goats = new Goats("В этом вольере живут козлы", 15, "Мужской", "Бее", "Козлы");
-        private Rabbits _rabbits = new Rabbits("В этом вольере живут кролики", 50, "Женский", "Фырк", "Кролики");
-        private bool _isWorking = true;
+        private int _money;
+        private int _priceOfWork;
+        private string _service;
+        private int _idOfService;
+        private List<Detail> _storage = new List<Detail>();
+        private Queue<Client> _clients = new Queue<Client>();
 
-        public void ShowMenu()
+        public void AddDetail()
         {
-            while (_isWorking == true)
+            int necessaryCount = 10;
+
+            for (int i = 0; i < necessaryCount; i++)
             {
-                string userInput;
-                bool isSuccessfull;
-                int userNumber;
-                Console.WriteLine($"Добро пожаловать в зоопарк\nЧтобы подойти к вольеру {_dogs.Name}, нажмите 1\nЧтобы подойти к вольеру {_ducks.Name}, нажмите 2\n" +
-                    $"Чтобы подойти к вольеру {_goats.Name}, нажмите 3\nЧтобы подойти к вольеру {_rabbits.Name}, нажмите 4\nЧтобы выйти, нажмите 5");
-                userInput = Console.ReadLine();
-                isSuccessfull = int.TryParse(userInput, out userNumber);
-                PickAnAviary(isSuccessfull, userNumber);
+                _storage.Add(new Detail());        
             }
         }
 
-        private void PickAnAviary(bool isSuccessfull, int userNumber)
+        public void AddClients()
         {
-            if (isSuccessfull == true)
+            int countOfClients = 5;
+
+            for (var i = 0; i < countOfClients; i++)
             {
-                switch (userNumber)
-                {
-                    case 1:
-                        _dogs.ShowInfo();
-                        break;
-                    case 2:
-                        _ducks.ShowInfo();
-                        break;
-                    case 3:
-                        _goats.ShowInfo();
-                        break;
-                    case 4:
-                        _rabbits.ShowInfo();
-                        break;
-                    case 5:
-                        _isWorking = false;
-                        break;
-                }
+                _clients.Enqueue(new Client());
             }
-            else
+        }
+
+        public void StartToWork()
+        {
+            AddDetail();
+            AddClients();
+
+
+        }
+
+        public void Repair()
+        {
+
+        }
+    }
+
+    class Client 
+    {
+        private int _money = 5000;
+
+        public Car _car { get; private set; } = new Car();
+        
+        public void GetMoney(int financialDamage)
+        {
+            _money += financialDamage;
+        }
+        
+        public void GiveAwayMoney(int priceOfDetail, int priceOfWork)
+        {
+            _money -= priceOfDetail + priceOfWork;
+        }
+    }
+
+
+
+    class Car
+    {
+        public string Defect { get; private set; }
+        public int IdOfDefect { get; private set; }
+
+        public Car()
+        {
+            int minimalIdOfDefect = 1;
+            int maximalIdOfDefect = 4;
+            Random random = new Random();
+            IdOfDefect = random.Next(minimalIdOfDefect, maximalIdOfDefect);
+
+            switch (IdOfDefect)
             {
-                Console.WriteLine("Вы ввели не число");
+                case 1:
+                    Defect = "Прокол шины";
+                    break;
+                case 2:
+                    Defect = "Закончилось масло";
+                    break;
+                case 3:
+                    Defect = "Разбилось левое зеркало";
+                    break;
             }
-            Console.ReadKey();
-            Console.Clear();
         }
     }
 
-    abstract class Aviary
+    class Detail
     {
-        protected string Description;
-        protected int CountOfAmimals;
-        protected string GenderOfAmimals;
-        protected string SoundOfAmimals;
+        public string Name { get; private set; }
+        public int Id { get; private set; }
+        public int Price { get; private set; }
 
-        public string Name { get; protected set; }
-
-        public Aviary(string description, int countOfAmimals, string genderOfAmimals, string soundOfAmimals, string name)
+        public Detail()
         {
-            Description = description;
-            CountOfAmimals = countOfAmimals;
-            GenderOfAmimals = genderOfAmimals;
-            SoundOfAmimals = soundOfAmimals;
-            Name = name;
-        }
+            int minimalId = 1;
+            int maximalId = 4;
 
-        public void ShowInfo()
-        {
-            Console.WriteLine("Вот вся информация по этому вольеру:");
-            Console.WriteLine($"{Description} в колличестве {CountOfAmimals} штук, у всех {GenderOfAmimals} пол, а их издаваемый звук - {SoundOfAmimals}");
-        }
-    }
+            Random random = new Random();
+            Id = random.Next(minimalId, maximalId);
 
-    class Dogs : Aviary
-    {
-        public Dogs(string description, int countOfAmimals, string genderOfAmimals, string soundOfAmimals, string name) : base(description, countOfAmimals, genderOfAmimals, soundOfAmimals, name)
-        {
-            Description = description;
-            CountOfAmimals = countOfAmimals;
-            GenderOfAmimals = genderOfAmimals;
-            SoundOfAmimals = soundOfAmimals;
-            Name = name;
-        }
-    }
-
-    class Ducks : Aviary
-    {
-        public Ducks(string description, int countOfAmimals, string genderOfAmimals, string soundOfAmimals, string name) : base(description, countOfAmimals, genderOfAmimals, soundOfAmimals, name)
-        {
-            Description = description;
-            CountOfAmimals = countOfAmimals;
-            GenderOfAmimals = genderOfAmimals;
-            SoundOfAmimals = soundOfAmimals;
-            Name = name;
-        }
-    }
-
-    class Goats : Aviary
-    {
-        public Goats(string description, int countOfAmimals, string genderOfAmimals, string soundOfAmimals, string name) : base(description, countOfAmimals, genderOfAmimals, soundOfAmimals, name)
-        {
-            Description = description;
-            CountOfAmimals = countOfAmimals;
-            GenderOfAmimals = genderOfAmimals;
-            SoundOfAmimals = soundOfAmimals;
-            Name = name;
-        }
-    }
-
-    class Rabbits : Aviary
-    {
-        public Rabbits(string description, int countOfAmimals, string genderOfAmimals, string soundOfAmimals, string name) : base(description, countOfAmimals, genderOfAmimals, soundOfAmimals, name)
-        {
-            Description = description;
-            CountOfAmimals = countOfAmimals;
-            GenderOfAmimals = genderOfAmimals;
-            SoundOfAmimals = soundOfAmimals;
-            Name = name;
+            switch (Id)
+            {
+                case 1:
+                    Name = "Шина";
+                    Price = 300;
+                    break;
+                case 2:
+                    Name = "Масло";
+                    Price = 150;
+                    break;
+                case 3:
+                    Name = "Зеркало";
+                    Price = 500;
+                    break;
+            }
         }
     }
 }
