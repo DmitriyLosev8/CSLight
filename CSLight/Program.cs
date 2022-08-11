@@ -25,10 +25,10 @@ namespace CSLight
         private int _priceOfWork;
         private int _fine = 150;
         private List<Detail> _storage = new List<Detail>();
-        public List<Client> _clients = new List<Client>();
+        private List<Client> _clients = new List<Client>();
         private bool _isWorking = true;
 
-        public int _accuracyOfWork { get; private set; } = 0;
+        public int AccuracyOfWork { get; private set; } = 0;
 
         public void StartToWork()
         {
@@ -52,7 +52,7 @@ namespace CSLight
 
         private void FormPrices(Client client)
         {
-            switch (client._car.IdOfDefect)
+            switch (client.Сar.IdOfDefect)
             {
                 case 1:
                     _priceOfWork = 150;
@@ -64,12 +64,12 @@ namespace CSLight
                     _priceOfWork = 250;
                     break;
             }
-            _priceOfService = _priceOfWork + (_priceOfWork * 2);
+            _priceOfService = _priceOfWork + (_priceOfWork + _priceOfWork);
         }
 
         private void ShowAllInfo(Client client, int priceOfService)
         {
-            Console.WriteLine($"Денег в автосервисе - {_money}\nПоломка у текущего автомобиля - {client._car.Defect}\n" +
+            Console.WriteLine($"Денег в автосервисе - {_money}\nПоломка у текущего автомобиля - {client.Сar.Defect}\n" +
                 $"Итоговая цена починки состоит из цены за деталь + цены за работу(в два раза меньше цены за деталь) - {priceOfService}");
             Console.SetCursorPosition(0, 18);
             Console.WriteLine("Склад автосервиса:");
@@ -108,14 +108,14 @@ namespace CSLight
                 {
                     for (int i = 0; i < _storage.Count; i++)
                     {
-                        if (_storage[i].Id == userNumber && client._car.IdOfDefect == userNumber)
+                        if (_storage[i].Id == userNumber && client.Сar.IdOfDefect == userNumber)
                         {
                             firstFoundDetail++;
 
                             if (firstFoundDetail == 1)
                             {
                                 indexOfDetail = i;
-                                _accuracyOfWork = 1;
+                                AccuracyOfWork = 1;
                                 Repair(client, indexOfDetail);
                             }
                         }
@@ -137,12 +137,13 @@ namespace CSLight
                             }
                             else if (userNumber == 2)
                             {
+                                int multiplierOfFinancialDamage = 5;
                                 indexOfDetail = 0;
                                 Console.WriteLine("Вы установили ему неподходящую деталь. Надейтесь, что клиент не заметит");
-                                _accuracyOfWork = 2;
+                                AccuracyOfWork = 2;
                                 Repair(client, indexOfDetail);
-                                int financialDamage = _priceOfService * 5;
-                                bool isNoticed = client.CheckRepairedCar(_accuracyOfWork, financialDamage);
+                                int financialDamage = _priceOfService * multiplierOfFinancialDamage;
+                                bool isNoticed = client.CheckRepairedCar(AccuracyOfWork, financialDamage);
                                 GiveAwayMoney(financialDamage, isNoticed);
                             }
                         }
@@ -204,7 +205,7 @@ namespace CSLight
     {
         private int _money = 5000;
 
-        public Car _car { get; private set; } = new Car();
+        public Car Сar { get; private set; } = new Car();
 
         public void GetMoney(int financialDamage)
         {
