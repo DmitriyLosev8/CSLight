@@ -12,28 +12,80 @@ namespace CSLight
         static void Main(string[] args)
         {
             //Задание: автосервис:        
-           
+
             CarService carService = new CarService();
             carService.StartToWork();
         }
     }
 
+    class Storage
+    {
+        private List<Detail> _details = new List<Detail>();
+       
+        public int IndexOfDetail { get; private set; }
+
+        public Storage()
+        {
+            int necessaryCount = 10;
+
+            for (int i = 0; i < necessaryCount; i++)
+            {
+                _details.Add(new Detail());
+                System.Threading.Thread.Sleep(150);
+            }
+        }
+
+        public bool FindDetail(int clientsIdOfDetail)
+        {
+            bool isFound = false;
+
+            for (int i = 0; i < _details.Count; i++)
+            {
+                if (_details[i].Id == clientsIdOfDetail)
+                {
+                    isFound = true;
+                    IndexOfDetail = i;
+                }
+            }
+            return isFound;
+        }
+
+        public Detail GiveDetail(int indexOfDetail)
+        {
+            Detail tranferredDetail = _details[indexOfDetail];
+            _details.RemoveAt(indexOfDetail);
+            return tranferredDetail;
+        }
+
+        public void ShowInfo()
+        {
+            Console.SetCursorPosition(0, 16);
+            Console.WriteLine("Детали на скалде:");
+
+            for (int i = 0; i < _details.Count; i++)
+            {
+                Console.WriteLine(_details[i].Id + " - " + _details[i].Name);
+            }
+            Console.SetCursorPosition(0, 5);
+        }
+    }
+
     class CarService
     {
+        private Storage _storage = new Storage();
         private int _money = 20000;
         private int _priceOfService;
         private int _priceOfWork;
         private int _fine = 150;
-        private List<Detail> _storage = new List<Detail>();
         private List<Client> _clients = new List<Client>();
         private bool _isWorking = true;
+        private Detail _detailForRepair;
 
         public int AccuracyOfWork { get; private set; } = 0;
 
         public void StartToWork()
         {
-            AddDetail();
-            AddClients();
+            AttractClients();
 
             while (_isWorking == true)
             {
@@ -52,6 +104,8 @@ namespace CSLight
 
         private void FormPrices(Client client)
         {
+            int multiplierOfPrice = 3;
+
             switch (client.Сar.IdOfDefect)
             {
                 case 1:
@@ -64,108 +118,76 @@ namespace CSLight
                     _priceOfWork = 250;
                     break;
             }
-            _priceOfService = _priceOfWork + (_priceOfWork + _priceOfWork);
+            _priceOfService = _priceOfWork * multiplierOfPrice;
         }
 
         private void ShowAllInfo(Client client, int priceOfService)
         {
             Console.WriteLine($"Денег в автосервисе - {_money}\nПоломка у текущего автомобиля - {client.Сar.Defect}\n" +
                 $"Итоговая цена починки состоит из цены за деталь + цены за работу(в два раза меньше цены за деталь) - {priceOfService}");
-            Console.SetCursorPosition(0, 18);
-            Console.WriteLine("Склад автосервиса:");
-
-            for (int i = 0; i < _storage.Count; i++)
-            {
-                Console.WriteLine(_storage[i].Id + " - " + _storage[i].Name);
-            }
-            Console.SetCursorPosition(0, 7);
+            _storage.ShowInfo();
         }
 
         private void PrepareToRepair(Client client)
         {
             string userInput;
-            bool isSuccessfull;
-            int userNumber;
-
-            Console.WriteLine("Введите id детали, которую надо заменить, чтобы найти её на складе произвести ремонт\nЧтобы выйти, нажмите 9");
+            Console.WriteLine("\n\nНажмите enter чтобы найти деталь на складе и произвести ремонт\nЧтобы выйти, нажмите 'в'");
             userInput = Console.ReadLine();
-            isSuccessfull = int.TryParse(userInput, out userNumber);
-            FindADetail(client, isSuccessfull, userNumber);
+
+            if (userInput == "в")
+            {
+                _isWorking = false;
+            }
+            Console.ReadKey();
+            TakeDetail(client);
         }
 
-        private void FindADetail(Client client, bool isSuccessfull, int userNumber)
+        private void TakeDetail(Client client)
         {
-            if (isSuccessfull == true)
-            {
-                int indexOfDetail;
-                int firstFoundDetail = 0;
+            bool isFound = _storage.FindDetail(client.Сar.IdOfDefect);
 
-                if (userNumber == 9)
+            if (isFound == true)
+            {
+                _detailForRepair = _storage.GiveDetail(_storage.IndexOfDetail);
+                AccuracyOfWork = 1;
+                Repair(client, _detailForRepair);
+            }
+            else
+            {
+                Console.WriteLine("Такой детали нет на складе.\nОтказать клиенту и заплатить штраф (нажмите любую клавишу)\n" +
+                    "Установить ему первую неподходящую деталь и попытать счастья (введите слово 'рискнуть')");
+
+                string userInput = Console.ReadLine();
+
+                if (userInput == "рискнуть")
                 {
-                    _isWorking = false;
+                    int multiplierOfFinancialDamage = 5;
+                    int indexOfDetail = 0;
+                    _detailForRepair = _storage.GiveDetail(indexOfDetail);
+                    Console.WriteLine("Вы установили ему неподходящую деталь. Надейтесь, что клиент не заметит");
+                    AccuracyOfWork = 2;
+                    Repair(client, _detailForRepair);
+                    int financialDamage = _priceOfService * multiplierOfFinancialDamage;
+                    bool isNoticed = client.CheckRepairedCar(AccuracyOfWork, financialDamage);
+                    Pay(financialDamage, isNoticed);
                 }
                 else
                 {
-                    for (int i = 0; i < _storage.Count; i++)
-                    {
-                        if (_storage[i].Id == userNumber && client.Сar.IdOfDefect == userNumber)
-                        {
-                            firstFoundDetail++;
-
-                            if (firstFoundDetail == 1)
-                            {
-                                indexOfDetail = i;
-                                AccuracyOfWork = 1;
-                                Repair(client, indexOfDetail);
-                            }
-                        }
-                    }
-
-                    if (firstFoundDetail == 0)
-                    {
-                        Console.WriteLine("Такой детали нет на складе. Или вы ввели не тот id.\nОтказать клиенту и заплатить штраф (нажмите 1)\n" +
-                            "Установить ему первую неподходящую деталь (нажмите 2)");
-                        string userInput = Console.ReadLine();
-                        isSuccessfull = int.TryParse(userInput, out userNumber);
-
-                        if (isSuccessfull == true)
-                        {
-                            if (userNumber == 1)
-                            {
-                                Console.WriteLine("Вы заплатили штраф");
-                                GiveAwayMoney(_fine, true);
-                            }
-                            else if (userNumber == 2)
-                            {
-                                int multiplierOfFinancialDamage = 5;
-                                indexOfDetail = 0;
-                                Console.WriteLine("Вы установили ему неподходящую деталь. Надейтесь, что клиент не заметит");
-                                AccuracyOfWork = 2;
-                                Repair(client, indexOfDetail);
-                                int financialDamage = _priceOfService * multiplierOfFinancialDamage;
-                                bool isNoticed = client.CheckRepairedCar(AccuracyOfWork, financialDamage);
-                                GiveAwayMoney(financialDamage, isNoticed);
-                            }
-                        }
-                    }
+                    Console.WriteLine("Вы заплатили штраф");
+                    Pay(_fine, true);
                 }
-            }
-            else if (isSuccessfull == false)
-            {
-                Console.WriteLine("Вы ввели не число");
             }
             Console.ReadKey();
             Console.Clear();
         }
 
-        private void Repair(Client client, int indexOfDetail)
+        private void Repair(Client client, Detail detailForRepair)
         {
-            client.GiveAwayMoney(_priceOfService);
-            GetMoney(_priceOfService);
-            _storage.RemoveAt(indexOfDetail);
+            client.Pay(_priceOfService);
+            AcceptMoney(_priceOfService);
         }
 
-        private void GiveAwayMoney(int fine, bool isNoticed)
+        private void Pay(int fine, bool isNoticed)
         {
             if (_isWorking == true)
             {
@@ -173,23 +195,12 @@ namespace CSLight
             }
         }
 
-        private void GetMoney(int priceOfService)
+        private void AcceptMoney(int priceOfService)
         {
             _money += priceOfService;
         }
 
-        private void AddDetail()
-        {
-            int necessaryCount = 10;
-
-            for (int i = 0; i < necessaryCount; i++)
-            {
-                _storage.Add(new Detail());
-                System.Threading.Thread.Sleep(150);
-            }
-        }
-
-        private void AddClients()
+        private void AttractClients()
         {
             int countOfClients = 5;
 
@@ -207,12 +218,12 @@ namespace CSLight
 
         public Car Сar { get; private set; } = new Car();
 
-        public void GetMoney(int financialDamage)
+        public void AcceptMoney(int financialDamage)
         {
             _money += financialDamage;
         }
 
-        public void GiveAwayMoney(int priceOfService)
+        public void Pay(int priceOfService)
         {
             _money -= priceOfService;
         }
@@ -235,7 +246,7 @@ namespace CSLight
                 if (accuracyOfWork == 2)
                 {
                     Console.WriteLine("Клиент заметил, что вы поставили ему не ту деталь. У вас спишется 5 стоимостей услуги из-за ущерба клиенту");
-                    GetMoney(financialDamage);
+                    AcceptMoney(financialDamage);
                     isNoticed = true;
                 }
             }
