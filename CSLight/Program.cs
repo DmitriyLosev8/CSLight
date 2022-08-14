@@ -24,16 +24,16 @@ namespace CSLight
         private bool _isWorking = true;
 
         public void Work()
-        {  
+        {
             string userInput;
             string comandToAddFishes = "1";
             string comandToTakeOutFish = "2";
             string comandToExit = "3";
 
             while (_isWorking == true)
-            {      
+            {
                 ShowAllInfo();
-                Console.WriteLine("Перед вами аквариум\n\nНажмите 1, чтобы добавить рыб\nНажмите 2, чтобы вытащить рыбу\nНажмите 3 , чтобы выйти");
+                Console.WriteLine($"Перед вами аквариум\n\nНажмите {comandToAddFishes}, чтобы добавить рыб\nНажмите {comandToTakeOutFish}, чтобы вытащить рыбу\nНажмите {comandToExit} , чтобы выйти");
                 userInput = Console.ReadLine();
 
                 if (userInput == comandToAddFishes)
@@ -49,7 +49,7 @@ namespace CSLight
                     _isWorking = false;
                 }
                 GrowOldOfFishes();
-                DieFishes();
+                DeleteDeadFishes();
                 Console.ReadKey();
                 Console.Clear();
             }
@@ -63,7 +63,7 @@ namespace CSLight
             }
         }
 
-        private void DieFishes()
+        private void DeleteDeadFishes()
         {
             for (int i = 0; i < _fishes.Count; i++)
             {
@@ -78,11 +78,10 @@ namespace CSLight
         private void ShowAllInfo()
         {
             Console.SetCursorPosition(0, 10);
-            int correctNumber = 1;
-            
+
             for (int i = 0; i < _fishes.Count; i++)
             {
-                Console.Write((i + correctNumber) + " - ");
+                Console.Write((i + 1) + " - ");
                 _fishes[i].ShowInfo();
             }
             Console.SetCursorPosition(0, 0);
@@ -100,7 +99,7 @@ namespace CSLight
 
             if (isSuccessfull == true)
             {
-                if (countOfFishes <= emptyPlases) 
+                if (countOfFishes <= emptyPlases)
                 {
                     for (int i = 0; i < countOfFishes; i++)
                     {
@@ -122,17 +121,33 @@ namespace CSLight
 
         private void TakeOutFish()
         {
-            int correctNumber = 1;
             bool isSuccessfull;
             string userInput;
             int userNumber;
+            bool isFound = false;
             Console.WriteLine("Введите номер рыбы, которую вы хотите забрать:");
             userInput = Console.ReadLine();
             isSuccessfull = int.TryParse(userInput, out userNumber);
 
             if (isSuccessfull == true)
             {
-                _fishes.RemoveAt(userNumber - correctNumber);
+                for (int i = 0; i < _fishes.Count; i++)
+                {
+                    if (i == userNumber - 1)
+                    {
+                        isFound = true;
+                        _fishes.RemoveAt(userNumber - 1);
+                    }
+                    else
+                    {
+                        isFound = false;
+                    }
+                }
+
+                if (isFound == false)
+                {
+                    Console.WriteLine("Рыбы под таким номером нет");
+                }
             }
             else
             {
