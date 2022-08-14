@@ -124,27 +124,17 @@ namespace CSLight
             bool isSuccessfull;
             string userInput;
             int userNumber;
-            bool isFound = false;
             Console.WriteLine("Введите номер рыбы, которую вы хотите забрать:");
             userInput = Console.ReadLine();
             isSuccessfull = int.TryParse(userInput, out userNumber);
 
             if (isSuccessfull == true)
-            {
-                for (int i = 0; i < _fishes.Count; i++)
+            {    
+                if(userNumber <= _fishes.Count && userNumber > 0)
                 {
-                    if (i == userNumber - 1)
-                    {
-                        isFound = true;
-                        _fishes.RemoveAt(userNumber - 1);
-                    }
-                    else
-                    {
-                        isFound = false;
-                    }
+                    _fishes.RemoveAt(userNumber - 1);
                 }
-
-                if (isFound == false)
+                else
                 {
                     Console.WriteLine("Рыбы под таким номером нет");
                 }
