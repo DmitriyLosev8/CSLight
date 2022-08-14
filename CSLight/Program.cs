@@ -13,51 +13,43 @@ namespace CSLight
         {
             //Задание: аквариум:        
             Aquarium aquarium = new Aquarium();
-            aquarium.Observe();
+            aquarium.Work();
         }
     }
 
     class Aquarium
     {
-        static private int _maximumCounfOfFishes = 20;
-        private List<Fish> _fishes = new List<Fish>(_maximumCounfOfFishes);
-        private string[] _names = { "Егор", "Маша", "Киря", "Стёпа", "Саша", "Боря", "Жана", "Лена", "Женя", "Толя", "Настя", "Олег" };
-        private string _nameForFish;
+        private int _maximumCounfOfFishes = 20;
+        private List<Fish> _fishes = new List<Fish>();
         private bool _isWorking = true;
-        private int _countOfFishes;
-        private int _correctNumber = 1;
-        private int _emptyPlases = 20;
 
-        public void Observe()
-        {
-            bool isSuccessfull;
+        public void Work()
+        {  
             string userInput;
-            int userNumber;
+            string comandToAddFishes = "1";
+            string comandToTakeOutFish = "2";
+            string comandToExit = "3";
 
             while (_isWorking == true)
-            {
+            {      
                 ShowAllInfo();
-                Console.WriteLine("Перед вами аквариум\n\nНажмите 1, чтобы добавить рыб\nНажмите 2, чтобы вытащить рыбу\nНажмите любую другую цифру, чтобы выйти");
+                Console.WriteLine("Перед вами аквариум\n\nНажмите 1, чтобы добавить рыб\nНажмите 2, чтобы вытащить рыбу\nНажмите 3 , чтобы выйти");
                 userInput = Console.ReadLine();
-                isSuccessfull = int.TryParse(userInput, out userNumber);
 
-                if (isSuccessfull == true)
+                if (userInput == comandToAddFishes)
                 {
-                    if (userNumber == 1)
-                    {
-                        AddFishes();
-                    }
-                    else if (userNumber == 2)
-                    {
-                        TakeFish();
-                    }
-                    else
-                    {
-                        _isWorking = false;
-                    }
+                    AddFishes();
+                }
+                else if (userInput == comandToTakeOutFish)
+                {
+                    TakeOutFish();
+                }
+                else if (userInput == comandToExit)
+                {
+                    _isWorking = false;
                 }
                 GrowOldOfFishes();
-                DieingFishes();
+                DieFishes();
                 Console.ReadKey();
                 Console.Clear();
             }
@@ -68,31 +60,29 @@ namespace CSLight
             for (int i = 0; i < _fishes.Count; i++)
             {
                 _fishes[i].GrowOld();
-                _fishes[i].Die();
             }
         }
 
-        private void DieingFishes()
+        private void DieFishes()
         {
             for (int i = 0; i < _fishes.Count; i++)
             {
                 if (_fishes[i].IsAlive == false)
                 {
                     _fishes.RemoveAt(i);
-                    _emptyPlases++;
+                    i--;
                 }
             }
         }
-       
+
         private void ShowAllInfo()
         {
-            Console.SetCursorPosition(65, 0);
-            Console.WriteLine("Колличество свободных мест в аквариуме - " + _emptyPlases);
             Console.SetCursorPosition(0, 10);
-
+            int correctNumber = 1;
+            
             for (int i = 0; i < _fishes.Count; i++)
             {
-                Console.Write((i + _correctNumber) + " - ");
+                Console.Write((i + correctNumber) + " - ");
                 _fishes[i].ShowInfo();
             }
             Console.SetCursorPosition(0, 0);
@@ -100,21 +90,22 @@ namespace CSLight
 
         private void AddFishes()
         {
+            int emptyPlases = _maximumCounfOfFishes - _fishes.Count;
+            int countOfFishes;
             bool isSuccessfull;
             string userInput;
             Console.WriteLine("Сколько рыб вы хотите добавить?");
             userInput = Console.ReadLine();
-            isSuccessfull = int.TryParse(userInput, out _countOfFishes);
+            isSuccessfull = int.TryParse(userInput, out countOfFishes);
 
             if (isSuccessfull == true)
             {
-                if (_countOfFishes <= _maximumCounfOfFishes && _countOfFishes <= _emptyPlases)
+                if (countOfFishes <= emptyPlases) 
                 {
-                    for (int i = 0; i < _countOfFishes; i++)
+                    for (int i = 0; i < countOfFishes; i++)
                     {
-                        GiveName();
-                        _fishes.Add(new Fish(_nameForFish));
-                        _emptyPlases = _maximumCounfOfFishes - _fishes.Count;
+                        string nameForFish = GiveName();
+                        _fishes.Add(new Fish(nameForFish));
                         System.Threading.Thread.Sleep(150);
                     }
                 }
@@ -129,8 +120,9 @@ namespace CSLight
             }
         }
 
-        private void TakeFish()
+        private void TakeOutFish()
         {
+            int correctNumber = 1;
             bool isSuccessfull;
             string userInput;
             int userNumber;
@@ -140,8 +132,7 @@ namespace CSLight
 
             if (isSuccessfull == true)
             {
-                _fishes.RemoveAt(userNumber - _correctNumber);
-                _emptyPlases++;
+                _fishes.RemoveAt(userNumber - correctNumber);
             }
             else
             {
@@ -149,15 +140,18 @@ namespace CSLight
             }
         }
 
-        private void GiveName()
+        private string GiveName()
         {
+            string[] names = { "Егор", "Маша", "Киря", "Стёпа", "Саша", "Боря", "Жана", "Лена", "Женя", "Толя", "Настя", "Олег" };
+            string nameForFish = "";
             Random random = new Random();
             int indexOfName;
-            for (int i = 0; i < _names.Length; i++)
+            for (int i = 0; i < names.Length; i++)
             {
-                indexOfName = random.Next(_names.Length);
-                _nameForFish = _names[indexOfName];
+                indexOfName = random.Next(names.Length);
+                nameForFish = names[indexOfName];
             }
+            return nameForFish;
         }
     }
 
@@ -184,6 +178,11 @@ namespace CSLight
         public void GrowOld()
         {
             _years++;
+
+            if (_years == _maximumAge)
+            {
+                Die();
+            }
         }
 
         public void ShowInfo()
@@ -193,10 +192,7 @@ namespace CSLight
 
         public void Die()
         {
-            if (_years == _maximumAge)
-            {
-                IsAlive = false;
-            }
+            IsAlive = false;
         }
     }
 }
