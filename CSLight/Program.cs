@@ -11,195 +11,218 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            //Задание: аквариум:        
-            Aquarium aquarium = new Aquarium();
-            aquarium.Work();
+            //Задание: Супермаркет:    
+
+            Supermarket supermarket = new Supermarket();
+            supermarket.Work();
         }
     }
 
-    class Aquarium
+    class Supermarket
     {
-        private int _maximumCounfOfFishes = 20;
-        private List<Fish> _fishes = new List<Fish>();
-        private bool _isWorking = true;
+        private int _countOfCliensPerDay = 15;
+        private int _countOfProductsPerDay = 500;
+        private int _money = 5000;
+        private int _purchaseAmount = 0;
+        private List<Product> _shelves = new List<Product>();
+        private List<Client> _clients = new List<Client>();
 
         public void Work()
         {
-            string userInput;
-            string comandToAddFishes = "1";
-            string comandToTakeOutFish = "2";
-            string comandToExit = "3";
+            AddProducts();
+            AddClients();
+            TakeOfProducts();
+            int numberOfClient = 1;
 
-            while (_isWorking == true)
+            for (int i = 0; i < _clients.Count; i++)
             {
-                ShowAllInfo();
-                Console.WriteLine($"Перед вами аквариум\n\nНажмите {comandToAddFishes}, чтобы добавить рыб\nНажмите {comandToTakeOutFish}, чтобы вытащить рыбу\nНажмите {comandToExit} , чтобы выйти");
-                userInput = Console.ReadLine();
+                ShowInfo(numberOfClient);
+                _clients[i].TakePurchaseAmount();
+                _clients[i].ShowInfo();
+                CalculatePurchase(_clients[i]);
+                _clients[i].ChekCountOfMoney(_purchaseAmount);
 
-                if (userInput == comandToAddFishes)
+                if (_clients[i].IsEnoughMoney == true)
                 {
-                    AddFishes();
+                    _clients[i].BuyProdutcs(_purchaseAmount);
+                    SellProducts();
+                    Console.WriteLine("Покупка пройдёт успешно");
+                    _purchaseAmount = 0;
                 }
-                else if (userInput == comandToTakeOutFish)
+                else
                 {
-                    TakeOutFish();
+                    int countOfProduct = 0;
+                    Console.WriteLine("Денег не достаточно. Нажмите Enter, чтобы удалить случайный товар(ы) из корзины пока денег не будет достаточно.");
+                    Console.ReadKey();
+
+                    while (_clients[i].IsEnoughMoney == false)
+                    {
+                        countOfProduct++;
+                        _purchaseAmount = 0;
+                        _clients[i].DeleteProduct();
+                        ReturnProduct(_clients[i]);
+                        CalculatePurchase(_clients[i]);
+                        _clients[i].ChekCountOfMoney(_purchaseAmount);
+                    }
+                    _clients[i].BuyProdutcs(_purchaseAmount);
+                    SellProducts();
+                    Console.WriteLine("Покупка пройдёт успешно, но пришлось вытащить из корзины " + countOfProduct + " продуктов.");
+                    _purchaseAmount = 0;
                 }
-                else if (userInput == comandToExit)
-                {
-                    _isWorking = false;
-                }
-                GrowOldOfFishes();
-                DeleteDeadFishes();
+                _clients.RemoveAt(i);
+                i--;
+                numberOfClient++;
                 Console.ReadKey();
                 Console.Clear();
             }
         }
 
-        private void GrowOldOfFishes()
+        public void SellProducts()
         {
-            for (int i = 0; i < _fishes.Count; i++)
-            {
-                _fishes[i].GrowOld();
-            }
+            _money += _purchaseAmount;
         }
 
-        private void DeleteDeadFishes()
+        public void ReturnProduct(Client client)
         {
-            for (int i = 0; i < _fishes.Count; i++)
-            {
-                if (_fishes[i].IsAlive == false)
-                {
-                    _fishes.RemoveAt(i);
-                    i--;
-                }
-            }
+            _shelves.Add(client.ProductToReturn);
         }
 
-        private void ShowAllInfo()
+        public void CalculatePurchase(Client client)
         {
-            Console.SetCursorPosition(0, 10);
-
-            for (int i = 0; i < _fishes.Count; i++)
+            for (int i = 0; i < client.Busket.Count; i++)
             {
-                Console.Write((i + 1) + " - ");
-                _fishes[i].ShowInfo();
+                _purchaseAmount += client.Busket[i].Price;
             }
+            Console.WriteLine("Сумма покупки - " + _purchaseAmount);
+        }
+
+        public void ShowInfo(int numberOfClient)
+        {
             Console.SetCursorPosition(0, 0);
+            Console.WriteLine("На кассе клиент номер - " + numberOfClient);
+            Console.SetCursorPosition(45, 1);
+            Console.WriteLine("Денег в супермаркете - " + _money);
         }
 
-        private void AddFishes()
+        private void TakeOfProducts()
         {
-            int emptyPlases = _maximumCounfOfFishes - _fishes.Count;
-            int countOfFishes;
-            bool isSuccessfull;
-            string userInput;
-            Console.WriteLine("Сколько рыб вы хотите добавить?");
-            userInput = Console.ReadLine();
-            isSuccessfull = int.TryParse(userInput, out countOfFishes);
-
-            if (isSuccessfull == true)
+            foreach (var client in _clients)
             {
-                if (countOfFishes <= emptyPlases)
+                for (int i = 0; i < client.NecessaryProducts; i++)
                 {
-                    for (int i = 0; i < countOfFishes; i++)
-                    {
-                        string nameForFish = GiveName();
-                        _fishes.Add(new Fish(nameForFish));
-                        System.Threading.Thread.Sleep(150);
-                    }
+                    Random random = new Random();
+                    int indexOfProduct = random.Next(_shelves.Count);
+                    Product productToTakeOf = _shelves[indexOfProduct];
+                    client.PutProducToGroceryBusket(productToTakeOf);
+                    _shelves.RemoveAt(indexOfProduct);
+                    System.Threading.Thread.Sleep(50);
                 }
-                else
-                {
-                    Console.WriteLine("В аквариуме не хватает места, добавьте меньше рыб");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Вы ввели не число");
             }
         }
 
-        private void TakeOutFish()
+        private void AddClients()
         {
-            bool isSuccessfull;
-            string userInput;
-            int userNumber;
-            Console.WriteLine("Введите номер рыбы, которую вы хотите забрать:");
-            userInput = Console.ReadLine();
-            isSuccessfull = int.TryParse(userInput, out userNumber);
-
-            if (isSuccessfull == true)
-            {    
-                if(userNumber <= _fishes.Count && userNumber > 0)
-                {
-                    _fishes.RemoveAt(userNumber - 1);
-                }
-                else
-                {
-                    Console.WriteLine("Рыбы под таким номером нет");
-                }
-            }
-            else
+            for (int i = 0; i < _countOfCliensPerDay; i++)
             {
-                Console.WriteLine("Вы ввели не число");
+                _clients.Add(new Client());
             }
         }
 
-        private string GiveName()
+        private void AddProducts()
         {
-            string[] names = { "Егор", "Маша", "Киря", "Стёпа", "Саша", "Боря", "Жана", "Лена", "Женя", "Толя", "Настя", "Олег" };
-            string nameForFish = "";
+            string[] titlesOfProducts = { "Морковь", "Картофель", "Лук", "Сахар", "Яйца", "Хлеб", "Свинина", "Курица", "Пельмени", "Колбаса" };
+            int indexOfProduct;
+            string titleOfProduct;
+            int priceOfProduct;
+            int[] pricesOfProduts = { 50, 70, 40, 75, 65, 30, 320, 280, 380, 450 };
             Random random = new Random();
-            int indexOfName;
-            for (int i = 0; i < names.Length; i++)
+
+            for (int i = 0; i < _countOfProductsPerDay; i++)
             {
-                indexOfName = random.Next(names.Length);
-                nameForFish = names[indexOfName];
+                indexOfProduct = random.Next(titlesOfProducts.Length);
+                titleOfProduct = titlesOfProducts[indexOfProduct];
+                priceOfProduct = pricesOfProduts[indexOfProduct];
+                _shelves.Add(new Product(titleOfProduct, priceOfProduct));
             }
-            return nameForFish;
         }
     }
 
-    class Fish
+    class Client
     {
-        private string _name;
-        private int _maximumAge;
-        private int _years;
+        private int _money;
+        private List<Product> _groceryBusket = new List<Product>();
 
-        public bool IsAlive { get; private set; }
+        public IReadOnlyList<Product> Busket { get; private set; }
 
-        public Fish(string name)
+        public Product ProductToPut { get; private set; }
+        public Product ProductToReturn { get; private set; }
+        public int NecessaryProducts { get; private set; } = 8;
+        public bool IsEnoughMoney { get; private set; }
+
+        public Client()
         {
-            int minimumYears = 14;
-            int maximumYears = 21;
-            _years = 0;
-            IsAlive = true;
-            _name = name;
-
+            int minimalNumberOfMoney = 1000;
+            int maximumNumberOfMoney = 2000;
             Random random = new Random();
-            _maximumAge = random.Next(minimumYears, maximumYears);
+            _money = random.Next(minimalNumberOfMoney, maximumNumberOfMoney);
         }
 
-        public void GrowOld()
+        public void PutProducToGroceryBusket(Product productToPut)
         {
-            _years++;
+            ProductToPut = productToPut;
+            _groceryBusket.Add(productToPut);
+        }
 
-            if (_years == _maximumAge)
-            {
-                Die();
-            }
+        public void TakePurchaseAmount()
+        {
+            Busket = _groceryBusket;
         }
 
         public void ShowInfo()
         {
-            Console.WriteLine(_name + " " + _years + " лет. ");
+            Console.SetCursorPosition(45, 0);
+            Console.WriteLine("Денег у клиента - " + _money);
         }
 
-        public void Die()
+        public void BuyProdutcs(int purchaseAmount)
         {
-            IsAlive = false;
+            _money -= purchaseAmount;
+        }
+
+        public void ChekCountOfMoney(int purchaseAmount)
+        {
+            if (_money >= purchaseAmount)
+            {
+                IsEnoughMoney = true;
+            }
+            else
+            {
+                IsEnoughMoney = false;
+            }
+        }
+
+        public void DeleteProduct()
+        {
+            Random random = new Random();
+            int indexOfProduct = random.Next(_groceryBusket.Count);
+            ProductToReturn = _groceryBusket[indexOfProduct];
+            _groceryBusket.RemoveAt(indexOfProduct);
+            TakePurchaseAmount();
         }
     }
+
+    class Product
+    {
+        public string Title { get; private set; }
+        public int Price { get; private set; }
+
+        public Product(string title, int price)
+        {
+            Title = title;
+            Price = price;
+        }
+    }
+
 }
 
 
