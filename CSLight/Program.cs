@@ -42,7 +42,7 @@ namespace CSLight
                 CalculatePurchase(_clients[i]);
                 _clients[i].ChekCountOfMoney(_purchaseAmount);
 
-                if (_clients[i].IsEnoughMoney == true)
+                if (_clients[i].IsEnoughMoney)
                 {
                     _clients[i].BuyProdutcs(_purchaseAmount);
                     SellProducts();
@@ -64,11 +64,13 @@ namespace CSLight
                         CalculatePurchase(_clients[i]);
                         _clients[i].ChekCountOfMoney(_purchaseAmount);
                     }
+                    
                     _clients[i].BuyProdutcs(_purchaseAmount);
                     SellProducts();
                     Console.WriteLine("Покупка пройдёт успешно, но пришлось вытащить из корзины " + countOfProduct + " продуктов.");
                     _purchaseAmount = 0;
                 }
+               
                 _clients.RemoveAt(i);
                 i--;
                 numberOfClient++;
@@ -77,26 +79,27 @@ namespace CSLight
             }
         }
 
-        public void SellProducts()
+        private void SellProducts()
         {
             _money += _purchaseAmount;
         }
 
-        public void ReturnProduct(Client client)
+        private void ReturnProduct(Client client)
         {
             _shelves.Add(client.ProductToReturn);
         }
 
-        public void CalculatePurchase(Client client)
+        private void CalculatePurchase(Client client)
         {
             for (int i = 0; i < client.Busket.Count; i++)
             {
                 _purchaseAmount += client.Busket[i].Price;
             }
+            
             Console.WriteLine("Сумма покупки - " + _purchaseAmount);
         }
 
-        public void ShowInfo(int numberOfClient)
+        private void ShowInfo(int numberOfClient)
         {
             Console.SetCursorPosition(0, 0);
             Console.WriteLine("На кассе клиент номер - " + numberOfClient);
@@ -153,7 +156,6 @@ namespace CSLight
         private List<Product> _groceryBusket = new List<Product>();
 
         public IReadOnlyList<Product> Busket { get; private set; }
-
         public Product ProductToPut { get; private set; }
         public Product ProductToReturn { get; private set; }
         public int NecessaryProducts { get; private set; } = 8;
@@ -222,7 +224,6 @@ namespace CSLight
             Price = price;
         }
     }
-
 }
 
 
