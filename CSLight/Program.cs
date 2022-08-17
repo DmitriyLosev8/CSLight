@@ -43,6 +43,7 @@ namespace CSLight
                         isWorking = false;
                         break;
                 }
+               
                 Console.ReadKey();
                 Console.Clear();
             }
@@ -51,7 +52,7 @@ namespace CSLight
 
     class Storage
     {
-        private List<Book> _books  = new List<Book>();
+        private List<Book> _books = new List<Book>();
 
         public void AddBook()
         {
@@ -68,11 +69,13 @@ namespace CSLight
             Console.WriteLine("Введите год издания книги:");
             userInput = Console.ReadLine();
             isSuccessfull = int.TryParse(userInput, out userYearOfIssue);
+
             if (isSuccessfull)
             {
                 Console.WriteLine("Введите цену книги:");
                 userInput = Console.ReadLine();
                 isSuccessfull = int.TryParse(userInput, out userPrice);
+                
                 if (isSuccessfull)
                 {
                     _books.Add(new Book(userTitle, userAuthor, userYearOfIssue, userPrice));
@@ -81,12 +84,11 @@ namespace CSLight
                 {
                     Console.WriteLine("Вы ввели не число");
                 }
-
             }
             else
             {
                 Console.WriteLine("Вы ввели не число");
-            }  
+            }
         }
 
         public void DeleteBook()
@@ -107,6 +109,7 @@ namespace CSLight
         public void ShowAllBooks()
         {
             Console.WriteLine("Вот список всех книг:\n");
+
             for (int i = 0; i < _books.Count; i++)
             {
                 Console.WriteLine($"Название книги - {_books[i].Title}, её автор - {_books[i].Author}, год издания - {_books[i].YearOfIisue} и цена - {_books[i].Price}");
@@ -218,7 +221,7 @@ namespace CSLight
             else
             {
                 Console.WriteLine("Вы ввели не число");
-            }   
+            }
         }
     }
 
