@@ -10,217 +10,230 @@ namespace CSLight
     internal class Program
     {
         static void Main(string[] args)
-        {
-            //Задание: Супермаркет:    
+        {      // Задание: Хранилище книг:
 
-            Supermarket supermarket = new Supermarket();
-            supermarket.Work();
-        }
-    }
+            Storage storage = new Storage();
+            bool isWorking = true;
 
-    class Supermarket
-    {
-        private int _countOfCliensPerDay = 15;
-        private int _countOfProductsPerDay = 500;
-        private int _money = 5000;
-        private int _purchaseAmount = 0;
-        private List<Product> _shelves = new List<Product>();
-        private List<Client> _clients = new List<Client>();
-
-        public void Work()
-        {
-            AddProducts();
-            AddClients();
-            TakeOfProducts();
-            int numberOfClient = 1;
-
-            for (int i = 0; i < _clients.Count; i++)
+            while (isWorking)
             {
-                ShowInfo(numberOfClient);
-                _clients[i].TakePurchaseAmount();
-                _clients[i].ShowInfo();
-                CalculatePurchase(_clients[i]);
-                _clients[i].ChekCountOfMoney(_purchaseAmount);
+                string userInput;
+                Console.SetCursorPosition(35, 0);
+                Console.WriteLine("Перед вами хранилище книг");
+                Console.SetCursorPosition(0, 3);
+                Console.WriteLine("Чтобы добавить книгу, нажмите 1\nЧтобы удалить книгу, нажмите 2\nЧтобы посмотреть список всех книг, нажмите 3\n" +
+                    "Чтобы посмотмотреть список книг по определённому параметру, нажмите 4\nЧтобы выйти, нажмите 5");
+                userInput = Console.ReadLine();
 
-                if (_clients[i].IsEnoughMoney)
+                switch (userInput)
                 {
-                    _clients[i].BuyProdutcs(_purchaseAmount);
-                    SellProducts();
-                    Console.WriteLine("Покупка пройдёт успешно");
-                    _purchaseAmount = 0;
+                    case "1":
+                        storage.AddBook();
+                        break;
+                    case "2":
+                        storage.DeleteBook();
+                        break;
+                    case "3":
+                        storage.ShowAllBooks();
+                        break;
+                    case "4":
+                        storage.ShowPartOfBooks();
+                        break;
+                    case "5":
+                        isWorking = false;
+                        break;
                 }
-                else
-                {
-                    int countOfProduct = 0;
-                    Console.WriteLine("Денег не достаточно. Нажмите Enter, чтобы удалить случайный товар(ы) из корзины пока денег не будет достаточно.");
-                    Console.ReadKey();
-
-                    while (_clients[i].IsEnoughMoney == false)
-                    {
-                        countOfProduct++;
-                        _purchaseAmount = 0;
-                        _clients[i].DeleteProduct();
-                        ReturnProduct(_clients[i]);
-                        CalculatePurchase(_clients[i]);
-                        _clients[i].ChekCountOfMoney(_purchaseAmount);
-                    }
-                    
-                    _clients[i].BuyProdutcs(_purchaseAmount);
-                    SellProducts();
-                    Console.WriteLine("Покупка пройдёт успешно, но пришлось вытащить из корзины " + countOfProduct + " продуктов.");
-                    _purchaseAmount = 0;
-                }
-               
-                _clients.RemoveAt(i);
-                i--;
-                numberOfClient++;
                 Console.ReadKey();
                 Console.Clear();
             }
         }
+    }
 
-        private void SellProducts()
-        {
-            _money += _purchaseAmount;
-        }
+    class Storage
+    {
+        private List<Book> _books  = new List<Book>();
 
-        private void ReturnProduct(Client client)
+        public void AddBook()
         {
-            _shelves.Add(client.ProductToReturn);
-        }
-
-        private void CalculatePurchase(Client client)
-        {
-            for (int i = 0; i < client.Busket.Count; i++)
+            bool isSuccessfull;
+            string userInput;
+            string userTitle;
+            string userAuthor;
+            int userYearOfIssue;
+            int userPrice;
+            Console.WriteLine("Введите название книги:");
+            userTitle = Console.ReadLine();
+            Console.WriteLine("Введите автора книги:");
+            userAuthor = Console.ReadLine();
+            Console.WriteLine("Введите год издания книги:");
+            userInput = Console.ReadLine();
+            isSuccessfull = int.TryParse(userInput, out userYearOfIssue);
+            if (isSuccessfull)
             {
-                _purchaseAmount += client.Busket[i].Price;
-            }
-            
-            Console.WriteLine("Сумма покупки - " + _purchaseAmount);
-        }
-
-        private void ShowInfo(int numberOfClient)
-        {
-            Console.SetCursorPosition(0, 0);
-            Console.WriteLine("На кассе клиент номер - " + numberOfClient);
-            Console.SetCursorPosition(45, 1);
-            Console.WriteLine("Денег в супермаркете - " + _money);
-        }
-
-        private void TakeOfProducts()
-        {
-            foreach (var client in _clients)
-            {
-                for (int i = 0; i < client.NecessaryProducts; i++)
+                Console.WriteLine("Введите цену книги:");
+                userInput = Console.ReadLine();
+                isSuccessfull = int.TryParse(userInput, out userPrice);
+                if (isSuccessfull)
                 {
-                    Random random = new Random();
-                    int indexOfProduct = random.Next(_shelves.Count);
-                    Product productToTakeOf = _shelves[indexOfProduct];
-                    client.PutProducToGroceryBusket(productToTakeOf);
-                    _shelves.RemoveAt(indexOfProduct);
-                    System.Threading.Thread.Sleep(50);
+                    _books.Add(new Book(userTitle, userAuthor, userYearOfIssue, userPrice));
+                }
+                else
+                {
+                    Console.WriteLine("Вы ввели не число");
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("Вы ввели не число");
+            }  
+        }
+
+        public void DeleteBook()
+        {
+            string userTitle;
+            Console.WriteLine("Введите название книги, которую хотите удалить:");
+            userTitle = Console.ReadLine();
+
+            for (int i = 0; i < _books.Count; i++)
+            {
+                if (_books[i].Title == userTitle)
+                {
+                    _books.RemoveAt(i);
                 }
             }
         }
 
-        private void AddClients()
+        public void ShowAllBooks()
         {
-            for (int i = 0; i < _countOfCliensPerDay; i++)
+            Console.WriteLine("Вот список всех книг:\n");
+            for (int i = 0; i < _books.Count; i++)
             {
-                _clients.Add(new Client());
+                Console.WriteLine($"Название книги - {_books[i].Title}, её автор - {_books[i].Author}, год издания - {_books[i].YearOfIisue} и цена - {_books[i].Price}");
             }
         }
 
-        private void AddProducts()
+        public void ShowPartOfBooks()
         {
-            string[] titlesOfProducts = { "Морковь", "Картофель", "Лук", "Сахар", "Яйца", "Хлеб", "Свинина", "Курица", "Пельмени", "Колбаса" };
-            int indexOfProduct;
-            string titleOfProduct;
-            int priceOfProduct;
-            int[] pricesOfProduts = { 50, 70, 40, 75, 65, 30, 320, 280, 380, 450 };
-            Random random = new Random();
+            string userInput;
+            Console.WriteLine("Выберите параметр по которому вы хотите отсортитировать и посмотреть книги:");
+            Console.WriteLine("По названию, нажмите 1\nПо автору, нажмите 2\nПо году выпуска, нажмите 3\nПо цене, нажмите 4");
+            userInput = Console.ReadLine();
 
-            for (int i = 0; i < _countOfProductsPerDay; i++)
+            switch (userInput)
             {
-                indexOfProduct = random.Next(titlesOfProducts.Length);
-                titleOfProduct = titlesOfProducts[indexOfProduct];
-                priceOfProduct = pricesOfProduts[indexOfProduct];
-                _shelves.Add(new Product(titleOfProduct, priceOfProduct));
+                case "1":
+                    ShowTitle();
+                    break;
+                case "2":
+                    ShowAuthor();
+                    break;
+                case "3":
+                    ShowYearOfIssue();
+                    break;
+                case "4":
+                    ShowPrice();
+                    break;
             }
         }
-    }
 
-    class Client
-    {
-        private int _money;
-        private List<Product> _groceryBusket = new List<Product>();
-
-        public IReadOnlyList<Product> Busket { get; private set; }
-        public Product ProductToPut { get; private set; }
-        public Product ProductToReturn { get; private set; }
-        public int NecessaryProducts { get; private set; } = 8;
-        public bool IsEnoughMoney { get; private set; }
-
-        public Client()
+        private void ShowTitle()
         {
-            int minimalNumberOfMoney = 1000;
-            int maximumNumberOfMoney = 2000;
-            Random random = new Random();
-            _money = random.Next(minimalNumberOfMoney, maximumNumberOfMoney);
-        }
+            Console.WriteLine("Введите название книги:");
+            string userTitle = Console.ReadLine();
+            Console.WriteLine("Вот список книг с этим названием:\n");
 
-        public void PutProducToGroceryBusket(Product productToPut)
-        {
-            ProductToPut = productToPut;
-            _groceryBusket.Add(productToPut);
-        }
-
-        public void TakePurchaseAmount()
-        {
-            Busket = _groceryBusket;
-        }
-
-        public void ShowInfo()
-        {
-            Console.SetCursorPosition(45, 0);
-            Console.WriteLine("Денег у клиента - " + _money);
-        }
-
-        public void BuyProdutcs(int purchaseAmount)
-        {
-            _money -= purchaseAmount;
-        }
-
-        public void ChekCountOfMoney(int purchaseAmount)
-        {
-            if (_money >= purchaseAmount)
+            for (int i = 0; i < _books.Count; i++)
             {
-                IsEnoughMoney = true;
+                if (_books[i].Title == userTitle)
+                {
+                    Console.WriteLine($"Название книги - {_books[i].Title}, её автор - {_books[i].Author}, год издания - {_books[i].YearOfIisue} и цена - {_books[i].Price}");
+                }
+            }
+        }
+
+        private void ShowAuthor()
+        {
+            Console.WriteLine("Введите автора книги:");
+            string userAuthor = Console.ReadLine();
+            Console.WriteLine("Вот список книг с этим автором:\n");
+
+            for (int i = 0; i < _books.Count; i++)
+            {
+                if (_books[i].Author == userAuthor)
+                {
+                    Console.WriteLine($"Название книги - {_books[i].Title}, её автор - {_books[i].Author}, год издания - {_books[i].YearOfIisue} и цена - {_books[i].Price}");
+                }
+            }
+        }
+
+        private void ShowYearOfIssue()
+        {
+            bool isSuccessfull;
+            string userInput;
+            int userYearOfIssue;
+            Console.WriteLine("Введите год издания книги:");
+            userInput = Console.ReadLine();
+            isSuccessfull = int.TryParse(userInput, out userYearOfIssue);
+
+            if (isSuccessfull)
+            {
+                Console.WriteLine("Вот список книг этого года:\n");
+
+                for (int i = 0; i < _books.Count; i++)
+                {
+                    if (_books[i].YearOfIisue == userYearOfIssue)
+                    {
+                        Console.WriteLine($"Название книги - {_books[i].Title}, её автор - {_books[i].Author}, год издания - {_books[i].YearOfIisue} и цена - {_books[i].Price}");
+                    }
+                }
             }
             else
             {
-                IsEnoughMoney = false;
+                Console.WriteLine("Вы ввели не число");
             }
         }
 
-        public void DeleteProduct()
+        private void ShowPrice()
         {
-            Random random = new Random();
-            int indexOfProduct = random.Next(_groceryBusket.Count);
-            ProductToReturn = _groceryBusket[indexOfProduct];
-            _groceryBusket.RemoveAt(indexOfProduct);
-            TakePurchaseAmount();
+            bool isSuccessfull;
+            string userInput;
+            int userPrice;
+            Console.WriteLine("Введите цену книги:");
+            userInput = Console.ReadLine();
+            isSuccessfull = int.TryParse(userInput, out userPrice);
+
+            if (isSuccessfull)
+            {
+                Console.WriteLine("Вот список книг с такой ценой:\n");
+
+                for (int i = 0; i < _books.Count; i++)
+                {
+                    if (_books[i].Price == userPrice)
+                    {
+                        Console.WriteLine($"Название книги - {_books[i].Title}, её автор - {_books[i].Author}, год издания - {_books[i].YearOfIisue} и цена - {_books[i].Price}");
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("Вы ввели не число");
+            }   
         }
     }
 
-    class Product
+    class Book
     {
         public string Title { get; private set; }
+        public string Author { get; private set; }
+        public int YearOfIisue { get; private set; }
         public int Price { get; private set; }
 
-        public Product(string title, int price)
+        public Book(string title, string author, int yearOfIisue, int price)
         {
             Title = title;
+            Author = author;
+            YearOfIisue = yearOfIisue;
             Price = price;
         }
     }
