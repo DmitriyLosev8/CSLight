@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq; //ПОДКЛЮЧАЕМ LINQ, ЧТОБЫ МОЖНО БЫЛО С НИМ РАБОТАТЬ
-using System.Text;
+using System.Linq; 
 using System.Threading.Tasks;
  
 
@@ -11,43 +10,32 @@ namespace CSLight
     internal class Program
     {
         static void Main(string[] args)
-        {      // Задание: Топ игроков:
+        {      // Задание: Объединение войск:
+            
+            List<Warrior> leftWarriors = new List<Warrior> { (new Warrior("Гена", "Борисов")), (new Warrior("Дима", "Аникеев")), (new Warrior("Саша", "Бондаренко")), 
+                (new Warrior("Саша", "Степанов")),(new Warrior("Боря", "Андропов")),(new Warrior("Семён", "Бонько")),(new Warrior("Никита", "Опа")),(new Warrior("Степан", "Борислав")), };
 
-            List<Player> players = new List<Player> { new Player("Бритва", 85, 40), new Player("Дымок", 70, 43), new Player("Терминатор", 15, 10), new Player("Гроза", 105, 54), new Player("Пуля", 67, 58),
-            new Player("Девятка", 90, 87),new Player("Гараж", 74, 60),new Player("Буря", 10, 2),new Player("Страх", 150, 180),new Player("Нож", 11, 18),};
+            List<Warrior> rigthWarriors = new List<Warrior> { (new Warrior("Саша", "Задорожный")), (new Warrior("Дима", "Лосев")), (new Warrior("Сергей", "Бодров")),
+                (new Warrior("Сергей", "Шнуров")),(new Warrior("Незами", "Мамедов")),(new Warrior("Ксения", "Задорожная")),(new Warrior("Любовь", "Двойнина")),(new Warrior("Владимир", "Двойнин")), };
 
-            var sorteredLevelPlayers = players.OrderByDescending(player => player.Level);
-            var topThreeLevelPlayers = sorteredLevelPlayers.Take(3);
+            var unitedSqaud = rigthWarriors.Union(leftWarriors.Where(warrior => warrior.LastName.StartsWith("Б")));
 
-            Console.WriteLine("Вот топ 3 игроков по уровню:\n");
-
-            foreach (var player in topThreeLevelPlayers)
+            foreach (var warrior in unitedSqaud)
             {
-                Console.WriteLine(player.Name);
-            }
-
-            var sorteredPowerPlayers = players.OrderByDescending(player => player.Power);
-            var topThreePowerPlayers = sorteredPowerPlayers.Take(3);
-
-            Console.WriteLine("\n\nВот топ 3 игроков по силе:\n");
-
-            foreach (var player in topThreePowerPlayers)
-            {
-                Console.WriteLine(player.Name);
+                Console.WriteLine(warrior.Name);
             }
         }
     }
 
-    class Player
+    class Warrior
     {
-        public string Name { get; private set; }
-        public int Level { get; private set; }
-        public int Power { get; private set; }
-        public Player(string name, int level, int power)
+       public string Name { get; private set; } 
+       public string LastName { get; private set; }
+
+      public Warrior(string name, string lastName)
         {
             Name = name;
-            Level = level;
-            Power = power;
+            LastName = lastName;
         }
     }
 }
