@@ -10,35 +10,35 @@ namespace CSLight
     internal class Program
     {
         static void Main(string[] args)
-        {      // Задание: Определение просрочки:
+        {      // Задание: Отчёт о вооружении:
 
-            int nowYear = 2022;
+            List<Soldier> soldiers = new List<Soldier> {new Soldier("Борис", "Автомат","Лейтенант",56), new Soldier("Никита", "Пистолет", "Сержанn", 15),
+          new Soldier("Коля", "Нож","Курсант",3),new Soldier("Саша", "Пистолет","Майор",158),new Soldier("Толя", "Граната","Курсант",6),};
 
-            List<Stew> stews = new List<Stew> {new Stew("Добрыня",2015,8), new Stew("Степан", 2012, 8), new Stew("Мясовник", 2019, 2), new Stew("СуперТушёнка", 2013, 15),
-            new Stew("СъешьМеня",2014,7),new Stew("ПочтиТушёнка",2003,8),new Stew("Вкусняшка",2021,4),new Stew("КускиМяса",2017,3),new Stew("НеТушёнка",2015,6)};
+            var soldiersList = soldiers.Select(soldier => new { Name = soldier.Name, Rank = soldier.Rank }).ToList();
 
-            var overdueStew = stews.Where(stew => stew.ProductionYear + stew.ExpirationDate < nowYear).ToList();
-
-            Console.WriteLine("Тушёнка с истёкшим сроком годности:\n");
-
-            foreach (var stew in overdueStew)
+            Console.WriteLine("Список солдат, состоящий из имен и званий:\n");
+            
+            foreach (var soldier in soldiersList)
             {
-                Console.WriteLine(stew.Title);
+                Console.WriteLine(soldier.Name + " " + soldier.Rank);
             }
         }
     }
 
-    class Stew
+    class Soldier
     {
-        public string Title { get; private set; }
-        public int ProductionYear { get; private set; }
-        public int ExpirationDate { get; private set; }
+        public string Name { get; private set; }
+        public string Armament { get; private set; }
+        public string Rank { get; private set; }
+        public int YearsOfService { get; private set; }
 
-        public Stew(string title, int productionYear, int expirationDate)
+        public Soldier(string name, string armament, string rank, int yearsOfService)
         {
-            Title = title;
-            ProductionYear = productionYear;
-            ExpirationDate = expirationDate;
+            Name = name;
+            Armament = armament;
+            Rank = rank;
+            YearsOfService = yearsOfService;
         }
     }
 }
