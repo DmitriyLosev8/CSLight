@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq; 
+using System.Linq;
 using System.Threading.Tasks;
- 
+
 
 
 namespace CSLight
@@ -10,32 +10,35 @@ namespace CSLight
     internal class Program
     {
         static void Main(string[] args)
-        {      // Задание: Объединение войск:
-            
-            List<Warrior> leftWarriors = new List<Warrior> { (new Warrior("Гена", "Борисов")), (new Warrior("Дима", "Аникеев")), (new Warrior("Саша", "Бондаренко")), 
-                (new Warrior("Саша", "Степанов")),(new Warrior("Боря", "Андропов")),(new Warrior("Семён", "Бонько")),(new Warrior("Никита", "Опа")),(new Warrior("Степан", "Борислав")), };
+        {      // Задание: Определение просрочки:
 
-            List<Warrior> rigthWarriors = new List<Warrior> { (new Warrior("Саша", "Задорожный")), (new Warrior("Дима", "Лосев")), (new Warrior("Сергей", "Бодров")),
-                (new Warrior("Сергей", "Шнуров")),(new Warrior("Незами", "Мамедов")),(new Warrior("Ксения", "Задорожная")),(new Warrior("Любовь", "Двойнина")),(new Warrior("Владимир", "Двойнин")), };
+            int nowYear = 2022;
 
-            var unitedSqaud = rigthWarriors.Union(leftWarriors.Where(warrior => warrior.LastName.StartsWith("Б")));
+            List<Stew> stews = new List<Stew> {new Stew("Добрыня",2015,8), new Stew("Степан", 2012, 8), new Stew("Мясовник", 2019, 2), new Stew("СуперТушёнка", 2013, 15),
+            new Stew("СъешьМеня",2014,7),new Stew("ПочтиТушёнка",2003,8),new Stew("Вкусняшка",2021,4),new Stew("КускиМяса",2017,3),new Stew("НеТушёнка",2015,6)};
 
-            foreach (var warrior in unitedSqaud)
+            var overdueStew = stews.Where(stew => stew.ProductionYear + stew.ExpirationDate < nowYear).ToList();
+
+            Console.WriteLine("Тушёнка с истёкшим сроком годности:\n");
+
+            foreach (var stew in overdueStew)
             {
-                Console.WriteLine(warrior.Name);
+                Console.WriteLine(stew.Title);
             }
         }
     }
 
-    class Warrior
+    class Stew
     {
-       public string Name { get; private set; } 
-       public string LastName { get; private set; }
+        public string Title { get; private set; }
+        public int ProductionYear { get; private set; }
+        public int ExpirationDate { get; private set; }
 
-      public Warrior(string name, string lastName)
+        public Stew(string title, int productionYear, int expirationDate)
         {
-            Name = name;
-            LastName = lastName;
+            Title = title;
+            ProductionYear = productionYear;
+            ExpirationDate = expirationDate;
         }
     }
 }
