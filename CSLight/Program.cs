@@ -10,35 +10,43 @@ namespace CSLight
     internal class Program
     {
         static void Main(string[] args)
-        {      // Задание: Отчёт о вооружении:
+        {      // Задание: Объединение войск:
 
-            List<Soldier> soldiers = new List<Soldier> {new Soldier("Борис", "Автомат","Лейтенант",56), new Soldier("Никита", "Пистолет", "Сержанn", 15),
-          new Soldier("Коля", "Нож","Курсант",3),new Soldier("Саша", "Пистолет","Майор",158),new Soldier("Толя", "Граната","Курсант",6),};
+            List<Warrior> leftWarriors = new List<Warrior> { (new Warrior("Гена", "Борисов")), (new Warrior("Дима", "Аникеев")), (new Warrior("Саша", "Бондаренко")),
+                (new Warrior("Саша", "Степанов")),(new Warrior("Боря", "Андропов")),(new Warrior("Семён", "Бонько")),(new Warrior("Никита", "Опа")),(new Warrior("Степан", "Борислав")), };
 
-            var soldiersList = soldiers.Select(soldier => new { Name = soldier.Name, Rank = soldier.Rank }).ToList();
+            List<Warrior> rigthWarriors = new List<Warrior> { (new Warrior("Саша", "Задорожный")), (new Warrior("Дима", "Лосев")), (new Warrior("Сергей", "Бодров")),
+                (new Warrior("Сергей", "Шнуров")),(new Warrior("Незами", "Мамедов")),(new Warrior("Ксения", "Задорожная")),(new Warrior("Любовь", "Двойнина")),(new Warrior("Владимир", "Двойнин")), };
 
-            Console.WriteLine("Список солдат, состоящий из имен и званий:\n");
-            
-            foreach (var soldier in soldiersList)
+            var newRigthWarriors = rigthWarriors.Union(leftWarriors.Where(warrior => warrior.LastName.StartsWith("Б"))).ToList();
+            var newLeftWarriors = leftWarriors.Except(leftWarriors.Where(warrior => warrior.LastName.StartsWith("Б"))).ToList();
+            rigthWarriors = newRigthWarriors;
+            leftWarriors = newLeftWarriors;
+            Console.WriteLine("Левый отряд без бойцов с фамилией на букву Б:\n");
+
+            foreach (var warrior in leftWarriors)
             {
-                Console.WriteLine(soldier.Name + " " + soldier.Rank);
+                Console.WriteLine(warrior.Name + " " + warrior.LastName);
+            }
+
+            Console.WriteLine("\n\nПравый отряд с перенесёнными бойцами с фамилией на букву Б:\n");
+
+            foreach (var warrior in rigthWarriors)
+            {
+                Console.WriteLine(warrior.Name + " " + warrior.LastName);
             }
         }
     }
 
-    class Soldier
+    class Warrior
     {
         public string Name { get; private set; }
-        public string Armament { get; private set; }
-        public string Rank { get; private set; }
-        public int YearsOfService { get; private set; }
+        public string LastName { get; private set; }
 
-        public Soldier(string name, string armament, string rank, int yearsOfService)
+        public Warrior(string name, string lastName)
         {
             Name = name;
-            Armament = armament;
-            Rank = rank;
-            YearsOfService = yearsOfService;
+            LastName = lastName;
         }
     }
 }
